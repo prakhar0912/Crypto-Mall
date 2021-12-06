@@ -233,29 +233,29 @@ Showcase.prototype.onPart1 = function(){
     z: this.GL.camera.position.z + 1, duration: 1, ease: "power4.in",
   })
   // this.options.showPart2()
-  if (this.GLStickPop) {
-    this.GLStickPop.stop();
-  }
-  this.GL.scheduleLoop();
-  const startWaveIntensitySpring = spring({
-    from: this.waveIntensity,
-    to: this.waveIntensityRange[1]-0.2,
-    mass: 5,
-    stiffness: 10,
-    damping: 200
-  });
-  this.GLStickPop = parallel(
-    startWaveIntensitySpring
-  ).start({
-    update: values => {
-      this.waveIntensity = values[0];
-      this.GL.updateStickEffect({
-        waveIntensity: this.waveIntensity,
-        part: this.part,
-        inTransition: true
-      });
-    },
-  });
+  // if (this.GLStickPop) {
+  //   this.GLStickPop.stop();
+  // }
+  // this.GL.scheduleLoop();
+  // const startWaveIntensitySpring = spring({
+  //   from: this.waveIntensity,
+  //   to: this.waveIntensityRange[1]-0.2,
+  //   mass: 5,
+  //   stiffness: 10,
+  //   damping: 200
+  // });
+  // this.GLStickPop = parallel(
+  //   startWaveIntensitySpring
+  // ).start({
+  //   update: values => {
+  //     this.waveIntensity = values[0];
+  //     this.GL.updateStickEffect({
+  //       waveIntensity: this.waveIntensity,
+  //       part: this.part,
+  //       inTransition: true
+  //     });
+  //   },
+  // });
 }
 
 

@@ -48494,41 +48494,38 @@ Showcase.prototype.setStickEffect = function () {
 };
 
 Showcase.prototype.onPart1 = function () {
-  var _this3 = this;
-
   this.zoom.to(this.GL.camera.position, {
     z: this.GL.camera.position.z + 1,
     duration: 1,
     ease: "power4.in"
   }); // this.options.showPart2()
-
-  if (this.GLStickPop) {
-    this.GLStickPop.stop();
-  }
-
-  this.GL.scheduleLoop();
-  var startWaveIntensitySpring = (0, _popmotion.spring)({
-    from: this.waveIntensity,
-    to: this.waveIntensityRange[1] - 0.2,
-    mass: 5,
-    stiffness: 10,
-    damping: 200
-  });
-  this.GLStickPop = (0, _popmotion.parallel)(startWaveIntensitySpring).start({
-    update: function update(values) {
-      _this3.waveIntensity = values[0];
-
-      _this3.GL.updateStickEffect({
-        waveIntensity: _this3.waveIntensity,
-        part: _this3.part,
-        inTransition: true
-      });
-    }
-  });
+  // if (this.GLStickPop) {
+  //   this.GLStickPop.stop();
+  // }
+  // this.GL.scheduleLoop();
+  // const startWaveIntensitySpring = spring({
+  //   from: this.waveIntensity,
+  //   to: this.waveIntensityRange[1]-0.2,
+  //   mass: 5,
+  //   stiffness: 10,
+  //   damping: 200
+  // });
+  // this.GLStickPop = parallel(
+  //   startWaveIntensitySpring
+  // ).start({
+  //   update: values => {
+  //     this.waveIntensity = values[0];
+  //     this.GL.updateStickEffect({
+  //       waveIntensity: this.waveIntensity,
+  //       part: this.part,
+  //       inTransition: true
+  //     });
+  //   },
+  // });
 };
 
 Showcase.prototype.startMoveToSection = function (from, to) {
-  var _this4 = this;
+  var _this3 = this;
 
   var spec = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 
@@ -48558,23 +48555,23 @@ Showcase.prototype.startMoveToSection = function (from, to) {
       onComplete: function onComplete() {
         console.log('start complete', from, to);
 
-        _this4.setStickEffect();
+        _this3.setStickEffect();
 
-        _this4.part = to;
-        _this4.GL.part = to;
+        _this3.part = to;
+        _this3.GL.part = to;
 
-        _this4.options.updatePart(to, _this4.index.active);
+        _this3.options.updatePart(to, _this3.index.active);
 
-        _this4.inTransition = false;
+        _this3.inTransition = false;
 
         if (to == 0) {
-          _this4.options.endPart1();
+          _this3.options.endPart1();
         }
 
         if (to === 1) {
-          _this4.onPart1();
+          _this3.onPart1();
 
-          _this4.options.onPart1();
+          _this3.options.onPart1();
         }
       }
     });
@@ -48593,11 +48590,11 @@ Showcase.prototype.startMoveToSection = function (from, to) {
     });
     this.GLStickPop = (0, _popmotion.parallel)(startWaveIntensitySpring).start({
       update: function update(values) {
-        _this4.waveIntensity = values[0];
-        if (_this4.inTransition) _this4.GL.updateStickEffect({
-          waveIntensity: _this4.waveIntensity,
-          part: _this4.part,
-          inTransition: _this4.inTransition
+        _this3.waveIntensity = values[0];
+        if (_this3.inTransition) _this3.GL.updateStickEffect({
+          waveIntensity: _this3.waveIntensity,
+          part: _this3.part,
+          inTransition: _this3.inTransition
         });
       }
     });
@@ -48622,22 +48619,22 @@ Showcase.prototype.startMoveToSection = function (from, to) {
       onComplete: function onComplete() {
         console.log('start complete', from, to);
 
-        _this4.setStickEffect();
+        _this3.setStickEffect();
 
-        _this4.options.updatePart(to, _this4.index.active);
+        _this3.options.updatePart(to, _this3.index.active);
 
-        _this4.part = to;
-        _this4.GL.part = to;
-        _this4.inTransition = false;
+        _this3.part = to;
+        _this3.GL.part = to;
+        _this3.inTransition = false;
 
         if (to == 0) {
-          _this4.options.endPart1();
+          _this3.options.endPart1();
         }
 
         if (to === 1) {
-          _this4.onPart1();
+          _this3.onPart1();
 
-          _this4.options.onPart1();
+          _this3.options.onPart1();
         }
       }
     });
@@ -48656,11 +48653,11 @@ Showcase.prototype.startMoveToSection = function (from, to) {
     });
     this.GLStickPop = (0, _popmotion.parallel)(waveIntensitySpring).start({
       update: function update(values) {
-        _this4.waveIntensity = values[0];
-        if (_this4.inTransition) _this4.GL.updateStickEffect({
-          waveIntensity: _this4.waveIntensity,
-          part: _this4.part,
-          inTransition: _this4.inTransition
+        _this3.waveIntensity = values[0];
+        if (_this3.inTransition) _this3.GL.updateStickEffect({
+          waveIntensity: _this3.waveIntensity,
+          part: _this3.part,
+          inTransition: _this3.inTransition
         });
       }
     });
@@ -48668,7 +48665,7 @@ Showcase.prototype.startMoveToSection = function (from, to) {
 };
 
 Showcase.prototype.endMoveToSection = function (from, to) {
-  var _this5 = this;
+  var _this4 = this;
 
   if (to < 0 || to > this.data.length - 1 || from === to) {
     return;
@@ -48688,14 +48685,14 @@ Showcase.prototype.endMoveToSection = function (from, to) {
     ease: "power2.in",
     onComplete: function onComplete() {
       console.log('end complete');
-      _this5.inTransition = false;
-      _this5.GL.part = from;
-      _this5.part = from;
+      _this4.inTransition = false;
+      _this4.GL.part = from;
+      _this4.part = from;
 
       if (from == 1) {
-        _this5.onPart1();
+        _this4.onPart1();
 
-        _this5.options.onPart1();
+        _this4.options.onPart1();
       }
     }
   });
@@ -48713,13 +48710,13 @@ Showcase.prototype.endMoveToSection = function (from, to) {
   });
   this.GLStickPop = (0, _popmotion.parallel)(waveIntensitySpring).start({
     update: function update(values) {
-      _this5.waveIntensity = values[0];
+      _this4.waveIntensity = values[0];
 
-      if (_this5.inTransition) {
-        _this5.GL.updateStickEffect({
-          waveIntensity: _this5.waveIntensity,
-          part: _this5.part,
-          inTransition: _this5.inTransition
+      if (_this4.inTransition) {
+        _this4.GL.updateStickEffect({
+          waveIntensity: _this4.waveIntensity,
+          part: _this4.part,
+          inTransition: _this4.inTransition
         });
       }
     }
@@ -48755,7 +48752,7 @@ Showcase.prototype.onGrabEnd = function () {
 };
 
 Showcase.prototype.snapCurrentToActiveIndex = function () {
-  var _this6 = this;
+  var _this5 = this;
 
   if (this.part === 1) {
     if (this.slidesPop) {
@@ -48774,18 +48771,18 @@ Showcase.prototype.snapCurrentToActiveIndex = function () {
       complete: function complete() {},
       update: function update(val) {
         // this.slides.onMove(val);
-        if (_this6.options.onIndexChange) {
-          _this6.options.onIndexChange(val.index);
+        if (_this5.options.onIndexChange) {
+          _this5.options.onIndexChange(val.index);
         }
 
-        _this6.index.current = val.index;
+        _this5.index.current = val.index;
       }
     });
   }
 };
 
 Showcase.prototype.titleClickEnd = function () {
-  var _this7 = this;
+  var _this6 = this;
 
   // this.slides.disperse(this.index.active);
   if (this.part === 1) {
@@ -48822,13 +48819,13 @@ Showcase.prototype.titleClickEnd = function () {
       update: function update(values) {
         // this.progress = values[0];
         // this.direction = values[1];
-        _this7.waveIntensity = values[0];
+        _this6.waveIntensity = values[0];
 
-        _this7.GL.updateStickEffect({
-          progress: _this7.progress,
-          direction: _this7.direction,
-          waveIntensity: _this7.waveIntensity,
-          part: _this7.part
+        _this6.GL.updateStickEffect({
+          progress: _this6.progress,
+          direction: _this6.direction,
+          waveIntensity: _this6.waveIntensity,
+          part: _this6.part
         });
       },
       complete: function complete() {// if (this.options.onClickEnd) {
