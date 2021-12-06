@@ -2,7 +2,6 @@ import image1 from "../images/img1.jpg"
 import landingImage from "../images/landing.jpg"
 import landingLogo from "../images/landingLogo.svg"
 import landingStudio from "../images/studio.svg"
-import arrow from "../images/arrow.svg"
 import video1 from "../video/KingsAuto.mp4"
 
 const slidesData = [

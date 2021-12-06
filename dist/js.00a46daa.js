@@ -48496,7 +48496,7 @@ Showcase.prototype.setStickEffect = function () {
 Showcase.prototype.onPart1 = function () {
   this.zoom.to(this.GL.camera.position, {
     z: this.GL.camera.position.z + 1,
-    duration: 1,
+    duration: 0.5,
     ease: "power4.in"
   }); // this.options.showPart2()
   // if (this.GLStickPop) {
@@ -48569,12 +48569,11 @@ Showcase.prototype.startMoveToSection = function (from, to) {
         }
 
         if (to === 1) {
-          _this3.onPart1();
-
           _this3.options.onPart1();
         }
       }
     });
+    this.onPart1();
 
     if (this.GLStickPop) {
       this.GLStickPop.stop();
@@ -48632,12 +48631,11 @@ Showcase.prototype.startMoveToSection = function (from, to) {
         }
 
         if (to === 1) {
-          _this3.onPart1();
-
           _this3.options.onPart1();
         }
       }
     });
+    this.onPart1();
 
     if (this.GLStickPop) {
       this.GLStickPop.stop();
@@ -48681,7 +48679,7 @@ Showcase.prototype.endMoveToSection = function (from, to) {
   this.zoom = _gsap.default.timeline();
   this.zoom.to(this.GL.camera.position, {
     z: this.data[from][0].position + 6,
-    duration: 0.8,
+    duration: 0.3,
     ease: "power2.in",
     onComplete: function onComplete() {
       console.log('end complete');
@@ -49551,8 +49549,6 @@ module.exports = "/landing.10726b6b.jpg";
 module.exports = "/landingLogo.9fdc7c6d.svg";
 },{}],"images/studio.svg":[function(require,module,exports) {
 module.exports = "/studio.db870bdb.svg";
-},{}],"images/arrow.svg":[function(require,module,exports) {
-module.exports = "/arrow.305c14c2.svg";
 },{}],"video/KingsAuto.mp4":[function(require,module,exports) {
 module.exports = "/KingsAuto.d7019de4.mp4";
 },{}],"js/slidesData.js":[function(require,module,exports) {
@@ -49571,8 +49567,6 @@ var _landingLogo = _interopRequireDefault(require("../images/landingLogo.svg"));
 
 var _studio = _interopRequireDefault(require("../images/studio.svg"));
 
-var _arrow = _interopRequireDefault(require("../images/arrow.svg"));
-
 var _KingsAuto = _interopRequireDefault(require("../video/KingsAuto.mp4"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -49588,7 +49582,7 @@ var slidesData = [[{
   position: 0
 }]];
 exports.slidesData = slidesData;
-},{"../images/img1.jpg":"images/img1.jpg","../images/landing.jpg":"images/landing.jpg","../images/landingLogo.svg":"images/landingLogo.svg","../images/studio.svg":"images/studio.svg","../images/arrow.svg":"images/arrow.svg","../video/KingsAuto.mp4":"video/KingsAuto.mp4"}],"js/Frame.js":[function(require,module,exports) {
+},{"../images/img1.jpg":"images/img1.jpg","../images/landing.jpg":"images/landing.jpg","../images/landingLogo.svg":"images/landingLogo.svg","../images/studio.svg":"images/studio.svg","../video/KingsAuto.mp4":"video/KingsAuto.mp4"}],"js/Frame.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -51803,6 +51797,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function once(el, event, fn, opts) {
+  var onceFn = function onceFn(e) {
+    el.removeEventListener(event, onceFn);
+    fn.apply(this, arguments);
+  };
+
+  el.addEventListener(event, onceFn, opts);
+  return onceFn;
+}
+
 var Vid = /*#__PURE__*/function () {
   function Vid() {
     _classCallCheck(this, Vid);
@@ -51815,7 +51819,53 @@ var Vid = /*#__PURE__*/function () {
     this.prev = 0;
     this.go = false;
     this.done = false;
-  }
+
+    _gsap.default.registerPlugin(_ScrollTrigger.ScrollTrigger);
+  } // start(part) {
+  //     if (part == 0) {
+  //         this.video1.play()
+  //     }
+  //     else if (part == 1) {
+  //         this.running = true
+  //         this.video1.pause()
+  //         this.scrollPlay()
+  //     }
+  // }
+  // pause(part) {
+  //     if (part == 0) {
+  //         this.video1.pause()
+  //     }
+  //     else if (part == 1) {
+  //         this.running = false
+  //         this.video2.pause()
+  //     }
+  // }
+  // oneShot() {
+  //     if(!this.done){
+  //         this.done = true
+  //         setTimeout(() => {
+  //             this.go = false
+  //             this.video2.pause()
+  //             this.done = false
+  //         }, 500)
+  //     }
+  // }
+  // scrollPlay() {
+  //     if (this.video2.duration) {
+  //         if (this.prev != window.scrollY && !this.go) {
+  //             this.go = true
+  //             this.video2.play()
+  //         }
+  //         else if (this.prev == window.scrollY) {
+  //             this.oneShot()
+  //         }
+  //         this.prev = window.scrollY
+  //     }
+  //     if (this.running) {
+  //         requestAnimationFrame(this.scrollPlay.bind(this));
+  //     }
+  // }
+
 
   _createClass(Vid, [{
     key: "start",
@@ -51834,43 +51884,59 @@ var Vid = /*#__PURE__*/function () {
       if (part == 0) {
         this.video1.pause();
       } else if (part == 1) {
+        // clearInterval(this.inte)
         this.running = false;
+        this.scrollTrig.kill();
         this.video2.pause();
-      }
-    }
-  }, {
-    key: "oneShot",
-    value: function oneShot() {
-      var _this = this;
-
-      if (!this.done) {
-        this.done = true;
-        setTimeout(function () {
-          _this.go = false;
-
-          _this.video2.pause();
-
-          _this.done = false;
-        }, 500);
       }
     }
   }, {
     key: "scrollPlay",
     value: function scrollPlay() {
-      if (this.video2.duration) {
-        if (this.prev != window.scrollY && !this.go) {
-          this.go = true;
-          this.video2.play();
-        } else if (this.prev == window.scrollY) {
-          this.oneShot();
-        }
+      // clearInterval(this.inte)
+      if (this.scrollTrig) {
+        this.scrollTrig.kill();
+      } // this.scrollTrig = ScrollTrigger.create({
+      //     trigger: this.section,
+      //     duration: 1,
+      //     markers: true,
+      //     ease: "power4.out",
+      //     scrub: true
+      // })
 
-        this.prev = window.scrollY;
-      }
+
+      this.scrollTrig = _gsap.default.timeline({
+        defaults: {
+          duration: 1
+        },
+        scrollTrigger: {
+          trigger: this.section,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true
+        }
+      });
+      this.scrollTrig.fromTo(this.video2, {
+        currentTime: 0
+      }, {
+        currentTime: this.video2.duration || 1
+      }); // this.run()
+      // this.inte = setInterval(this.playVideo.bind(this), 1)
+    }
+  }, {
+    key: "run",
+    value: function run() {
+      this.playVideo();
 
       if (this.running) {
-        requestAnimationFrame(this.scrollPlay.bind(this));
+        requestAnimationFrame(this.run.bind(this));
       }
+    }
+  }, {
+    key: "playVideo",
+    value: function playVideo() {
+      this.delay += (this.scrollPos - this.delay) * this.acc;
+      this.video2.currentTime = this.delay.toFixed(1);
     }
   }]);
 
@@ -52186,7 +52252,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "38391" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40561" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

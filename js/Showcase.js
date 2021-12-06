@@ -230,7 +230,7 @@ Showcase.prototype.setStickEffect = function () {
 
 Showcase.prototype.onPart1 = function(){
   this.zoom.to(this.GL.camera.position, {
-    z: this.GL.camera.position.z + 1, duration: 1, ease: "power4.in",
+    z: this.GL.camera.position.z + 1, duration: 0.5, ease: "power4.in",
   })
   // this.options.showPart2()
   // if (this.GLStickPop) {
@@ -288,11 +288,12 @@ Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
           this.options.endPart1()
         }
         if (to === 1) {
-          this.onPart1()
           this.options.onPart1()
         }
       }
     })
+    this.onPart1()
+
 
 
     if (this.GLStickPop) {
@@ -343,12 +344,12 @@ Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
           this.options.endPart1()
         }
         if (to === 1) {
-          this.onPart1()
           this.options.onPart1()
         }
 
       }
     })
+    this.onPart1()
 
     if (this.GLStickPop) {
       this.GLStickPop.stop();
@@ -389,7 +390,7 @@ Showcase.prototype.endMoveToSection = function (from, to) {
   this.GL.scheduleLoop();
   this.zoom = gsap.timeline()
   this.zoom.to(this.GL.camera.position, {
-    z: this.data[from][0].position + 6, duration: 0.8, ease: "power2.in", onComplete: () => {
+    z: this.data[from][0].position + 6, duration: 0.3, ease: "power2.in", onComplete: () => {
       console.log('end complete')
       this.inTransition = false
       this.GL.part = from
