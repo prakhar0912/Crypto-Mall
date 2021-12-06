@@ -11,10 +11,7 @@ const slidesData = [
       content: `
         <div class="slide-container slide-grid">
           <div class="slide-header">
-            <div class="slide-title title-center ">
-              <img src="${landingLogo}">
-              <img src="${landingStudio}">
-            </div>
+            
           </div>
         </div>
       `,

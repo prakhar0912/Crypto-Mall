@@ -49573,7 +49573,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var slidesData = [[{
   image: _landing.default,
-  content: "\n        <div class=\"slide-container slide-grid\">\n          <div class=\"slide-header\">\n            <div class=\"slide-title title-center \">\n              <img src=\"".concat(_landingLogo.default, "\">\n              <img src=\"").concat(_studio.default, "\">\n            </div>\n          </div>\n        </div>\n      "),
+  content: "\n        <div class=\"slide-container slide-grid\">\n          <div class=\"slide-header\">\n            \n          </div>\n        </div>\n      ",
   position: 10
 }], [{
   image: _img.default,
