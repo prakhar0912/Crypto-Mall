@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/yeah.css">
+    <style>
+        body {
+            margin: 0;
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <video muted src="./video/rand2.mp4"></video>
+    <div class="yeah">
+        <section>
+
+        </section>
+        <section>
+
+        </section>
+        <section>
+
+        </section>
+    </div>
+    <script>
+        let video = document.querySelector('video')
+        let section = document.querySelector('.yeah')
+        // video.play()
+        // // let sec = video.duration % 60
+        // // console.log(sec)
+        // let sectionHeight = 1742
+        // console.log(sectionHeight)
+        // let sec = 18.472
+        // // this.running = false
+        // let scrollPlay = () => {
+        //     let currentOffset = window.pageYOffset
+        //     let frameNumber = currentOffset / sectionHeight
+        //     let currentTime = Number.parseFloat(frameNumber * sec).toPrecision(5);
+        //     console.log(currentTime)
+        //     video.currentTime = currentTime
+        //     window.requestAnimationFrame(scrollPlay)
+        // }
+        // scrollPlay()
+        const registerVideo = (bound, video) => {
+            // bound = document.querySelector(bound);
+            // video = document.querySelector(video);
+            const scrollVideo = () => {
+                if (video.duration) {
+                    const distanceFromTop = window.scrollY + bound.getBoundingClientRect().top;
+                    const rawPercentScrolled = (window.scrollY - distanceFromTop) / (bound.scrollHeight - window.innerHeight);
+                    const percentScrolled = Math.min(Math.max(rawPercentScrolled, 0), 1);
+
+                    // console.log(percentScrolled)
+                    video.currentTime = video.duration * percentScrolled;
+                }
+                requestAnimationFrame(scrollVideo);
+            }
+            requestAnimationFrame(scrollVideo);
+        }
+        registerVideo(section, video)
+
+    </script>
+</body>
+
+</html>

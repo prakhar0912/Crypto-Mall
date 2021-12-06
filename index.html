@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>White Pencil</title>
+  <meta name="description"
+    content="A recreation of the sticky image effect seen on the websites of MakeReign and Ultranoir using three.js." />
+  <meta name="keywords" content="three.js, sticky, animation, webgl, javascript, scroll, drag" />
+  <meta name="author" content="Codrops" />
+  <link rel="stylesheet" href="https://use.typekit.net/ncw8xrb.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./css/base.css" />
+
+  <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+
+  <link rel="stylesheet" type="text/css" href="./css/yeah.css" />
+  <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
+
+  <script>
+    document.documentElement.className = "js";
+    var supportsCssVars = function () {
+      var e,
+        t = document.createElement("style");
+      return (
+        (t.innerHTML = "root: { --tmp-var: bold; }"),
+        document.head.appendChild(t),
+        (e = !!(
+          window.CSS &&
+          window.CSS.supports &&
+          window.CSS.supports("font-weight", "var(--tmp-var)")
+        )),
+        t.parentNode.removeChild(t),
+        e
+      );
+    };
+    supportsCssVars() ||
+      alert(
+        "Please view this demo in a modern browser that supports CSS Variables."
+      );
+  </script>
+
+</head>
+
+<body>
+  <video muted loop style="display: none;" id="video1" src="./video/KingsAuto.mp4"></video>
+  <video muted loop preload style="display: none;" id="video2" src="./video/less see.mp4"></video>
+  <div class="preloader">
+    <div class="">
+      <img src="./images/mainlogo.png" alt="">
+      <div class="loader">
+        <div class="loader-line"></div>
+      </div>
+    </div>
+  </div>
+  <main>
+    <div class="content" id="app">
+      <!-- the content -->
+    </div>
+  </main>
+  <div class="main-logo">
+    <img src="./images/mainlogo.png" alt="">
+  </div>
+  <div class="frame">
+    <div class="proj">
+      <div class="arrow-up arrow"></div>
+      <div class="lien on"></div>
+      <div class="num">
+        <p>1/5</p>
+      </div>
+      <div class="lien tw"></div>
+      <div class="arrow-down arrow"></div>
+    </div>
+    <div class="scroll">
+      <div class="scroll-line"></div>
+    </div>
+    <div class="frame__tip hint">
+      <p>CLICK &amp; HOLD</p>
+      <div class="lin"></div>
+    </div>
+  </div>
+  <img src="./images/rot.svg" alt="" class="rot">
+  <div class="video">
+    <!-- <video src="./video/KingsAuto.mp4" muted autoplay loop></video> -->
+  </div>
+  <div class="burger">
+    <div class="line"></div>
+    <!-- <div class="line"></div> -->
+    <div class="line"></div>
+  </div>
+  <div class="nav-container">
+    <div class="nav">
+      <div class="center">
+        <img src="./images/Menu.svg" alt="">
+        <div class="text active">HOME</div>
+        <div class="text">PROJECTS</div>
+        <div class="text">ABOUT US</div>
+        <div class="text">CONTACT US</div>
+      </div>
+      <div class="socials">
+        <img src="./images/youtube.png" alt="">
+        <img src="./images/insta.png" alt="">
+        <img src="./images/facebook.png" alt="">
+      </div>
+    </div>
+  </div>
+  <div class="cursor">
+    <div class="arrow-up arrow"></div>
+    <div class="cursor__inner cursor__inner--circle">
+      <div class="cursor__inner cursor__inner--dot"></div>
+    </div>
+    <div class="arrow-down arrow"></div>
+    <div class="cursor-hint"></div>
+  </div>
+  <script src="js/index.js"></script>
+</body>
+
+</html>

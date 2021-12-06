@@ -1,0 +1,33 @@
+{
+  "name": "stickyimageeffect",
+  "version": "1.0.0",
+  "description": "A sticky image effect for a slideshow inspired by [ultanoir's project showcase slideshow](https://ultranoir.com/en/).",
+  "main": "index.js",
+  "scripts": {
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anemolo/StickyImageEffect.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Anemolo/StickyImageEffect/issues"
+  },
+  "homepage": "https://github.com/Anemolo/StickyImageEffect#readme",
+  "dependencies": {
+    "babel": "^6.23.0",
+    "gsap": "^3.7.1",
+    "popmotion": "^8.6.4",
+    "regenerator-runtime": "^0.13.9",
+    "stats.js": "^0.17.0",
+    "three": "^0.132.2"
+  },
+  "devDependencies": {
+    "cssnano": "^4.1.11",
+    "parcel-bundler": "^1.12.3",
+    "postcss": "^8.3.11"
+  }
+}
