@@ -51813,13 +51813,11 @@ var Vid = /*#__PURE__*/function () {
     this.video1 = document.querySelector('#video1');
     this.video2 = document.querySelector('#video2');
     this.section = document.querySelector('.yeah');
+    this.sectionHeight = this.section.clientHeight - document.body.clientHeight + 10;
     this.running = false;
-    this.acc = 0.1;
-    this.scrollPos = 0;
-    this.delay = 0;
-    this.sec = 15;
-
-    _gsap.default.registerPlugin(_ScrollTrigger.ScrollTrigger);
+    this.prev = 0;
+    this.go = false;
+    this.done = false;
   }
 
   _createClass(Vid, [{
@@ -51839,48 +51837,43 @@ var Vid = /*#__PURE__*/function () {
       if (part == 0) {
         this.video1.pause();
       } else if (part == 1) {
-        // clearInterval(this.inte)
         this.running = false;
-        this.scrollTrig.kill();
         this.video2.pause();
+      }
+    }
+  }, {
+    key: "oneShot",
+    value: function oneShot() {
+      var _this = this;
+
+      if (!this.done) {
+        this.done = true;
+        setTimeout(function () {
+          _this.go = false;
+
+          _this.video2.pause();
+
+          _this.done = false;
+        }, 500);
       }
     }
   }, {
     key: "scrollPlay",
     value: function scrollPlay() {
-      var _this = this;
-
-      clearInterval(this.inte);
-
-      if (this.scrollTrig) {
-        this.scrollTrig.kill();
-      }
-
-      this.scrollTrig = _ScrollTrigger.ScrollTrigger.create({
-        trigger: this.section,
-        duration: 1,
-        markers: true,
-        ease: "power4.out",
-        onUpdate: function onUpdate(e) {
-          _this.scrollPos = e.progress * _this.video2.duration;
+      if (this.video2.duration) {
+        if (this.prev != window.scrollY && !this.go) {
+          this.go = true;
+          this.video2.play();
+        } else if (this.prev == window.scrollY) {
+          this.oneShot();
         }
-      });
-      this.run(); // this.inte = setInterval(this.playVideo.bind(this), 1)
-    }
-  }, {
-    key: "run",
-    value: function run() {
-      this.playVideo();
+
+        this.prev = window.scrollY;
+      }
 
       if (this.running) {
-        requestAnimationFrame(this.run.bind(this));
+        requestAnimationFrame(this.scrollPlay.bind(this));
       }
-    }
-  }, {
-    key: "playVideo",
-    value: function playVideo() {
-      this.delay += (this.scrollPos - this.delay) * this.acc;
-      this.video2.currentTime = this.delay.toFixed(1);
     }
   }]);
 
