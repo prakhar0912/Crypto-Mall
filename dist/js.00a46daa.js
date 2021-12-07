@@ -43136,7 +43136,7 @@ GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
   var plane = this.getPlaneSize();
   var windowRatio = window.innerWidth / window.innerHeight;
   var rectRatio = plane.width / plane.height * windowRatio;
-  var imageRatio = 1.37777777778; // console.log("index",texture)
+  var imageRatio = 1.77777777778; // console.log("index",texture)
 
   var factorX = 1;
   var factorY = 1;
