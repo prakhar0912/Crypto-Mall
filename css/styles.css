@@ -55,8 +55,17 @@
   background: rgb(19, 19, 19);
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
+*{
+  scroll-behavior: smooth;
+}
+
 body {
   cursor: none;
+  scroll-behavior: smooth;
 }
 
 #app {

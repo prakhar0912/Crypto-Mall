@@ -103,7 +103,7 @@ const showcase = new Showcase(slidesData, {
     }
   },
   showTriangle: () => {
-    cursor.showTriangle()
+    // cursor.showTriangle()
   },
   onPart1: () => {
     vid.pause(0)
@@ -135,13 +135,13 @@ const showcase = new Showcase(slidesData, {
   updatePart: (index, section) => {
     // nav.updatePart(index)
     // frame.updatePart(index)
-    cursor.updateHint(index)
+    // cursor.updateHint(index)
   },
   blowUp: () => {
-    cursor.blowUp()
+    // cursor.blowUp()
   },
   blowDown: () => {
-    cursor.blowDown()
+    // cursor.blowDown()
   }
 });
 

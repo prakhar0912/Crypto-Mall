@@ -24,10 +24,10 @@ class Cursor {
             this.DOM = { el: el };
             this.DOM.dot = this.DOM.el.querySelector('.cursor__inner--dot');
             this.DOM.circle = this.DOM.el.querySelector('.cursor__inner--circle');
-            this.hintContainer = this.DOM.el.querySelector('.cursor-hint');
+            // this.hintContainer = this.DOM.el.querySelector('.cursor-hint');
             this.bounds = { dot: this.DOM.dot.getBoundingClientRect(), circle: this.DOM.circle.getBoundingClientRect() };
             this.triangles = this.DOM.el.querySelectorAll('.cursor > .arrow')
-            gsap.set(this.hintContainer, {xPercent: -50})
+            // gsap.set(this.hintContainer, {xPercent: -50})
             this.scale = 1;
             this.opacity = 1;
             this.mousePos = { x: 0, y: 0 };
@@ -36,7 +36,7 @@ class Cursor {
             this.blowAnimation = null
             this.touch = false
             this.initEvents();
-            this.blowHint()
+            // this.blowHint()
             this.remove()
             // requestAnimationFrame(() => this.render());
         }
@@ -57,63 +57,68 @@ class Cursor {
         this.lastMousePos.circle.x = this.mousePos.x - this.bounds.circle.width / 2
         this.lastMousePos.circle.y = this.mousePos.y - this.bounds.circle.height / 2
         this.lastScale = this.scale;
-        gsap.set(this.DOM.el, {
+        gsap.to(this.DOM.dot, {
             x: this.lastMousePos.dot.x,
             y: this.lastMousePos.dot.y,
-            force3D: !0
+            duration: 0.1,
+        })
+        gsap.to(this.DOM.circle, {
+            x: this.lastMousePos.dot.x,
+            y: this.lastMousePos.dot.y,
+            duration: 0.4,
         })
         // requestAnimationFrame(() => this.render())
     }
 
-    showTriangle() {
-        if(this.touch) return
-        gsap.to(this.triangles, {
-            display: 'block', opacity: 1, duration: 0.5
-        })
-    }
+    // showTriangle() {
+    //     if(this.touch) return
+    //     gsap.to(this.triangles, {
+    //         display: 'block', opacity: 1, duration: 0.5
+    //     })
+    // }
 
-    hideTriangle() {
-        if(this.touch) return
-        gsap.to(this.triangles, {
-            opacity: 0, duration: 0.5, onComplete: () => {
-                gsap.set(this.triangles, {display: 'none'})
-            }
-        })
-    }
+    // hideTriangle() {
+    //     if(this.touch) return
+    //     gsap.to(this.triangles, {
+    //         opacity: 0, duration: 0.5, onComplete: () => {
+    //             gsap.set(this.triangles, {display: 'none'})
+    //         }
+    //     })
+    // }
 
-    killHint() {
-        if(this.touch) return
-        console.log('arsstast')
-        if (this.blowAnime) {
-            this.blowAnime.kill()
-            gsap.to(this.hintContainer, {
-                scale: 1,
-                duration: 0.3,
-                onComplete: () => {
-                    this.hintContainer.style.display = 'none'
-                }
-            })
-        }
-    }
+    // killHint() {
+    //     if(this.touch) return
+    //     console.log('arsstast')
+    //     if (this.blowAnime) {
+    //         this.blowAnime.kill()
+    //         gsap.to(this.hintContainer, {
+    //             scale: 1,
+    //             duration: 0.3,
+    //             onComplete: () => {
+    //                 this.hintContainer.style.display = 'none'
+    //             }
+    //         })
+    //     }
+    // }
 
-    blowHint() {
-        if(this.touch) return
-        this.killBlow()
-        this.hintContainer.style.display = 'block'
-        this.blowAnime = gsap.timeline({
-            repeat: 2, onComplete: () => {
-                this.hintContainer.style.display = 'none'
-            }
-        })
-        this.blowAnime.to(this.hintContainer, {
-            scale: 1.1,
-            duration: 1
-        })
-        this.blowAnime.to(this.hintContainer, {
-            scale: 1,
-            duration: 1
-        })
-    }
+    // blowHint() {
+    //     if(this.touch) return
+    //     this.killBlow()
+    //     this.hintContainer.style.display = 'block'
+    //     this.blowAnime = gsap.timeline({
+    //         repeat: 2, onComplete: () => {
+    //             this.hintContainer.style.display = 'none'
+    //         }
+    //     })
+    //     this.blowAnime.to(this.hintContainer, {
+    //         scale: 1.1,
+    //         duration: 1
+    //     })
+    //     this.blowAnime.to(this.hintContainer, {
+    //         scale: 1,
+    //         duration: 1
+    //     })
+    // }
 
     updateHint(part) {
         if(this.touch) return
@@ -128,7 +133,7 @@ class Cursor {
             hint = 'Scroll'
         }
         this.hintContainer.innerHTML = hint
-        this.blowHint()
+        // this.blowHint()
     }
 
     killBlow() {

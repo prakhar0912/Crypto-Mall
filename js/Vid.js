@@ -1,5 +1,6 @@
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import locomotiveScroll from "locomotive-scroll";
 
 function once(el, event, fn, opts) {
     var onceFn = function (e) {
@@ -22,6 +23,9 @@ class Vid {
         this.done = false
         gsap.registerPlugin(ScrollTrigger)
     }
+
+
+    // for a horizontal version, see https://codepen.io/GreenSock/pen/rNmQPpa?editors=0010
 
     // start(part) {
     //     if (part == 0) {
@@ -82,6 +86,7 @@ class Vid {
             this.running = true
             this.video1.pause()
             this.scrollPlay()
+
         }
 
     }
@@ -125,15 +130,20 @@ class Vid {
         });
 
 
+
+
         this.scrollTrig.fromTo(
             this.video2,
             {
-                currentTime: 0
+                currentTime: 0,
             },
             {
-                currentTime: this.video2.duration || 1
+                currentTime: this.video2.duration || 1,
             }
         );
+
+
+
 
         // this.run()
         // this.inte = setInterval(this.playVideo.bind(this), 1)
