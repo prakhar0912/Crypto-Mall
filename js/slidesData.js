@@ -1,9 +1,11 @@
 import astroL from "../images/astroL.png"
 import astroR from "../images/astroR.png"
+import img1 from "../images/1.jpg"
 
 const slidesData = [
   [
     {
+      // image: img1,
       content: `
         <div class="slide-container">
           <div class="slide-header">
@@ -16,6 +18,7 @@ const slidesData = [
   ],
   [
     {
+      // image: img1,
       content: `
         <div class="slide-container">
           <div class="yeah">

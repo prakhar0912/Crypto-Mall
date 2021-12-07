@@ -2,6 +2,8 @@ import gsap from "gsap"
 
 
 class Frame {
+
+    
     constructor(options, mobileDevice, numProjs) {
         this.options = options
         if (!mobileDevice) {

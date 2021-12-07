@@ -43036,6 +43036,8 @@ function GLManager(data, cursorRender, updatePre) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 1);
+  this.textures = [];
+  this.assignTextures();
   this.stopEffects = true;
   this.camera = camera;
   this.scene = scene;
@@ -43049,8 +43051,6 @@ function GLManager(data, cursorRender, updatePre) {
   this.time = 0;
   this.loopRaf = null;
   this.loop = this.loop.bind(this);
-  this.textures = [];
-  this.assignTextures();
   this.createPlane(0, data[0][0].position);
   this.createPlane(1, data[1][0].position); // this.init()
 
@@ -43058,7 +43058,8 @@ function GLManager(data, cursorRender, updatePre) {
 
   if (!this.loopRaf) {
     this.render();
-  }
+  } // gsap.to(this.camera.position,{z: this.camera.position.z + 1})
+
 } // GLManager.prototype.init = function(){
 //   this.renderer.setSize(window.innerWidth, window.innerHeight);
 //   this.renderer.domElement.style.height = "100%"
@@ -43095,17 +43096,19 @@ GLManager.prototype.loadFactors = function (data) {
   return factorsMaster;
 };
 
-GLManager.prototype.calcAspectRatios = function () {// fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
-  // this.calculateAspectRatioFactorNew(0, this.textures[0])
-  // this.calculateAspectRatioFactor(1, this.textures[2])
+GLManager.prototype.calcAspectRatios = function () {
+  // fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
+  this.calculateAspectRatioFactorNew(0, this.textures[0]);
+  this.calculateAspectRatioFactorNew(0, this.textures[1]);
+  this.calculateAspectRatioFactor(1, this.textures[2]);
 };
 
 GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
   var plane = this.getPlaneSize();
   var windowRatio = window.innerWidth / window.innerHeight;
   var rectRatio = plane.width / plane.height * windowRatio;
-  var imageRatio = texture.image.width / texture.image.height; // console.log(imageRatio, rectRatio)
-
+  var imageRatio = 1.77777777778;
+  console.log(imageRatio, rectRatio);
   var factorX = 1;
   var factorY = 1;
 
@@ -43119,9 +43122,9 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
 
   this.factors[0] = new THREE.Vector2(factorX, factorY);
 
-  if (this.meshes[index]) {
-    this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[0];
-    this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
+  if (this.meshes[1]) {
+    this.meshes[1].material.uniforms.u_textureFactor.value = this.factors[0];
+    this.meshes[1].material.uniforms.u_textureFactor.needsUpdate = true;
   }
 
   if (this.initialRender) {
@@ -43133,22 +43136,24 @@ GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
   var plane = this.getPlaneSize();
   var windowRatio = window.innerWidth / window.innerHeight;
   var rectRatio = plane.width / plane.height * windowRatio;
-  var imageRatio = texture.image.width / texture.image.height; // console.log(imageRatio, rectRatio)
+  var imageRatio = 1.37777777778; // console.log("index",texture)
 
-  var ratio = rectRatio / imageRatio;
   var factorX = 1;
   var factorY = 1;
 
   if (rectRatio > imageRatio) {
     factorX = 1;
     factorY = 1 / rectRatio * imageRatio;
+    this.meshes[0].material.map.repeat.set(factorX, factorY);
+    this.meshes[0].material.map.offset.y = (factorY - 1) / 2 * -1;
   } else {
     factorX = 1 * rectRatio / imageRatio;
-    factorY = 1;
-  } // this.meshes[index].material.map.repeat.set(factorX, factorY)
-  // texture.repeat.set(factorX, factorY)
-  // ele.offset.x = 0.5 * (1 - ratio);
+    factorY = 1; // factorX += 0.2
 
+    texture.repeat.set(factorX, factorY);
+    console.log(factorX);
+    texture.offset.x = (factorX - 1) / 2 * -1;
+  }
 
   if (this.initialRender) {
     this.render();
@@ -43508,13 +43513,11 @@ GLManager.prototype.render = function () {
 
 GLManager.prototype.mount = function (container) {
   this.renderer.domElement.style.height = "100%";
-  this.renderer.domElement.style.width = "100%";
-
-  if (window.innerWidth <= 900) {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  this.renderer.domElement.style.width = "100%"; // if (window.innerWidth <= 900) {
+  //   this.camera.aspect = window.innerWidth / window.innerHeight;
+  //   this.camera.updateProjectionMatrix();
+  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
+  // }
 
   container.appendChild(this.renderer.domElement);
 };
@@ -43535,15 +43538,14 @@ GLManager.prototype.unmount = function () {
 GLManager.prototype.onResize = function () {
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   this.renderer.domElement.style.height = "100%";
-  this.renderer.domElement.style.width = "100%";
-
-  if (window.innerWidth <= 900) {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  this.renderer.domElement.style.width = "100%"; // if (window.innerWidth <= 900) {
+  //   this.camera.aspect = window.innerWidth / window.innerHeight;
+  //   this.camera.updateProjectionMatrix();
+  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
+  // }
 
   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  this.calcAspectRatios();
   this.render();
 };
 
@@ -49145,6 +49147,8 @@ exports.Cursor = Cursor;
 module.exports = "/astroL.d25ead5f.png";
 },{}],"images/astroR.png":[function(require,module,exports) {
 module.exports = "/astroR.5d22ff4d.png";
+},{}],"images/1.jpg":[function(require,module,exports) {
+module.exports = "/1.106c6bd6.jpg";
 },{}],"js/slidesData.js":[function(require,module,exports) {
 "use strict";
 
@@ -49157,17 +49161,21 @@ var _astroL = _interopRequireDefault(require("../images/astroL.png"));
 
 var _astroR = _interopRequireDefault(require("../images/astroR.png"));
 
+var _ = _interopRequireDefault(require("../images/1.jpg"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var slidesData = [[{
+  // image: img1,
   content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-header\">\n            <button class='explore'>Enter</button>\n          </div>\n        </div>\n      ",
   position: 10
 }], [{
+  // image: img1,
   content: "\n        <div class=\"slide-container\">\n          <div class=\"yeah\">\n            <div class=\"left-line liner\">\n              <div class='block left-block'></div>\n            </div>\n            <div class=\"content-container\">\n              <section class=\"intro\">\n                <div class=\"left\">\n                  <img src=\"".concat(_astroL.default, "\" alt=\"\">\n                </div>\n                <div class=\"middle\">\n                  <h1>INTRODUCING METAMALL</h1>\n                  <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade in the\n                    first-ever virtual mall owned by its users.</p>\n                </div>\n                <div class=\"right\">\n                  <img src=\"").concat(_astroR.default, "\" alt=\"\">\n                </div>\n              </section>\n              <section>\n                <div>\n                  <h1>The Unique</h1>\n                  <h1>VR Experience</h1>\n                  <p>Metamall features a unique VR experience with different themes, architecture and interactive VR properties.\n                    Token holders will be known as Metamallers. It will act as a central hub and welcome all levels of crypto\n                    experience. For the first time ever, users will have access to crypto information and immersive content all in\n                    one place. Metamallers will be able to earn revenue through real estate ownership, advertising revenue, play\n                    games, build networks and much more. By using the world\u2019s most advanced real time 3D Creation Engine, Metamall\n                    will leverage this technology to create stunning visualisations and user experience.</p>\n                </div>\n              </section>\n              <section>\n                <div>\n                  <p class=\"grey\">EARN</p>\n                  <h1>GENERATE REVENUE THROUGH</h1>\n                  <h1>MULTIPLE <b>INCOME STREAMS</b></h1>\n                  <p>\n                    Metamall will be a land of earning opportunities for Metamallers. Following the IDO, Metamall real estate will be\n                    made available for Metamallers to purchase. Other opportunities will consist of passive earning, staking and\n                    advertising.\n                  </p>\n                </div>\n              </section>\n              <section>\n          \n              </section>\n              <section>\n          \n              </section>\n            </div>\n            <div class=\"right-line liner\">\n              <div class='block right-block'></div>\n            </div>\n          </div>\n        </div>\n      "),
   position: 0
 }]];
 exports.slidesData = slidesData;
-},{"../images/astroL.png":"images/astroL.png","../images/astroR.png":"images/astroR.png"}],"node_modules/gsap/ScrollTrigger.js":[function(require,module,exports) {
+},{"../images/astroL.png":"images/astroL.png","../images/astroR.png":"images/astroR.png","../images/1.jpg":"images/1.jpg"}],"node_modules/gsap/ScrollTrigger.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -54290,12 +54298,17 @@ var Preloader = /*#__PURE__*/function () {
       var _this = this;
 
       this.videos.forEach(function (ele) {
-        ele.addEventListener('loadedmetadata', function (event) {
+        ele.addEventListener('canplay', function (event) {
           _this.loaded++;
 
           _this.updatea();
         });
       });
+      setTimeout(function () {
+        _this.loaded = 3;
+
+        _this.updatea();
+      }, 3000);
     }
   }, {
     key: "showPreloader",

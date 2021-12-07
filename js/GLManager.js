@@ -26,6 +26,8 @@ function GLManager(data, cursorRender, updatePre) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 1)
+  this.textures = []
+  this.assignTextures()
   this.stopEffects = true
   this.camera = camera;
   this.scene = scene;
@@ -39,8 +41,6 @@ function GLManager(data, cursorRender, updatePre) {
   this.time = 0;
   this.loopRaf = null;
   this.loop = this.loop.bind(this);
-  this.textures = []
-  this.assignTextures()
   this.createPlane(0, data[0][0].position)
   this.createPlane(1, data[1][0].position)
   // this.init()
@@ -48,6 +48,7 @@ function GLManager(data, cursorRender, updatePre) {
   if (!this.loopRaf) {
     this.render();
   }
+  // gsap.to(this.camera.position,{z: this.camera.position.z + 1})
 }
 
 
@@ -90,16 +91,17 @@ GLManager.prototype.loadFactors = function (data) {
 
 GLManager.prototype.calcAspectRatios = function () {
   // fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
-  // this.calculateAspectRatioFactorNew(0, this.textures[0])
-  // this.calculateAspectRatioFactor(1, this.textures[2])
+  this.calculateAspectRatioFactorNew(0, this.textures[0])
+  this.calculateAspectRatioFactorNew(0, this.textures[1])
+  this.calculateAspectRatioFactor(1, this.textures[2])
 }
 
 GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
   const plane = this.getPlaneSize();
   const windowRatio = window.innerWidth / window.innerHeight;
   const rectRatio = (plane.width / plane.height) * windowRatio;
-  const imageRatio = texture.image.width / texture.image.height;
-  // console.log(imageRatio, rectRatio)
+  const imageRatio = 1.77777777778;
+  console.log(imageRatio, rectRatio)
 
   let factorX = 1;
   let factorY = 1;
@@ -112,9 +114,9 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
   }
   this.factors[0] = new THREE.Vector2(factorX, factorY);
 
-  if (this.meshes[index]) {
-    this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[0];
-    this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
+  if (this.meshes[1]) {
+    this.meshes[1].material.uniforms.u_textureFactor.value = this.factors[0];
+    this.meshes[1].material.uniforms.u_textureFactor.needsUpdate = true;
   }
 
   if (this.initialRender) {
@@ -126,25 +128,24 @@ GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
   const plane = this.getPlaneSize();
   const windowRatio = window.innerWidth / window.innerHeight;
   const rectRatio = (plane.width / plane.height) * windowRatio;
-  const imageRatio = texture.image.width / texture.image.height;
-  // console.log(imageRatio, rectRatio)
-  let ratio = rectRatio / imageRatio;
-
-
+  const imageRatio = 1.37777777778;
+  // console.log("index",texture)
 
   let factorX = 1;
   let factorY = 1;
   if (rectRatio > imageRatio) {
     factorX = 1;
     factorY = (1 / rectRatio) * imageRatio;
+    this.meshes[0].material.map.repeat.set(factorX, factorY);
+    this.meshes[0].material.map.offset.y = (factorY - 1) / 2 * -1;
   } else {
     factorX = (1 * rectRatio) / imageRatio;
     factorY = 1;
+    // factorX += 0.2
+    texture.repeat.set(factorX, factorY);
+    console.log(factorX)
+    texture.offset.x = (factorX - 1) / 2 * -1;
   }
-
-  // this.meshes[index].material.map.repeat.set(factorX, factorY)
-  // texture.repeat.set(factorX, factorY)
-  // ele.offset.x = 0.5 * (1 - ratio);
 
   if (this.initialRender) {
     this.render();
@@ -411,11 +412,11 @@ GLManager.prototype.render = function () {
 GLManager.prototype.mount = function (container) {
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
-  if (window.innerWidth <= 900) {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  // if (window.innerWidth <= 900) {
+  //   this.camera.aspect = window.innerWidth / window.innerHeight;
+  //   this.camera.updateProjectionMatrix();
+  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
+  // }
   container.appendChild(this.renderer.domElement);
 };
 GLManager.prototype.unmount = function () {
@@ -435,12 +436,13 @@ GLManager.prototype.onResize = function () {
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
-  if (window.innerWidth <= 900) {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-  }
+  // if (window.innerWidth <= 900) {
+  //   this.camera.aspect = window.innerWidth / window.innerHeight;
+  //   this.camera.updateProjectionMatrix();
+  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
+  // }
   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  this.calcAspectRatios()
   this.render();
 };
 GLManager.prototype.scheduleLoop = function () {

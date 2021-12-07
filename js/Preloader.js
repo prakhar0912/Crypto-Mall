@@ -15,11 +15,15 @@ class Preloader {
 
     addListeners() {
         this.videos.forEach(ele => {
-            ele.addEventListener('loadedmetadata', (event) => {
+            ele.addEventListener('canplay', (event) => {
                 this.loaded++
                 this.updatea()
             });
         })
+        setTimeout(() => {
+            this.loaded = 3
+            this.updatea()
+        }, 3000)
     }
 
     showPreloader() {
