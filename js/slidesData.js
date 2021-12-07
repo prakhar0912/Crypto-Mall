@@ -2,7 +2,7 @@ import image1 from "../images/img1.jpg"
 import landingImage from "../images/landing.jpg"
 import landingLogo from "../images/landingLogo.svg"
 import landingStudio from "../images/studio.svg"
-import video1 from "../video/KingsAuto.mp4"
+// import video1 from "../video/KingsAuto.mp4"
 
 const slidesData = [
   [
@@ -21,7 +21,6 @@ const slidesData = [
   [
     {
       image: image1,
-      video: video1,
       content: `
         <div class="slide-container">
           <div class="slide-desc slide-desc-iframe">

@@ -49448,8 +49448,6 @@ module.exports = "/landing.10726b6b.jpg";
 module.exports = "/landingLogo.9fdc7c6d.svg";
 },{}],"images/studio.svg":[function(require,module,exports) {
 module.exports = "/studio.db870bdb.svg";
-},{}],"video/KingsAuto.mp4":[function(require,module,exports) {
-module.exports = "/KingsAuto.d7019de4.mp4";
 },{}],"js/slidesData.js":[function(require,module,exports) {
 "use strict";
 
@@ -49466,22 +49464,20 @@ var _landingLogo = _interopRequireDefault(require("../images/landingLogo.svg"));
 
 var _studio = _interopRequireDefault(require("../images/studio.svg"));
 
-var _KingsAuto = _interopRequireDefault(require("../video/KingsAuto.mp4"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import video1 from "../video/KingsAuto.mp4"
 var slidesData = [[{
   image: _landing.default,
   content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-header\">\n            <button class='explore'>Enter</button>\n          </div>\n        </div>\n      ",
   position: 10
 }], [{
   image: _img.default,
-  video: _KingsAuto.default,
   content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-desc slide-desc-iframe\">\n            <div class=\"yeah\">\n              <section>\n\n              </section>\n              <section>\n\n              </section>\n              <section>\n                \n              </section>\n              <section>\n\n              </section>\n              <section>\n                \n              </section>\n            </div>\n          </div>\n        </div>\n      ",
   position: 0
 }]];
 exports.slidesData = slidesData;
-},{"../images/img1.jpg":"images/img1.jpg","../images/landing.jpg":"images/landing.jpg","../images/landingLogo.svg":"images/landingLogo.svg","../images/studio.svg":"images/studio.svg","../video/KingsAuto.mp4":"video/KingsAuto.mp4"}],"js/Frame.js":[function(require,module,exports) {
+},{"../images/img1.jpg":"images/img1.jpg","../images/landing.jpg":"images/landing.jpg","../images/landingLogo.svg":"images/landingLogo.svg","../images/studio.svg":"images/studio.svg"}],"js/Frame.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -52160,7 +52156,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "40163" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "33971" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
