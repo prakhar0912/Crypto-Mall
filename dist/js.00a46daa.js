@@ -36541,7 +36541,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.vertex2 = exports.fragment2 = exports.vertex1 = exports.fragment1 = exports.vertex = exports.fragment = void 0;
-var fragment = "\nuniform vec2 u_resolution;\n\nuniform sampler2D u_texture;\nuniform sampler2D u_texture2;\nuniform vec2 u_textureFactor;\nuniform vec2 u_texture2Factor;\nuniform float u_textureProgress;\nuniform float u_blackProgress;\n\n// RGB\nuniform vec2 u_rgbPosition;\nuniform vec2 u_rgbVelocity;\n\nvarying vec2 vUv;\nvec2 centeredAspectRatio(vec2 uvs, vec2 factor){\n    return uvs * factor - factor /2. + 0.5;\n}\nvoid main(){\n    // On THREE 102 The image is has Y backwards\n    // vec2 flipedUV = vec2(vUv.x,1.-vUv.y);\n\n    vec2 normalizedRgbPos = u_rgbPosition / u_resolution;\n    normalizedRgbPos.y = 1. - normalizedRgbPos.y; \n\n    \n    vec2 vel = u_rgbVelocity;\n    float dist = distance(normalizedRgbPos + vel / u_resolution, vUv.xy);\n\n    float ratio = clamp(1.0 - dist * 5., 0., 1.);\n\n\n    vec4 tex1 = vec4(1.);\n    vec4 tex2 = vec4(1.);\n\n    vec2 uv = vUv;\n\n    uv.x -= sin(uv.y) * ratio / 100. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;\n\n    tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;\n    tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;\n\n    // tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;\n    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;\n\n    \n    uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;\n\n    tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;\n    tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;\n\n    // tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;\n    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;\n    \n    uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;\n\n    tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;\n    tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;\n\n    // tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;\n    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;\n\n\n    vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );\n    vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));\n    \n    vec4 mixedTextures =  mix(tex1,tex1,u_textureProgress);\n\n    gl_FragColor = mixedTextures;\n}\n"; // const fragment = `
+var fragment = "\nuniform vec2 u_resolution;\n\nuniform sampler2D u_texture;\nuniform sampler2D u_texture2;\nuniform vec2 u_textureFactor;\nuniform vec2 u_texture2Factor;\nuniform float u_textureProgress;\nuniform float u_blackProgress;\n\n// RGB\nuniform vec2 u_rgbPosition;\nuniform vec2 u_rgbVelocity;\n\nvarying vec2 vUv;\nvec2 centeredAspectRatio(vec2 uvs, vec2 factor){\n    return uvs * factor - factor /2. + 0.5;\n}\nvoid main(){\n    // On THREE 102 The image is has Y backwards\n    // vec2 flipedUV = vec2(vUv.x,1.-vUv.y);\n\n    vec2 normalizedRgbPos = u_rgbPosition / u_resolution;\n    normalizedRgbPos.y = 1. - normalizedRgbPos.y; \n\n    \n    vec2 vel = u_rgbVelocity;\n    float dist = distance(normalizedRgbPos + vel / u_resolution, vUv.xy);\n\n    float ratio = clamp(1.0 - dist * 5., 0., 1.);\n\n\n    vec4 tex1 = vec4(1.);\n    vec4 tex2 = vec4(1.);\n\n    vec2 uv = vUv;\n\n    uv.x -= sin(uv.y) * ratio / 100. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;\n\n    tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;\n    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;\n\n    // tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;\n    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;\n\n    \n    uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;\n\n    tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;\n    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;\n\n    // tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;\n    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;\n    \n    uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;\n\n    tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;\n    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;\n\n    // tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;\n    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;\n\n\n    vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );\n    // vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));\n    \n    vec4 mixedTextures =  mix(tex1,tex1,u_textureProgress);\n\n    gl_FragColor = mixedTextures;\n}\n"; // const fragment = `
 // uniform vec2 u_resolution;
 // uniform sampler2D u_texture;
 // uniform sampler2D u_texture2;
@@ -36588,7 +36588,7 @@ var fragment = "\nuniform vec2 u_resolution;\n\nuniform sampler2D u_texture;\nun
 exports.fragment = fragment;
 var vertex = "\n#define PI 3.14159265359\nuniform float u_offset;\nuniform float u_progress;\nuniform float u_direction;\nuniform float u_time;\nuniform float u_waveIntensity;\nvarying vec2 vUv;\nvoid main(){\n    vec3 pos = position.xyz;\n\n    float distance = length(uv.xy - 0.5 );\n    float sizeDist = length(vec2(0.5,0.5));\n    float normalizedDistance = distance/sizeDist ;\n\n    float stickOutEffect = normalizedDistance ;\n    float stickInEffect = -normalizedDistance ;\n\n    \n    float stickEffect = mix(stickOutEffect,stickInEffect, u_direction);\n\n    // Backwards V wave.\n    float stick = 0.5;\n\n    float waveIn = u_progress*(1. / stick); \n    float waveOut =  -( u_progress - 1.) * (1./(1.-stick) );\n    waveOut = pow(smoothstep(0.,1.,waveOut),0.7);\n\n    float stickProgress = min(waveIn, waveOut);\n\n\n\n\n\n    // We can re-use stick Influcse because this oen starts at the same position\n    float offsetInProgress = clamp(waveIn,0.,1.);\n\n    // Invert stickout to get the slope moving upwards to the right\n    // and move it left by 1\n    float offsetOutProgress = clamp(1.-waveOut,0.,1.);\n\n    float offsetProgress = mix(offsetInProgress,offsetOutProgress,u_direction);\n\n\n    float stickOffset = u_offset;\n    pos.z += stickEffect * stickOffset * stickProgress  - u_offset * offsetProgress;\n\n    \n    pos.z += sin(distance * 8. - u_time * 2. )  * u_waveIntensity;\n\n    gl_Position =   \n        projectionMatrix * \n        modelViewMatrix * \n         vec4(pos, 1.0);\n\n    vUv = uv;\n}\n";
 exports.vertex = vertex;
-var fragment1 = "\nuniform vec2 u_resolution;\n\nuniform sampler2D u_texture;\nuniform sampler2D u_texture2;\nuniform vec2 u_textureFactor;\nuniform vec2 u_texture2Factor;\nuniform float u_textureProgress;\n\n// RGB\nuniform vec2 u_rgbPosition;\nuniform vec2 u_rgbVelocity;\n\nvarying vec2 vUv;\nvec2 centeredAspectRatio(vec2 uvs, vec2 factor){\n    return uvs * factor - factor /2. + 0.5;\n}\nvoid main(){\n    // On THREE 102 The image is has Y backwards\n    // vec2 flipedUV = vec2(vUv.x,1.-vUv.y);\n\n    vec2 normalizedRgbPos = u_rgbPosition / u_resolution;\n    normalizedRgbPos.y = 1. - normalizedRgbPos.y; \n\n    \n    vec2 vel = u_rgbVelocity;\n    float dist = distance(normalizedRgbPos + vel / u_resolution, vUv.xy);\n\n    float ratio = clamp(1.0 - dist * 5., 0., 1.);\n\n\n    vec4 tex1 = vec4(1.);\n    vec4 tex2 = vec4(1.);\n\n    vec2 uv = vUv;\n\n    uv.x -= sin(uv.y) * ratio / 100. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;\n\n    tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;\n    tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;\n\n    \n    uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;\n\n    tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;\n    tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;\n    \n    uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;\n\n    tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;\n    tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;\n     \n    \n\n\n    vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );\n    vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));\n    \n    vec4 mixedTextures =  mix(tex1,tex2,u_textureProgress);\n\n    gl_FragColor = mixedTextures;\n}\n";
+var fragment1 = "\nuniform vec2 u_resolution;\n\nuniform sampler2D u_texture;\nuniform sampler2D u_texture2;\nuniform vec2 u_textureFactor;\nuniform vec2 u_texture2Factor;\nuniform float u_textureProgress;\n\n// RGB\nuniform vec2 u_rgbPosition;\nuniform vec2 u_rgbVelocity;\n\nvarying vec2 vUv;\nvec2 centeredAspectRatio(vec2 uvs, vec2 factor){\n    return uvs * factor - factor /2. + 0.5;\n}\nvoid main(){\n    // On THREE 102 The image is has Y backwards\n    // vec2 flipedUV = vec2(vUv.x,1.-vUv.y);\n\n    vec2 normalizedRgbPos = u_rgbPosition / u_resolution;\n    normalizedRgbPos.y = 1. - normalizedRgbPos.y; \n\n    \n    vec2 vel = u_rgbVelocity;\n    float dist = distance(normalizedRgbPos + vel / u_resolution, vUv.xy);\n\n    float ratio = clamp(1.0 - dist * 5., 0., 1.);\n\n\n    vec4 tex1 = vec4(1.);\n    vec4 tex2 = vec4(1.);\n\n    vec2 uv = vUv;\n\n    uv.x -= sin(uv.y) * ratio / 100. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;\n\n    tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;\n    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;\n\n    \n    uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;\n\n    tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;\n    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;\n    \n    uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;\n    uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;\n\n    tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;\n    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;\n     \n    \n\n\n    vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );\n    // vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));\n    \n    vec4 mixedTextures =  mix(tex1,tex1,u_textureProgress);\n\n    gl_FragColor = mixedTextures;\n}\n";
 exports.fragment1 = fragment1;
 var vertex1 = "\n#define PI 3.14159265359\nuniform float u_offset;\nuniform float u_progress;\nuniform float u_direction;\nuniform float u_time;\nuniform float u_waveIntensity;\nvarying vec2 vUv;\nvoid main(){\n    vec3 pos = position.xyz;\n\n    float distance = length(uv.xy - 0.5 );\n    float sizeDist = length(vec2(0.5,0.5));\n    float normalizedDistance = distance/sizeDist ;\n\n    float stickOutEffect = normalizedDistance ;\n    float stickInEffect = -normalizedDistance ;\n\n    \n    float stickEffect = mix(stickOutEffect,stickInEffect, u_direction);\n\n    // Backwards V wave.\n    float stick = 0.5;\n\n    float waveIn = u_progress*(1. / stick); \n    float waveOut =  -( u_progress - 1.) * (1./(1.-stick) );\n    waveOut = pow(smoothstep(0.,1.,waveOut),0.7);\n\n    float stickProgress = min(waveIn, waveOut);\n\n\n\n\n\n    // We can re-use stick Influcse because this oen starts at the same position\n    float offsetInProgress = clamp(waveIn,0.,1.);\n\n    // Invert stickout to get the slope moving upwards to the right\n    // and move it left by 1\n    float offsetOutProgress = clamp(1.-waveOut,0.,1.);\n\n    float offsetProgress = mix(offsetInProgress,offsetOutProgress,u_direction);\n\n\n    float stickOffset = u_offset;\n    pos.z += stickEffect * stickOffset * stickProgress  - u_offset * offsetProgress;\n\n    \n    pos.z += sin(distance * 8. - u_time * 2. )  * u_waveIntensity;\n\n    gl_Position =   \n        projectionMatrix * \n        modelViewMatrix * \n         vec4(pos, 1.0);\n\n    vUv = uv;\n}\n";
 exports.vertex1 = vertex1;
@@ -42955,8 +42955,6 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function GLManager(data, cursorRender, updatePre) {
-  var _this = this;
-
   this.totalEntries = this.calculateTotalEntries(data);
   this.loadedEntries = 0;
   var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000);
@@ -42978,28 +42976,24 @@ function GLManager(data, cursorRender, updatePre) {
   this.camera = camera;
   this.scene = scene;
   this.renderer = renderer;
-  this.render = this.render.bind(this);
-  this.loadTextures(data).then(function (textures) {
-    _this.textures = textures;
-    _this.factors = _this.loadFactors(data);
-    _this.currentIndex = 0;
-    _this.nextIndex = 0;
-    _this.textureProgress = 0;
-    _this.initialRender = false;
-    _this.time = 0;
-    _this.loopRaf = null;
-    _this.loop = _this.loop.bind(_this);
+  this.render = this.render.bind(this); // this.loadTextures(data).then(textures => {
+  // this.textures = textures
 
-    _this.createPlane(0, data[0][0].position);
+  this.factors = this.loadFactors(data);
+  this.currentIndex = 0;
+  this.nextIndex = 0;
+  this.textureProgress = 0;
+  this.initialRender = false;
+  this.time = 0;
+  this.loopRaf = null;
+  this.loop = this.loop.bind(this);
+  this.createPlane(0, data[0][0].position);
+  this.createPlane(1, data[1][0].position); // this.calcAspectRatios()
 
-    _this.createPlane(1, data[1][0].position);
+  if (!this.loopRaf) {
+    this.render();
+  } // })
 
-    _this.calcAspectRatios();
-
-    if (!_this.loopRaf) {
-      _this.render();
-    }
-  });
 }
 
 GLManager.prototype.setUpGui = function () {
@@ -43035,7 +43029,7 @@ GLManager.prototype.calcAspectRatios = function () {
 
 GLManager.prototype.loadTextures = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(data) {
-    var _this2 = this;
+    var _this = this;
 
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
@@ -43068,7 +43062,7 @@ GLManager.prototype.loadTextures = /*#__PURE__*/function () {
 
                         _context.t0 = textures;
                         _context.next = 9;
-                        return _this2.loadTexture(data[i][j], i, j);
+                        return _this.loadTexture(data[i][j], i, j);
 
                       case 9:
                         _context.t1 = _context.sent;
@@ -43118,23 +43112,23 @@ GLManager.prototype.loadTextures = /*#__PURE__*/function () {
 }();
 
 GLManager.prototype.loadTexture = function (data, i, j) {
-  var _this3 = this;
+  var _this2 = this;
 
   return new Promise(function (res) {
     new THREE.TextureLoader().load(data.image, function (texture) {
-      if (_this3.initialRender) {
-        _this3.loadedEntries++;
+      if (_this2.initialRender) {
+        _this2.loadedEntries++;
 
-        _this3.updatePre(_this3.loadedEntries, _this3.totalEntries);
+        _this2.updatePre(_this2.loadedEntries, _this2.totalEntries);
 
-        _this3.calculateAspectRatioFactor.bind(_this3, i, j);
+        _this2.calculateAspectRatioFactor.bind(_this2, i, j);
 
-        if (_this3.loadedEntries === _this3.totalEntries) {
+        if (_this2.loadedEntries === _this2.totalEntries) {
           document.body.classList.remove('loading');
           console.log('loaded all');
         }
 
-        _this3.render();
+        _this2.render();
 
         res(texture);
       }
@@ -43215,7 +43209,7 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, j, texture) {
 };
 
 GLManager.prototype.alterPlane0 = function () {
-  var _this4 = this;
+  var _this3 = this;
 
   _gsap.default.to(this.meshes[0].material.color, {
     r: 0,
@@ -43232,11 +43226,11 @@ GLManager.prototype.alterPlane0 = function () {
     var material = new THREE.MeshBasicMaterial({
       map: videoTexture
     });
-    _this4.meshes[0].material = material; // var material2 = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: true });
+    _this3.meshes[0].material = material; // var material2 = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: true });
     // this.meshes[0].material = material2
 
-    _this4.meshes[0].material.needsUpdate = true;
-    _this4.meshes[0].material.transparent = true;
+    _this3.meshes[0].material.needsUpdate = true;
+    _this3.meshes[0].material.transparent = true;
   }, 1800);
 }; // Plane Stuff
 
@@ -43287,14 +43281,14 @@ GLManager.prototype.createPlane = function (index, pos) {
           type: "f",
           value: this.factors[1][this.currentIndex]
         },
-        u_texture2: {
-          type: "t",
-          value: this.textures[1][this.nextIndex]
-        },
-        u_texture2Factor: {
-          type: "f",
-          value: this.factors[1][this.nextIndex]
-        },
+        // u_texture2: {
+        //   type: "t",
+        //   value: this.textures[1][this.nextIndex]
+        // },
+        // u_texture2Factor: {
+        //   type: "f",
+        //   value: this.factors[1][this.nextIndex]
+        // },
         u_textureProgress: {
           type: "f",
           value: this.textureProgress
@@ -43345,71 +43339,6 @@ GLManager.prototype.createPlane = function (index, pos) {
     mesh.position.z = pos;
     this.scene.add(mesh);
     this.meshes.push(mesh);
-  } else if (index === 2) {
-    var _this$getPlaneSize3 = this.getPlaneSize(),
-        _width2 = _this$getPlaneSize3.width,
-        _height2 = _this$getPlaneSize3.height;
-
-    var _segments2 = 60;
-
-    var _geometry2 = new THREE.PlaneBufferGeometry(_width2, _height2, _segments2, _segments2);
-
-    var _material2 = new THREE.ShaderMaterial({
-      uniforms: {
-        u_texture: {
-          type: "t",
-          value: this.textures[2][0]
-        },
-        u_textureFactor: {
-          type: "f",
-          value: this.factors[2][0]
-        },
-        u_offset: {
-          type: "f",
-          value: 8
-        },
-        u_progress: {
-          type: "f",
-          value: 0
-        },
-        u_direction: {
-          type: "f",
-          value: 1
-        },
-        u_effect: {
-          type: "f",
-          value: 0
-        },
-        u_time: {
-          type: "f",
-          value: this.time
-        },
-        u_waveIntensity: {
-          type: "f",
-          value: 0
-        },
-        u_resolution: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-        },
-        u_rgbPosition: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
-        },
-        u_rgbVelocity: {
-          type: "v2",
-          value: new THREE.Vector2(0, 0)
-        }
-      },
-      vertexShader: _shaders.vertex2,
-      fragmentShader: _shaders.fragment2,
-      side: THREE.DoubleSide
-    });
-
-    var mesh3 = new THREE.Mesh(_geometry2, _material2);
-    mesh3.position.z = pos;
-    this.scene.add(mesh3);
-    this.meshes.push(mesh3);
   }
 };
 
@@ -43429,12 +43358,12 @@ GLManager.prototype.updateTexture = function (newIndex, progress) {
   if (newIndex != null && this.newIndex !== this.currentIndex) {
     this.currentIndex = this.nextIndex;
     this.nextIndex = newIndex;
-    this.textureProgress = 0;
-    this.meshes[this.part].material.uniforms.u_textureProgress.value = 0;
-    this.meshes[this.part].material.uniforms.u_texture.value = this.textures[1][this.currentIndex];
-    this.meshes[this.part].material.uniforms.u_textureFactor.value = this.factors[1][this.currentIndex];
-    this.meshes[this.part].material.uniforms.u_texture2.value = this.textures[1][newIndex];
-    this.meshes[this.part].material.uniforms.u_texture2Factor.value = this.factors[1][newIndex];
+    this.textureProgress = 0; // this.meshes[this.part].material.uniforms.u_textureProgress.value = 0;
+    // this.meshes[this.part].material.uniforms.u_texture.value = this.textures[1][this.currentIndex];
+    // this.meshes[this.part].material.uniforms.u_textureFactor.value = this.factors[1][this.currentIndex];
+    // this.meshes[this.part].material.uniforms.u_texture2.value = this.textures[1][newIndex];
+    // this.meshes[this.part].material.uniforms.u_texture2Factor.value = this.factors[1][newIndex];
+
     didChange = true;
   }
 
@@ -43526,17 +43455,16 @@ GLManager.prototype.onResize = function () {
   this.renderer.domElement.style.height = "100%";
   this.renderer.domElement.style.width = "100%";
 
-  for (var _i = 0; _i < this.meshes.length; _i++) {
-    this.meshes[_i].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
-  }
+  for (var i = 0; i < this.meshes.length; i++) {
+    this.meshes[i].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  } // for (var i = 0; i < this.textures.length; i++) {
+  //   for (let j = 0; j < this.textures[i].length; j++) {
+  //     if (this.textures[i][j].image) {
+  //       this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
+  //     }
+  //   }
+  // }
 
-  for (var i = 0; i < this.textures.length; i++) {
-    for (var j = 0; j < this.textures[i].length; j++) {
-      if (this.textures[i][j].image) {
-        this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
-      }
-    }
-  }
 
   this.render();
 };
@@ -49137,289 +49065,7 @@ var Cursor = /*#__PURE__*/function () {
 }();
 
 exports.Cursor = Cursor;
-},{"gsap":"node_modules/gsap/index.js"}],"js/Nav.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Nav = void 0;
-
-var _gsap = _interopRequireDefault(require("gsap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Nav = /*#__PURE__*/function () {
-  function Nav(options) {
-    _classCallCheck(this, Nav);
-
-    this.navEle = document.querySelector(".nav");
-    this.navContainer = this.navEle.parentElement;
-    this.navDisplayed = false;
-    this.startNavAnimation = _gsap.default.timeline();
-    this.startBurgerAnimation = _gsap.default.timeline();
-    this.startOpacityAnimation = _gsap.default.timeline();
-    this.endNavAnimation = _gsap.default.timeline();
-    this.endBurgerAnimation = _gsap.default.timeline();
-    this.endOpacityAnimation = _gsap.default.timeline();
-    this.centerEle = document.querySelector(".center");
-    this.socialsEle = document.querySelector(".socials");
-    this.lettersAnimations = [];
-    this.inTransition = false;
-    this.textWrappers = document.querySelectorAll('.text');
-    this.lines = document.querySelectorAll('.line');
-    this.options = options;
-    this.part = 0;
-    this.letters = [];
-
-    _gsap.default.set(this.centerEle, {
-      yPercent: -20,
-      opacity: 0
-    });
-
-    _gsap.default.set(this.socialsEle, {
-      xPercent: -20,
-      opacity: 0
-    });
-
-    this.addListeners();
-    this.setLetters();
-    this.direction = 0; // this.delay = 1
-  }
-
-  _createClass(Nav, [{
-    key: "updatePart",
-    value: function updatePart(index) {
-      var _this = this;
-
-      this.part = index;
-      this.textWrappers.forEach(function (ele, i) {
-        if (i === _this.part) {
-          ele.classList.add("active");
-        } else {
-          ele.classList.remove("active");
-        }
-      });
-    }
-  }, {
-    key: "showNav",
-    value: function showNav() {
-      var _this2 = this;
-
-      // this.killAnimation(false)
-      this.startBurgerAnimation.to(this.lines[0], {
-        top: 0,
-        rotate: "45deg",
-        duration: 0.1
-      }); // this.startBurgerAnimation.to(this.lines[1], {
-      //     opacity: "0",
-      //     duration: 0.1,
-      //     delay: -0.1
-      // })
-
-      this.startBurgerAnimation.to(this.lines[1], {
-        top: "90%",
-        rotate: "-45deg",
-        duration: 0.1,
-        delay: -0.1
-      });
-      this.startOpacityAnimation.to(this.centerEle, {
-        yPercent: 0,
-        opacity: 1,
-        delay: 0.6
-      });
-      this.startOpacityAnimation.to(this.socialsEle, {
-        xPercent: 0,
-        opacity: 1
-      });
-      this.startNavAnimation.to(this.navEle, {
-        clipPath: "ellipse(200% 110% at 50% 0%)",
-        duration: 0.6,
-        onComplete: function onComplete() {
-          _this2.navDisplayed = true;
-          _this2.navContainer.style.pointerEvents = "all";
-        }
-      });
-    }
-  }, {
-    key: "hideNav",
-    value: function hideNav() {
-      var _this3 = this;
-
-      // this.killAnimation(true)
-      this.endBurgerAnimation.to(this.lines[0], {
-        top: "40%",
-        rotation: 0,
-        duration: 0.1
-      }); // this.endBurgerAnimation.to(this.lines[1], {
-      //     opacity: "1",
-      //     duration: 0.1,
-      //     delay: -0.1
-      // })
-
-      this.endBurgerAnimation.to(this.lines[1], {
-        top: "80%",
-        rotation: 0,
-        duration: 0.1,
-        delay: -0.1
-      });
-      this.endOpacityAnimation.to(this.socialsEle, {
-        xPercent: -20,
-        opacity: 0
-      });
-      this.endOpacityAnimation.to(this.centerEle, {
-        yPercent: -20,
-        opacity: 0
-      });
-      this.endNavAnimation.to(this.navEle, {
-        clipPath: "ellipse(0% 0% at 50% 0%)",
-        delay: this.delay,
-        duration: 0.6,
-        onComplete: function onComplete() {
-          _this3.navDisplayed = false;
-          _this3.navContainer.style.pointerEvents = "none";
-        }
-      });
-    }
-  }, {
-    key: "addListeners",
-    value: function addListeners() {
-      var _this4 = this;
-
-      document.querySelector(".burger").addEventListener("click", function () {
-        if (_this4.navDisplayed === false) {
-          _this4.navDisplayed = true;
-
-          _this4.showNav();
-        } else {
-          _this4.navDisplayed = false;
-
-          _this4.hideNav();
-        }
-      });
-      this.textWrappers.forEach(function (textWrapper, i) {
-        textWrapper.addEventListener('mouseenter', function () {
-          _this4.lettersAnimation(i);
-        });
-        textWrapper.addEventListener('click', function () {
-          if (_this4.part !== i) {
-            if (_this4.part === 2 && i === 3) {
-              console.log('arst');
-
-              _this4.hideNav();
-
-              _this4.options.scrollToContact();
-            } else {
-              _this4.moveToSection(i);
-            }
-          } else {
-            _this4.hideNav();
-          }
-        }); // textWrapper.addEventListener('touchend', () => {
-        //     this.moveToSection(i)
-        // })
-      });
-    }
-  }, {
-    key: "moveToSection",
-    value: function moveToSection(index) {
-      // this.textWrappers.forEach((ele, i) => {
-      //     if (i === index) {
-      //         ele.classList.add("active")
-      //     }
-      //     else {
-      //         ele.classList.remove("active")
-      //     }
-      // })
-      this.hideNav();
-
-      if (this.part === 2) {
-        this.options.onHidePart3();
-      }
-
-      if (index === 3) {
-        this.part = index;
-        this.options.onSectionSelected(2, true);
-      } else {
-        this.part = index;
-        this.options.onSectionSelected(index);
-      }
-    }
-  }, {
-    key: "setLetters",
-    value: function setLetters() {
-      var _this5 = this;
-
-      this.textWrappers.forEach(function (textWrapper) {
-        textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
-
-        _this5.letters.push(_toConsumableArray(textWrapper.querySelectorAll(".letter")));
-      });
-    }
-  }, {
-    key: "lettersAnimation",
-    value: function lettersAnimation(i) {
-      if (this.direction % 2 === 0) {
-        this.letters[i].forEach(function (el, i) {
-          _gsap.default.fromTo(el, {
-            scale: 2,
-            opacity: 0
-          }, {
-            scale: 1,
-            opacity: 1,
-            translateZ: 0,
-            duration: 0.3,
-            delay: i * 0.05,
-            ease: "power4.in"
-          });
-        });
-        this.direction = 1;
-      } else {
-        this.letters[i].reverse().forEach(function (el, i) {
-          _gsap.default.fromTo(el, {
-            scale: 2,
-            opacity: 0
-          }, {
-            scale: 1,
-            opacity: 1,
-            translateZ: 0,
-            duration: 0.3,
-            delay: i * 0.05,
-            ease: "power4.in"
-          });
-        });
-        this.direction = 0;
-      }
-    }
-  }]);
-
-  return Nav;
-}();
-
-exports.Nav = Nav;
-},{"gsap":"node_modules/gsap/index.js"}],"images/img1.jpg":[function(require,module,exports) {
-module.exports = "/img1.b5344f23.jpg";
-},{}],"images/landing.jpg":[function(require,module,exports) {
-module.exports = "/landing.10726b6b.jpg";
-},{}],"images/astroL.png":[function(require,module,exports) {
+},{"gsap":"node_modules/gsap/index.js"}],"images/astroL.png":[function(require,module,exports) {
 module.exports = "/astroL.d25ead5f.png";
 },{}],"images/astroR.png":[function(require,module,exports) {
 module.exports = "/astroR.5d22ff4d.png";
@@ -49431,470 +49077,21 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.slidesData = void 0;
 
-var _img = _interopRequireDefault(require("../images/img1.jpg"));
-
-var _landing = _interopRequireDefault(require("../images/landing.jpg"));
-
 var _astroL = _interopRequireDefault(require("../images/astroL.png"));
 
 var _astroR = _interopRequireDefault(require("../images/astroR.png"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import video1 from "../video/KingsAuto.mp4"
 var slidesData = [[{
-  image: _landing.default,
   content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-header\">\n            <button class='explore'>Enter</button>\n          </div>\n        </div>\n      ",
   position: 10
 }], [{
-  image: _img.default,
-  content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-desc slide-desc-iframe\">\n            <div class=\"yeah\">\n              <section class=\"intro\">\n                <div class=\"left\">\n                  <img src=\"".concat(_astroL.default, "\" alt=\"\">\n                </div>\n                <div class=\"middle\">\n                  <h1>INTRODUCING METAMALL</h1>\n                  <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade in the\n                    first-ever virtual mall owned by its users.</p>\n                </div>\n                <div class=\"right\">\n                  <img src=\"").concat(_astroR.default, "\" alt=\"\">\n                </div>\n              </section>\n              <section>\n                <div>\n                  <h1>The Unique</h1>\n                  <h1>VR Experience</h1>\n                  <p>Metamall features a unique VR experience with different themes, architecture and interactive VR properties.\n                    Token holders will be known as Metamallers. It will act as a central hub and welcome all levels of crypto\n                    experience. For the first time ever, users will have access to crypto information and immersive content all in\n                    one place. Metamallers will be able to earn revenue through real estate ownership, advertising revenue, play\n                    games, build networks and much more. By using the world\u2019s most advanced real time 3D Creation Engine, Metamall\n                    will leverage this technology to create stunning visualisations and user experience.</p>\n                </div>\n              </section>\n              <section>\n          \n              </section>\n              <section>\n          \n              </section>\n              <section>\n          \n              </section>\n            </div>\n          </div>\n        </div>\n      "),
+  content: "\n        <div class=\"slide-container\">\n          <div class=\"yeah\">\n            <section class=\"intro\">\n              <div class=\"left\">\n                <img src=\"".concat(_astroL.default, "\" alt=\"\">\n              </div>\n              <div class=\"middle\">\n                <h1>INTRODUCING METAMALL</h1>\n                <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade in the\n                  first-ever virtual mall owned by its users.</p>\n              </div>\n              <div class=\"right\">\n                <img src=\"").concat(_astroR.default, "\" alt=\"\">\n              </div>\n            </section>\n            <section>\n              <div>\n                <h1>The Unique</h1>\n                <h1>VR Experience</h1>\n                <p>Metamall features a unique VR experience with different themes, architecture and interactive VR properties.\n                  Token holders will be known as Metamallers. It will act as a central hub and welcome all levels of crypto\n                  experience. For the first time ever, users will have access to crypto information and immersive content all in\n                  one place. Metamallers will be able to earn revenue through real estate ownership, advertising revenue, play\n                  games, build networks and much more. By using the world\u2019s most advanced real time 3D Creation Engine, Metamall\n                  will leverage this technology to create stunning visualisations and user experience.</p>\n              </div>\n            </section>\n            <section>\n        \n            </section>\n            <section>\n        \n            </section>\n            <section>\n        \n            </section>\n          </div>\n        </div>\n      "),
   position: 0
 }]];
 exports.slidesData = slidesData;
-},{"../images/img1.jpg":"images/img1.jpg","../images/landing.jpg":"images/landing.jpg","../images/astroL.png":"images/astroL.png","../images/astroR.png":"images/astroR.png"}],"js/Frame.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.Frame = void 0;
-
-var _gsap = _interopRequireDefault(require("gsap"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Frame = /*#__PURE__*/function () {
-  function Frame(options, mobileDevice, numProjs) {
-    var _this = this;
-
-    _classCallCheck(this, Frame);
-
-    this.options = options;
-
-    if (!mobileDevice) {
-      // this.sectionContainer = document.querySelector('.current-section')
-      // this.sections = this.sectionContainer.querySelectorAll('p')
-      // this.nonActiveSections = this.sectionContainer.querySelectorAll('p:not(.active-section)')
-      this.part = 0;
-      this.sectionShown = true;
-      this.pauseSectionActivity = false;
-      this.mobile = false; // this.addSectionListeners()
-    } else {
-      // this.addNextPrevListeners()
-      this.mobile = true;
-    }
-
-    this.logo = document.querySelector('.main-logo');
-    this.hintDiv = document.querySelector('.hint');
-    this.hintContainer = this.hintDiv.querySelector('p');
-    this.hintLine = this.hintDiv.querySelector('.lin');
-    this.rotContainer = document.querySelector(".rot");
-    this.projContainer = document.querySelector(".proj");
-    this.lineTop = this.projContainer.querySelector(".on");
-    this.lineBottom = this.projContainer.querySelector(".tw");
-    this.checkScrollContainer = null;
-    this.projP = this.projContainer.querySelector("p");
-    this.scrollContainer = document.querySelector('.scroll');
-    this.scrollLine = this.scrollContainer.querySelector('.scroll-line');
-    this.numProjs = numProjs;
-    this.addRotListeners();
-    this.blowHint();
-    this.logo.addEventListener('click', function () {
-      _this.options.moveToSection(0);
-    });
-  }
-
-  _createClass(Frame, [{
-    key: "addRotListeners",
-    value: function addRotListeners() {
-      var _this2 = this;
-
-      this.rotAnime = _gsap.default.to(this.rotContainer, {
-        rotation: 360,
-        repeat: -1,
-        duration: 9,
-        ease: "linear"
-      });
-      this.rotContainer.addEventListener('mouseover', function () {
-        _this2.rotAnime.pause();
-      });
-      this.rotContainer.addEventListener('mouseleave', function () {
-        _this2.rotAnime.play();
-      });
-    }
-  }, {
-    key: "hideNextPrev",
-    value: function hideNextPrev() {
-      _gsap.default.to(".mov", {
-        opacity: 0,
-        pointerEvents: 'none'
-      });
-    }
-  }, {
-    key: "showNextPrev",
-    value: function showNextPrev() {
-      _gsap.default.to(".mov", {
-        opacity: 1,
-        pointerEvents: 'all'
-      });
-    }
-  }, {
-    key: "hideHint",
-    value: function hideHint() {
-      _gsap.default.to(this.hintContainer, {
-        opacity: 0,
-        pointerEvents: 'none'
-      });
-    }
-  }, {
-    key: "showHint",
-    value: function showHint() {
-      _gsap.default.to(this.hintContainer, {
-        opacity: 1,
-        pointerEvents: 'all'
-      });
-    }
-  }, {
-    key: "hideLogo",
-    value: function hideLogo() {
-      _gsap.default.to(this.logo, {
-        opacity: 0
-      });
-    }
-  }, {
-    key: "showLogo",
-    value: function showLogo() {
-      _gsap.default.to(this.logo, {
-        opacity: 1
-      });
-    }
-  }, {
-    key: "addSectionListeners",
-    value: function addSectionListeners() {
-      var _this3 = this;
-
-      this.sectionContainer.addEventListener('mouseenter', function () {
-        _this3.showSection();
-      });
-      this.sectionContainer.addEventListener('mouseleave', function () {
-        _this3.hideSection();
-      });
-      this.sections.forEach(function (ele, i) {
-        ele.addEventListener('click', function () {
-          _this3.pauseSectionActivity = true;
-
-          if (i === 3) {
-            _this3.options.moveToSection(2);
-          } else {
-            _this3.options.moveToSection(i);
-          }
-        });
-      });
-    }
-  }, {
-    key: "addNextPrevListeners",
-    value: function addNextPrevListeners() {
-      var _this4 = this;
-
-      // document.querySelector("button.nextbtn").addEventListener("mousedown", () => {
-      //     this.options.nextSection('down', false)
-      // })
-      document.querySelector("button.nextbtn").addEventListener("touchstart", function () {
-        _this4.options.nextSection('down', true);
-      }); // document.querySelector("button.nextbtn").addEventListener("mouseup", () => {
-      //     this.options.nextSection('up', false)
-      // })
-
-      document.querySelector("button.nextbtn").addEventListener("touchend", function () {
-        _this4.options.nextSection('up', true);
-      }); // document.querySelector("button.prevbtn").addEventListener("mousedown", () => {
-      //     this.options.prevSection('down', false)
-      // })
-
-      document.querySelector("button.prevbtn").addEventListener("touchstart", function () {
-        _this4.options.prevSection('down', true);
-      }); // document.querySelector("button.prevbtn").addEventListener("mouseup", () => {
-      //     this.options.prevSection('up', false)
-      // })
-
-      document.querySelector("button.prevbtn").addEventListener("touchend", function () {
-        _this4.options.prevSection('up', true);
-      });
-    }
-  }, {
-    key: "updateProj",
-    value: function updateProj(index) {
-      if (this.part === 1) {
-        _gsap.default.to(this.lineTop, {
-          height: "".concat(10 + 80 / this.numProjs * -index, "%")
-        });
-
-        _gsap.default.to(this.lineBottom, {
-          height: "calc(".concat(10 + 80 / this.numProjs * (this.numProjs + index), "% - 2rem)")
-        });
-
-        this.projP.innerHTML = Math.round(-index) + 1 + "/" + this.numProjs;
-      }
-    }
-  }, {
-    key: "showProj",
-    value: function showProj() {
-      _gsap.default.to(this.projContainer, {
-        opacity: 1
-      });
-    }
-  }, {
-    key: "hideProj",
-    value: function hideProj() {
-      _gsap.default.to(this.projContainer, {
-        opacity: 0
-      });
-    }
-  }, {
-    key: "updatePart",
-    value: function updatePart(index) {
-      this.part = index;
-
-      if (!this.mobile) {
-        this.paintSection();
-      }
-
-      this.updateHint(); // this.updateLogo()
-      // if (this.part === 1) {
-      //     this.showProj()
-      // }
-      // else {
-      //     this.hideProj()
-      // }
-    }
-  }, {
-    key: "updateLogo",
-    value: function updateLogo() {
-      if (this.logoAnime) {
-        this.logoAnime.kill();
-      }
-
-      if (this.part == 0) {
-        this.logoAnime = _gsap.default.timeline();
-        this.logoAnime.to(this.logo, {
-          opacity: 0,
-          duration: 0.4
-        });
-        this.logoAnime.set(this.logo, {
-          width: "100px",
-          top: "-29px",
-          left: "50%",
-          xPercent: -50,
-          rotate: -30
-        });
-        this.logoAnime.to(this.logo, {
-          opacity: 1,
-          duration: 0.3
-        });
-      } else if (this.part == 1 || this.part == 2) {
-        this.logoAnime = _gsap.default.timeline();
-        this.logoAnime.to(this.logo, {
-          opacity: 0,
-          duration: 0.4
-        });
-        this.logoAnime.set(this.logo, {
-          top: this.mobile ? "5px" : "7px",
-          left: this.mobile ? "5px" : "20px",
-          width: "70px",
-          xPercent: 0,
-          rotate: 0
-        });
-        this.logoAnime.to(this.logo, {
-          opacity: 1,
-          duration: 0.3
-        });
-      }
-    }
-  }, {
-    key: "killBlow",
-    value: function killBlow() {
-      if (this.blowAnime) {
-        this.blowAnime.kill();
-        console.log('yeah');
-
-        _gsap.default.to(this.hintLine, {
-          width: "100%",
-          opacity: 0.6,
-          duration: 0.3
-        });
-      }
-    }
-  }, {
-    key: "blowHint",
-    value: function blowHint() {
-      this.killBlow();
-      console.log('noienon');
-      this.blowAnime = _gsap.default.timeline({
-        repeat: 6
-      });
-      this.blowAnime.to(this.hintLine, {
-        width: "100%",
-        duration: 0.3
-      });
-      this.blowAnime.to(this.hintLine, {
-        width: "20%",
-        duration: 1
-      });
-      this.blowAnime.to(this.hintLine, {
-        width: "100%",
-        duration: 0.3
-      });
-    }
-  }, {
-    key: "updateHint",
-    value: function updateHint() {
-      var hint = '';
-
-      if (this.part === 0) {
-        hint = "CLICK &amp; HOLD";
-      } else if (this.part === 1) {
-        if (this.mobile) {
-          hint = 'SCROLL';
-        } else {
-          hint = '';
-        }
-      } else if (this.part === 2) {
-        hint = 'SCROLL';
-      } // alert('arst')
-
-
-      this.hintContainer.innerHTML = hint;
-      this.blowHint();
-    }
-  }, {
-    key: "showSection",
-    value: function showSection(nextFunc) {
-      var _this5 = this;
-
-      // console.log(this.sectionShown, this.pauseSectionActivity)
-      if (this.sectionShown && !nextFunc || this.pauseSectionActivity) {
-        return;
-      }
-
-      if (this.sectionAnim) {
-        this.sectionAnim.kill();
-      }
-
-      this.sectionAnime = _gsap.default.to(this.sections, {
-        opacity: 1,
-        duration: 0.3,
-        width: '100%',
-        marginRight: '25px',
-        onComplete: function onComplete() {
-          _this5.sectionShown = true;
-          console.log(nextFunc);
-
-          if (nextFunc) {
-            _this5.hideSection();
-          }
-        }
-      });
-    }
-  }, {
-    key: "hideSection",
-    value: function hideSection() {
-      var _this6 = this;
-
-      if (!this.sectionShown || this.pauseSectionActivity) {
-        return;
-      }
-
-      if (this.sectionAnim) {
-        this.sectionAnim.kill();
-      }
-
-      this.sectionAnime = _gsap.default.to(this.nonActiveSections, {
-        opacity: 0,
-        duration: 0.3,
-        width: 0,
-        marginRight: 0,
-        onComplete: function onComplete() {
-          _this6.sectionShown = false;
-        }
-      });
-    }
-  }, {
-    key: "paintSection",
-    value: function paintSection() {
-      var _this7 = this;
-
-      return;
-      this.sections.forEach(function (ele, i) {
-        if (i === _this7.part) {
-          ele.classList.add("active-section");
-        } else {
-          ele.classList.remove("active-section");
-        }
-
-        if (i === _this7.sections.length - 1) {
-          _this7.nonActiveSections = _this7.sectionContainer.querySelectorAll('p:not(.active-section)');
-          _this7.pauseSectionActivity = false;
-          console.log('here');
-
-          _this7.showSection(true);
-        }
-      });
-    }
-  }, {
-    key: "updateScroll",
-    value: function updateScroll(e) {
-      if (this.scrollAnime) {
-        this.scrollAnime.kill();
-      }
-
-      this.scrollAnime = _gsap.default.to(this.scrollLine, {
-        height: (this.checkScrollContainer.scrollTop + this.docHeight) * 100 / this.checkScroll.offsetHeight + "%",
-        duration: 0.4
-      });
-    }
-  }, {
-    key: "onResize",
-    value: function onResize() {
-      this.docHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
-    }
-  }, {
-    key: "showScroll",
-    value: function showScroll() {
-      this.docHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight);
-      this.checkScrollContainer = document.querySelector('.master-slide-container:nth-of-type(3) > .slide');
-      this.checkScroll = this.checkScrollContainer.querySelector('div > .slide-desc');
-      this.updateScroll();
-      this.checkScrollContainer.addEventListener('scroll', this.updateScroll.bind(this));
-
-      _gsap.default.to(this.scrollContainer, {
-        opacity: 1,
-        duration: 0.8
-      });
-    }
-  }, {
-    key: "hideScroll",
-    value: function hideScroll() {
-      this.checkScrollContainer.removeEventListener('scroll', this.updateScroll);
-
-      _gsap.default.to(this.scrollContainer, {
-        opacity: 0,
-        duration: 0.8
-      });
-    }
-  }]);
-
-  return Frame;
-}();
-
-exports.Frame = Frame;
-},{"gsap":"node_modules/gsap/index.js"}],"node_modules/gsap/ScrollTrigger.js":[function(require,module,exports) {
+},{"../images/astroL.png":"images/astroL.png","../images/astroR.png":"images/astroR.png"}],"node_modules/gsap/ScrollTrigger.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -55004,10 +54201,27 @@ var Preloader = /*#__PURE__*/function () {
     this.preloaderContainer = document.querySelector('.preloader');
     this.imgs = this.preloaderContainer.querySelector('div');
     this.line = this.preloaderContainer.querySelector('.loader-line');
+    this.videos = document.querySelectorAll('video');
+    this.loaded = 0;
+    this.total = this.videos.length;
+    this.addListeners();
     this.showPreloader();
   }
 
   _createClass(Preloader, [{
+    key: "addListeners",
+    value: function addListeners() {
+      var _this = this;
+
+      this.videos.forEach(function (ele) {
+        ele.addEventListener('loadedmetadata', function (event) {
+          _this.loaded++;
+
+          _this.update();
+        });
+      });
+    }
+  }, {
     key: "showPreloader",
     value: function showPreloader() {
       _gsap.default.to(this.preloaderContainer, {
@@ -55018,7 +54232,7 @@ var Preloader = /*#__PURE__*/function () {
   }, {
     key: "removePreloader",
     value: function removePreloader() {
-      var _this = this;
+      var _this2 = this;
 
       var tl = _gsap.default.timeline();
 
@@ -55031,7 +54245,7 @@ var Preloader = /*#__PURE__*/function () {
         duration: 0.8,
         delay: 0.6,
         onComplete: function onComplete() {
-          _gsap.default.set(_this.preloaderContainer, {
+          _gsap.default.set(_this2.preloaderContainer, {
             pointerEvents: 'none',
             display: 'none'
           });
@@ -55040,29 +54254,25 @@ var Preloader = /*#__PURE__*/function () {
     }
   }, {
     key: "update",
-    value: function update(part, total) {
-      var _this2 = this;
+    value: function update() {
+      var _this3 = this;
 
       if (this.loaderAnime) {
         this.loaderAnime.kill();
       }
 
-      if (part > 1) {
-        part = 1;
-      }
-
-      total = 1;
+      console.log(this.loaded, this.total);
       this.loaderAnime = _gsap.default.to(this.line, {
-        width: "".concat(part * 100 / total, "%"),
+        width: "".concat(this.loaded * 100 / this.total, "%"),
         duration: 1.5,
         ease: 'Power4.out',
         onComplete: function onComplete() {
-          if (part === total) {
+          if (_this3.loaded === _this3.total) {
             console.log('done');
 
-            _this2.removePreloader();
+            _this3.removePreloader();
 
-            _this2.options.loaded();
+            _this3.options.loaded();
           }
         }
       });
@@ -55073,7 +54283,70 @@ var Preloader = /*#__PURE__*/function () {
 }();
 
 exports.Preloader = Preloader;
-},{"gsap":"node_modules/gsap/index.js"}],"js/index.js":[function(require,module,exports) {
+},{"gsap":"node_modules/gsap/index.js"}],"js/Content.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Content = void 0;
+
+var _gsap = _interopRequireDefault(require("gsap"));
+
+var _ScrollTrigger = require("gsap/ScrollTrigger");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Content = /*#__PURE__*/function () {
+  function Content() {
+    _classCallCheck(this, Content);
+
+    _gsap.default.registerPlugin(_ScrollTrigger.ScrollTrigger);
+
+    console.log('arst');
+    this.astroL = document.querySelector('.intro > .left > img');
+    this.astroR = document.querySelector('.intro > .right > img'); // this.start()
+  }
+
+  _createClass(Content, [{
+    key: "start",
+    value: function start() {
+      this.astroLAnime = _gsap.default.timeline({
+        repeat: -1
+      });
+      this.astroLAnime.to(this.astroL, {
+        yPercent: -8,
+        duration: 1
+      });
+      this.astroLAnime.to(this.astroL, {
+        yPercent: 0,
+        duration: 1
+      });
+      this.astroRAnime = _gsap.default.timeline({
+        repeat: -1
+      });
+      this.astroRAnime.to(this.astroR, {
+        yPercent: 8,
+        duration: 1
+      });
+      this.astroRAnime.to(this.astroR, {
+        yPercent: 0,
+        duration: 1
+      });
+    }
+  }]);
+
+  return Content;
+}();
+
+exports.Content = Content;
+},{"gsap":"node_modules/gsap/index.js","gsap/ScrollTrigger":"node_modules/gsap/ScrollTrigger.js"}],"js/index.js":[function(require,module,exports) {
 "use strict";
 
 var _Showcase = require("./Showcase");
@@ -55082,15 +54355,13 @@ var _Slides = require("./Slides");
 
 var _Cursor = require("./Cursor");
 
-var _Nav = require("./Nav");
-
 var _slidesData = require("./slidesData");
-
-var _Frame = require("./Frame");
 
 var _Vid = require("./Vid");
 
 var _Preloader = require("./Preloader");
+
+var _Content = require("./Content");
 
 var mobileAndTabletCheck = function mobileAndTabletCheck() {
   var check = false;
@@ -55186,6 +54457,7 @@ var showcase = new _Showcase.Showcase(_slidesData.slidesData, {
   onPart1: function onPart1() {
     vid.pause(0);
     vid.start(1);
+    content.start();
   },
   endPart1: function endPart1() {
     console.log('vid a');
@@ -55247,6 +54519,7 @@ var showcase = new _Showcase.Showcase(_slidesData.slidesData, {
 showcase.mount(container);
 slides.mount(document.body);
 var vid = new _Vid.Vid();
+var content = new _Content.Content();
 showcase.render();
 window.addEventListener("resize", function () {
   showcase.onResize(); // frame.onResize()
@@ -55263,7 +54536,7 @@ if (mobileDevice) {
     document.documentElement.style.setProperty('--vh', "".concat(nice, "px"));
   }, false);
 }
-},{"./Showcase":"js/Showcase.js","./Slides":"js/Slides.js","./Cursor":"js/Cursor.js","./Nav":"js/Nav.js","./slidesData":"js/slidesData.js","./Frame":"js/Frame.js","./Vid":"js/Vid.js","./Preloader":"js/Preloader.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Showcase":"js/Showcase.js","./Slides":"js/Slides.js","./Cursor":"js/Cursor.js","./slidesData":"js/slidesData.js","./Vid":"js/Vid.js","./Preloader":"js/Preloader.js","./Content":"js/Content.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

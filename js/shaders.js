@@ -39,7 +39,7 @@ void main(){
     uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;
 
     tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;
-    tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;
+    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;
 
     // tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;
     // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r * u_blackProgress;
@@ -49,7 +49,7 @@ void main(){
     uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;
 
     tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;
-    tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;
+    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;
 
     // tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;
     // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g * u_blackProgress;
@@ -58,14 +58,14 @@ void main(){
     uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;
 
     tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;
-    tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;
+    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;
 
     // tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;
     // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b * u_blackProgress;
 
 
     vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );
-    vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));
+    // vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));
     
     vec4 mixedTextures =  mix(tex1,tex1,u_textureProgress);
 
@@ -239,28 +239,28 @@ void main(){
     uv.y -= sin(uv.x) * ratio / 100. * (vel.x + vel.y) / 7.;
 
     tex1.r = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).r;
-    tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;
+    // tex2.r = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).r;
 
     
     uv.x -= sin(uv.y) * ratio / 150. * (vel.x + vel.y) / 7.;
     uv.y -= sin(uv.x) * ratio / 150. * (vel.x + vel.y) / 7.;
 
     tex1.g = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).g;
-    tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;
+    // tex2.g = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).g;
     
     uv.x -= sin(uv.y) * ratio / 300. * (vel.x + vel.y) / 7.;
     uv.y -= sin(uv.x) * ratio / 300. * (vel.x + vel.y) / 7.;
 
     tex1.b = texture2D(u_texture, centeredAspectRatio(uv, u_textureFactor )).b;
-    tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;
+    // tex2.b = texture2D(u_texture2, centeredAspectRatio(uv, u_textureFactor )).b;
      
     
 
 
     vec4 fulltex1 = texture2D(u_texture, centeredAspectRatio(vUv, u_textureFactor) );
-    vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));
+    // vec4 fulltex2 = texture2D(u_texture2, centeredAspectRatio(vUv, u_texture2Factor));
     
-    vec4 mixedTextures =  mix(tex1,tex2,u_textureProgress);
+    vec4 mixedTextures =  mix(tex1,tex1,u_textureProgress);
 
     gl_FragColor = mixedTextures;
 }

@@ -1,11 +1,10 @@
 import { Showcase } from "./Showcase";
 import { Slides } from "./Slides";
 import { Cursor } from "./Cursor";
-import { Nav } from "./Nav";
 import { slidesData } from "./slidesData";
-import { Frame } from "./Frame";
 import { Vid } from "./Vid"
 import { Preloader } from "./Preloader"
+import { Content } from "./Content"
 
 
 let mobileAndTabletCheck = () => {
@@ -108,6 +107,7 @@ const showcase = new Showcase(slidesData, {
   onPart1: () => {
     vid.pause(0)
     vid.start(1)
+    content.start()
   },
   endPart1: () => {
     console.log('vid a')
@@ -167,6 +167,7 @@ const showcase = new Showcase(slidesData, {
 showcase.mount(container);
 slides.mount(document.body);
 const vid = new Vid()
+const content = new Content()
 showcase.render();
 
 window.addEventListener("resize", function () {

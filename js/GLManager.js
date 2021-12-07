@@ -1,15 +1,7 @@
 import * as THREE from "three";
 import {
-  fragment,
-  vertex
-} from "./shaders";
-import {
   fragment1,
   vertex1
-} from "./shaders";
-import {
-  fragment2,
-  vertex2
 } from "./shaders";
 import 'regenerator-runtime/runtime'
 import gsap from 'gsap'
@@ -38,8 +30,8 @@ function GLManager(data, cursorRender, updatePre) {
   this.scene = scene;
   this.renderer = renderer;
   this.render = this.render.bind(this);
-  this.loadTextures(data).then(textures => {
-    this.textures = textures
+  // this.loadTextures(data).then(textures => {
+    // this.textures = textures
     this.factors = this.loadFactors(data)
     this.currentIndex = 0;
     this.nextIndex = 0;
@@ -51,11 +43,11 @@ function GLManager(data, cursorRender, updatePre) {
 
     this.createPlane(0, data[0][0].position)
     this.createPlane(1, data[1][0].position)
-    this.calcAspectRatios()
+    // this.calcAspectRatios()
     if (!this.loopRaf) {
       this.render();
     }
-  })
+  // })
 }
 
 GLManager.prototype.setUpGui = function () {
@@ -259,14 +251,14 @@ GLManager.prototype.createPlane = function (index, pos) {
           type: "f",
           value: this.factors[1][this.currentIndex]
         },
-        u_texture2: {
-          type: "t",
-          value: this.textures[1][this.nextIndex]
-        },
-        u_texture2Factor: {
-          type: "f",
-          value: this.factors[1][this.nextIndex]
-        },
+        // u_texture2: {
+        //   type: "t",
+        //   value: this.textures[1][this.nextIndex]
+        // },
+        // u_texture2Factor: {
+        //   type: "f",
+        //   value: this.factors[1][this.nextIndex]
+        // },
         u_textureProgress: {
           type: "f",
           value: this.textureProgress
@@ -317,75 +309,6 @@ GLManager.prototype.createPlane = function (index, pos) {
     this.scene.add(mesh);
     this.meshes.push(mesh);
   }
-  else if (index === 2) {
-    const {
-      width,
-      height
-    } = this.getPlaneSize();
-
-    const segments = 60;
-    const geometry = new THREE.PlaneBufferGeometry(
-      width,
-      height,
-      segments,
-      segments
-    );
-    const material = new THREE.ShaderMaterial({
-      uniforms: {
-        u_texture: {
-          type: "t",
-          value: this.textures[2][0]
-        },
-        u_textureFactor: {
-          type: "f",
-          value: this.factors[2][0]
-        },
-        u_offset: {
-          type: "f",
-          value: 8
-        },
-        u_progress: {
-          type: "f",
-          value: 0
-        },
-        u_direction: {
-          type: "f",
-          value: 1
-        },
-        u_effect: {
-          type: "f",
-          value: 0
-        },
-        u_time: {
-          type: "f",
-          value: this.time
-        },
-        u_waveIntensity: {
-          type: "f",
-          value: 0
-        },
-        u_resolution: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-        },
-        u_rgbPosition: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
-        },
-        u_rgbVelocity: {
-          type: "v2",
-          value: new THREE.Vector2(0, 0)
-        }
-      },
-      vertexShader: vertex2,
-      fragmentShader: fragment2,
-      side: THREE.DoubleSide
-    });
-    const mesh3 = new THREE.Mesh(geometry, material);
-    mesh3.position.z = pos
-    this.scene.add(mesh3);
-    this.meshes.push(mesh3)
-  }
 };
 
 GLManager.prototype.updateCameraPosition = function (position) {
@@ -404,11 +327,11 @@ GLManager.prototype.updateTexture = function (newIndex, progress) {
     this.currentIndex = this.nextIndex;
     this.nextIndex = newIndex;
     this.textureProgress = 0;
-    this.meshes[this.part].material.uniforms.u_textureProgress.value = 0;
-    this.meshes[this.part].material.uniforms.u_texture.value = this.textures[1][this.currentIndex];
-    this.meshes[this.part].material.uniforms.u_textureFactor.value = this.factors[1][this.currentIndex];
-    this.meshes[this.part].material.uniforms.u_texture2.value = this.textures[1][newIndex];
-    this.meshes[this.part].material.uniforms.u_texture2Factor.value = this.factors[1][newIndex];
+    // this.meshes[this.part].material.uniforms.u_textureProgress.value = 0;
+    // this.meshes[this.part].material.uniforms.u_texture.value = this.textures[1][this.currentIndex];
+    // this.meshes[this.part].material.uniforms.u_textureFactor.value = this.factors[1][this.currentIndex];
+    // this.meshes[this.part].material.uniforms.u_texture2.value = this.textures[1][newIndex];
+    // this.meshes[this.part].material.uniforms.u_texture2Factor.value = this.factors[1][newIndex];
     didChange = true;
   }
   if (progress != null && progress !== this.textureProgress) {
@@ -483,13 +406,13 @@ GLManager.prototype.onResize = function () {
   for (let i = 0; i < this.meshes.length; i++) {
     this.meshes[i].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
   }
-  for (var i = 0; i < this.textures.length; i++) {
-    for (let j = 0; j < this.textures[i].length; j++) {
-      if (this.textures[i][j].image) {
-        this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
-      }
-    }
-  }
+  // for (var i = 0; i < this.textures.length; i++) {
+  //   for (let j = 0; j < this.textures[i].length; j++) {
+  //     if (this.textures[i][j].image) {
+  //       this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
+  //     }
+  //   }
+  // }
   this.render();
 };
 GLManager.prototype.scheduleLoop = function () {

@@ -1,21 +1,34 @@
 import gsap from "gsap"
 
-class Preloader{
-    constructor(options){
+class Preloader {
+    constructor(options) {
         this.options = options
         this.preloaderContainer = document.querySelector('.preloader')
         this.imgs = this.preloaderContainer.querySelector('div')
         this.line = this.preloaderContainer.querySelector('.loader-line')
+        this.videos = document.querySelectorAll('video')
+        this.loaded = 0
+        this.total = this.videos.length
+        this.addListeners()
         this.showPreloader()
     }
 
-    showPreloader(){
+    addListeners() {
+        this.videos.forEach(ele => {
+            ele.addEventListener('loadedmetadata', (event) => {
+                this.loaded++
+                this.update()
+            });
+        })
+    }
+
+    showPreloader() {
         gsap.to(this.preloaderContainer, {
             opacity: 1, duration: 0.8
         })
     }
 
-    removePreloader(){
+    removePreloader() {
         let tl = gsap.timeline()
         tl.to(this.imgs, {
             opacity: 0, scale: 0.4
@@ -30,17 +43,14 @@ class Preloader{
         })
     }
 
-    update(part, total){
-        if(this.loaderAnime){
+    update() {
+        if (this.loaderAnime) {
             this.loaderAnime.kill()
         }
-        if(part > 1){
-            part = 1
-        }
-        total = 1
+        console.log(this.loaded, this.total)
         this.loaderAnime = gsap.to(this.line, {
-            width: `${part*100/total}%`, duration: 1.5, ease: 'Power4.out', onComplete: () => {
-                if(part === total){
+            width: `${this.loaded * 100 / this.total}%`, duration: 1.5, ease: 'Power4.out', onComplete: () => {
+                if (this.loaded === this.total) {
                     console.log('done')
                     this.removePreloader()
                     this.options.loaded()
