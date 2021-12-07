@@ -48444,9 +48444,8 @@ Showcase.prototype.startMoveToSection = function (from, to) {
         if (to === 1) {
           _this3.GL.stopEffects = false;
 
-          _this3.options.onPart1();
+          _this3.options.onPart1(); // this.onPart1()
 
-          _this3.onPart1();
         }
       }
     });

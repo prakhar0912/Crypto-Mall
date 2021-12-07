@@ -298,7 +298,7 @@ Showcase.prototype.startMoveToSection = function (from, to, delay = 0) {
         if (to === 1) {
           this.GL.stopEffects = false
           this.options.onPart1()
-          this.onPart1()
+          // this.onPart1()
         }
       }
     })
