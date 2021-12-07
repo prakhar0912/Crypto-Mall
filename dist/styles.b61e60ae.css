@@ -165,6 +165,7 @@ canvas {
   height: auto;
   width: 100%;
   display: block;
+  /* background-blend-mode:luminosity */
 }
 
 .slide-header {
@@ -1098,7 +1099,7 @@ section:nth-of-type(3)>div>img {
     height: calc(var(--vh, 1vh) * 100);
   }
   .slide, .slide-grid {
-    height: calc(var(--vh, 1vh) * 100);
+    min-height: calc(var(--vh, 1vh) * 100);
   }
   .nav-container {
     height: calc(var(--vh, 1vh) * 100);

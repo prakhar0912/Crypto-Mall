@@ -84,9 +84,10 @@ const preloader = new Preloader({
 
 
 const showcase = new Showcase(slidesData, {
-  updatePre: (part, total) => {
-    preloader.update(part, total)
-  },
+  // updatePre: (part, total) => {
+  //   console.log('here')
+  //   preloader.update(part, total)
+  // },
   killHint: () => {
     // if (showcase.part === 1) {
     //   cursor.killHint()

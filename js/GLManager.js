@@ -6,6 +6,7 @@ import {
 import 'regenerator-runtime/runtime'
 import gsap from 'gsap'
 import Stats from "stats.js";
+import { fitTexture } from "./fitTexture";
 
 function GLManager(data, cursorRender, updatePre) {
   this.totalEntries = this.calculateTotalEntries(data);
@@ -30,24 +31,45 @@ function GLManager(data, cursorRender, updatePre) {
   this.scene = scene;
   this.renderer = renderer;
   this.render = this.render.bind(this);
-  // this.loadTextures(data).then(textures => {
-    // this.textures = textures
-    this.factors = this.loadFactors(data)
-    this.currentIndex = 0;
-    this.nextIndex = 0;
-    this.textureProgress = 0;
-    this.initialRender = false;
-    this.time = 0;
-    this.loopRaf = null;
-    this.loop = this.loop.bind(this);
+  this.factors = this.loadFactors(data)
+  this.currentIndex = 0;
+  this.nextIndex = 0;
+  this.textureProgress = 0;
+  this.initialRender = false;
+  this.time = 0;
+  this.loopRaf = null;
+  this.loop = this.loop.bind(this);
+  this.textures = []
+  this.assignTextures()
+  this.createPlane(0, data[0][0].position)
+  this.createPlane(1, data[1][0].position)
+  // this.init()
+  this.calcAspectRatios()
+  if (!this.loopRaf) {
+    this.render();
+  }
+}
 
-    this.createPlane(0, data[0][0].position)
-    this.createPlane(1, data[1][0].position)
-    // this.calcAspectRatios()
-    if (!this.loopRaf) {
-      this.render();
-    }
-  // })
+
+// GLManager.prototype.init = function(){
+//   this.renderer.setSize(window.innerWidth, window.innerHeight);
+//   this.renderer.domElement.style.height = "100%"
+//   this.renderer.domElement.style.width = "100%"
+
+//   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+//   this.render();
+
+
+// }
+
+
+GLManager.prototype.assignTextures = function () {
+  this.videos = document.querySelectorAll('video')
+  for (let i = 0; i < this.videos.length; i++) {
+    let videoTexture = new THREE.VideoTexture(this.videos[i])
+    videoTexture.wrapS = THREE.ClampToEdgeWrapping
+    this.textures.push(videoTexture)
+  }
 }
 
 GLManager.prototype.setUpGui = function () {
@@ -59,22 +81,73 @@ GLManager.prototype.setUpGui = function () {
 
 GLManager.prototype.loadFactors = function (data) {
   let factorsMaster = []
-  for (let i = 0; i < data.length; i++) {
-    let factors = []
-    for (let j = 0; j < data[i].length; j++) {
-      factors.push(new THREE.Vector2(1, 1))
-    }
-    factorsMaster.push(factors)
+  for (let i = 0; i < 1; i++) {
+    factorsMaster.push(new THREE.Vector2(1, 1))
   }
   return factorsMaster
 }
 
 
 GLManager.prototype.calcAspectRatios = function () {
-  for (let i = 0; i < this.textures.length; i++) {
-    for (let j = 0; j < this.textures[i].length; j++) {
-      this.calculateAspectRatioFactor(i, j, this.textures[i][j])
-    }
+  // fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
+  // this.calculateAspectRatioFactorNew(0, this.textures[0])
+  // this.calculateAspectRatioFactor(1, this.textures[2])
+}
+
+GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
+  const plane = this.getPlaneSize();
+  const windowRatio = window.innerWidth / window.innerHeight;
+  const rectRatio = (plane.width / plane.height) * windowRatio;
+  const imageRatio = texture.image.width / texture.image.height;
+  // console.log(imageRatio, rectRatio)
+
+  let factorX = 1;
+  let factorY = 1;
+  if (rectRatio > imageRatio) {
+    factorX = 1;
+    factorY = (1 / rectRatio) * imageRatio;
+  } else {
+    factorX = (1 * rectRatio) / imageRatio;
+    factorY = 1;
+  }
+  this.factors[0] = new THREE.Vector2(factorX, factorY);
+
+  if (this.meshes[index]) {
+    this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[0];
+    this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
+  }
+
+  if (this.initialRender) {
+    this.render();
+  }
+};
+
+GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
+  const plane = this.getPlaneSize();
+  const windowRatio = window.innerWidth / window.innerHeight;
+  const rectRatio = (plane.width / plane.height) * windowRatio;
+  const imageRatio = texture.image.width / texture.image.height;
+  // console.log(imageRatio, rectRatio)
+  let ratio = rectRatio / imageRatio;
+
+
+
+  let factorX = 1;
+  let factorY = 1;
+  if (rectRatio > imageRatio) {
+    factorX = 1;
+    factorY = (1 / rectRatio) * imageRatio;
+  } else {
+    factorX = (1 * rectRatio) / imageRatio;
+    factorY = 1;
+  }
+
+  // this.meshes[index].material.map.repeat.set(factorX, factorY)
+  // texture.repeat.set(factorX, factorY)
+  // ele.offset.x = 0.5 * (1 - ratio);
+
+  if (this.initialRender) {
+    this.render();
   }
 }
 
@@ -136,64 +209,21 @@ GLManager.prototype.getPlaneSize = function () {
   };
 };
 
-GLManager.prototype.calculateAspectRatioFactor = function (index, j, texture) {
-  const plane = this.getPlaneSize();
-  const windowRatio = window.innerWidth / window.innerHeight;
-  const rectRatio = (plane.width / plane.height) * windowRatio;
-  const imageRatio = texture.image.width / texture.image.height;
-  // console.log(imageRatio, rectRatio)
 
-  let factorX = 1;
-  let factorY = 1;
-  if (rectRatio > imageRatio) {
-    factorX = 1;
-    factorY = (1 / rectRatio) * imageRatio;
-  } else {
-    factorX = (1 * rectRatio) / imageRatio;
-    factorY = 1;
-  }
-  this.factors[index][j] = new THREE.Vector2(factorX, factorY);
-  if (index === 1) {
-    if (this.currentIndex === j) {
-      this.meshes[1].material.uniforms.u_textureFactor.value = this.factors[1][j];
-      this.meshes[1].material.uniforms.u_textureFactor.needsUpdate = true;
-    }
-    if (this.nextIndex === j) {
-      this.meshes[1].material.uniforms.u_texture2Factor.value = this.factors[1][j];
-      this.meshes[1].material.uniforms.u_texture2Factor.needsUpdate = true;
-    }
-  }
-  else {
-    if (this.meshes[index] && index != 0) {
-      this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[index][j];
-      this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
-    }
-  }
-  if (this.initialRender) {
-    this.loadedEntries++;
-    if (this.loadedEntries === this.totalEntries) {
-      document.body.classList.remove('loading');
-      console.log('loaded all')
-    }
-    this.render();
-  }
-};
 
 GLManager.prototype.alterPlane0 = function () {
   gsap.to(this.meshes[0].material.color, {
     r: 0, g: 0, b: 0, duration: 2,
   })
   setTimeout(() => {
-    const video = document.querySelector('#video2')
-    video.play();
-    const videoTexture = new THREE.VideoTexture(video)
-    videoTexture.format = THREE.RGBAFormat;
-    var material = new THREE.MeshBasicMaterial({ map: videoTexture });
+    this.videos[1].play();
+    this.textures[1].format = THREE.RGBAFormat;
+    var material = new THREE.MeshBasicMaterial({ map: this.textures[1] });
     this.meshes[0].material = material
-    // var material2 = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: true });
-    // this.meshes[0].material = material2
     this.meshes[0].material.needsUpdate = true
-    this.meshes[0].material.transparent = true
+    setTimeout(() => {
+      this.meshes[0].material.transparent = true
+    }, 200)
   }, 1800)
 }
 
@@ -214,11 +244,8 @@ GLManager.prototype.createPlane = function (index, pos) {
       segments
     );
 
-    const video = document.querySelector('#video1')
-    video.play();
-    const videoTexture = new THREE.VideoTexture(video)
-
-    var material = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: false, });
+    this.videos[0].play();
+    var material = new THREE.MeshBasicMaterial({ map: this.textures[0], transparent: false, });
     const mesh2 = new THREE.Mesh(geometry, material);
     mesh2.position.z = pos
     this.scene.add(mesh2);
@@ -237,19 +264,16 @@ GLManager.prototype.createPlane = function (index, pos) {
       segments,
       segments
     );
-    const video = document.querySelector('#video3')
-    // video.play();
-    video.currentTime = 1
-    const videoTexture = new THREE.VideoTexture(video)
+    this.videos[2].currentTime = 1
     const material = new THREE.ShaderMaterial({
       uniforms: {
         u_texture: {
           type: "t",
-          value: videoTexture
+          value: this.textures[2]
         },
         u_textureFactor: {
           type: "f",
-          value: this.factors[1][this.currentIndex]
+          value: this.factors[0]
         },
         // u_texture2: {
         //   type: "t",
@@ -379,11 +403,19 @@ GLManager.prototype.render = function () {
     this.initialRender = true;
   }
   this.cursorRender()
+  // const canvas = this.renderer.domElement;
+  // this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  // this.camera.updateProjectionMatrix();
   this.renderer.render(this.scene, this.camera);
 };
 GLManager.prototype.mount = function (container) {
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
+  if (window.innerWidth <= 900) {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
   container.appendChild(this.renderer.domElement);
 };
 GLManager.prototype.unmount = function () {
@@ -403,16 +435,12 @@ GLManager.prototype.onResize = function () {
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
-  for (let i = 0; i < this.meshes.length; i++) {
-    this.meshes[i].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+  if (window.innerWidth <= 900) {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
-  // for (var i = 0; i < this.textures.length; i++) {
-  //   for (let j = 0; j < this.textures[i].length; j++) {
-  //     if (this.textures[i][j].image) {
-  //       this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
-  //     }
-  //   }
-  // }
+  this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
   this.render();
 };
 GLManager.prototype.scheduleLoop = function () {
@@ -421,7 +449,6 @@ GLManager.prototype.scheduleLoop = function () {
 };
 
 GLManager.prototype.loop = function () {
-  // this.stats.begin()
   this.render();
   this.time += 0.1;
   for (let i = 0; i < this.meshes.length; i++) {
@@ -429,7 +456,6 @@ GLManager.prototype.loop = function () {
       this.meshes[i].material.uniforms.u_time.value = this.time;
     }
   }
-  // this.stats.end()
   this.loopRaf = requestAnimationFrame(this.loop);
 };
 

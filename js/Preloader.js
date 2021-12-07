@@ -17,7 +17,7 @@ class Preloader {
         this.videos.forEach(ele => {
             ele.addEventListener('loadedmetadata', (event) => {
                 this.loaded++
-                this.update()
+                this.updatea()
             });
         })
     }
@@ -43,14 +43,14 @@ class Preloader {
         })
     }
 
-    update() {
+    updatea() {
         if (this.loaderAnime) {
             this.loaderAnime.kill()
         }
         console.log(this.loaded, this.total)
         this.loaderAnime = gsap.to(this.line, {
             width: `${this.loaded * 100 / this.total}%`, duration: 1.5, ease: 'Power4.out', onComplete: () => {
-                if (this.loaded === this.total) {
+                if (this.loaded >= this.total) {
                     console.log('done')
                     this.removePreloader()
                     this.options.loaded()

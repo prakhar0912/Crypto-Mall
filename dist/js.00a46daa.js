@@ -42926,6 +42926,68 @@ u(++l%c.children.length)},!1);var k=(performance||Date).now(),g=k,a=0,r=e(new f.
 1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){k=this.end()},domElement:c,setMode:u}};f.Panel=function(e,f,l){var c=Infinity,k=0,g=Math.round,a=g(window.devicePixelRatio||1),r=80*a,h=48*a,t=3*a,v=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=h;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,h);b.fillStyle=f;b.fillText(e,t,v);
 b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(h,w){c=Math.min(c,h);k=Math.max(k,h);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=f;b.fillText(g(h)+" "+e+" ("+g(c)+"-"+g(k)+")",t,v);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,g((1-h/w)*p))}}};return f});
 
+},{}],"js/fitTexture.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.fitTexture = fitTexture;
+
+/**
+ * @param {Texture} texture - a texture containing a loaded image with a defined width and height
+ * @param {number} screenAspect - the aspect ratio (width / height) of the model that contains the texture
+ * @param {"fit"|"fill"|"stretch"} mode - three modes of manipulating the texture offset and scale
+ * @param {number} [alignH] - optional multiplier to align the texture horizontally - 0: left, 0.5: center, 1: right
+ * @param {number} [alignV] - optional multiplier to align the texture vertically - 0: bottom, 0.5: middle, 1: top
+ **/
+function fitTexture(texture, screenAspect, mode) {
+  var alignH = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0.5;
+  var alignV = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 0.5;
+  var imageAspect = texture.image.width / texture.image.height;
+  var scale = imageAspect / screenAspect;
+  var offsetX = (imageAspect - screenAspect) / imageAspect;
+  var offsetY = (screenAspect - imageAspect) / screenAspect;
+
+  switch (mode) {
+    case 'contain':
+    case 'fit':
+      {
+        if (screenAspect < imageAspect) {
+          texture.offset.set(0, offsetY * alignV);
+          texture.repeat.set(1, scale);
+        } else {
+          texture.offset.set(offsetX * alignH, 0);
+          texture.repeat.set(1 / scale, 1);
+        }
+
+        break;
+      }
+
+    case 'cover':
+    case 'fill':
+      {
+        if (screenAspect < imageAspect) {
+          texture.offset.set(offsetX * alignH, 0);
+          texture.repeat.set(1 / scale, 1);
+        } else {
+          texture.offset.set(0, offsetY * alignV);
+          texture.repeat.set(1, scale);
+        }
+
+        break;
+      }
+
+    case 'none':
+    case 'stretch':
+    default:
+      {
+        texture.offset.set(0, 0);
+        texture.repeat.set(1, 1);
+        break;
+      }
+  }
+}
 },{}],"js/GLManager.js":[function(require,module,exports) {
 "use strict";
 
@@ -42943,6 +43005,8 @@ require("regenerator-runtime/runtime");
 var _gsap = _interopRequireDefault(require("gsap"));
 
 var _stats = _interopRequireDefault(require("stats.js"));
+
+var _fitTexture = require("./fitTexture");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42976,9 +43040,7 @@ function GLManager(data, cursorRender, updatePre) {
   this.camera = camera;
   this.scene = scene;
   this.renderer = renderer;
-  this.render = this.render.bind(this); // this.loadTextures(data).then(textures => {
-  // this.textures = textures
-
+  this.render = this.render.bind(this);
   this.factors = this.loadFactors(data);
   this.currentIndex = 0;
   this.nextIndex = 0;
@@ -42987,14 +43049,34 @@ function GLManager(data, cursorRender, updatePre) {
   this.time = 0;
   this.loopRaf = null;
   this.loop = this.loop.bind(this);
+  this.textures = [];
+  this.assignTextures();
   this.createPlane(0, data[0][0].position);
-  this.createPlane(1, data[1][0].position); // this.calcAspectRatios()
+  this.createPlane(1, data[1][0].position); // this.init()
+
+  this.calcAspectRatios();
 
   if (!this.loopRaf) {
     this.render();
-  } // })
+  }
+} // GLManager.prototype.init = function(){
+//   this.renderer.setSize(window.innerWidth, window.innerHeight);
+//   this.renderer.domElement.style.height = "100%"
+//   this.renderer.domElement.style.width = "100%"
+//   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
+//   this.render();
+// }
 
-}
+
+GLManager.prototype.assignTextures = function () {
+  this.videos = document.querySelectorAll('video');
+
+  for (var i = 0; i < this.videos.length; i++) {
+    var videoTexture = new THREE.VideoTexture(this.videos[i]);
+    videoTexture.wrapS = THREE.ClampToEdgeWrapping;
+    this.textures.push(videoTexture);
+  }
+};
 
 GLManager.prototype.setUpGui = function () {
   this.stats = (0, _stats.default)();
@@ -43006,24 +43088,70 @@ GLManager.prototype.setUpGui = function () {
 GLManager.prototype.loadFactors = function (data) {
   var factorsMaster = [];
 
-  for (var i = 0; i < data.length; i++) {
-    var factors = [];
-
-    for (var j = 0; j < data[i].length; j++) {
-      factors.push(new THREE.Vector2(1, 1));
-    }
-
-    factorsMaster.push(factors);
+  for (var i = 0; i < 1; i++) {
+    factorsMaster.push(new THREE.Vector2(1, 1));
   }
 
   return factorsMaster;
 };
 
-GLManager.prototype.calcAspectRatios = function () {
-  for (var i = 0; i < this.textures.length; i++) {
-    for (var j = 0; j < this.textures[i].length; j++) {
-      this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
-    }
+GLManager.prototype.calcAspectRatios = function () {// fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
+  // this.calculateAspectRatioFactorNew(0, this.textures[0])
+  // this.calculateAspectRatioFactor(1, this.textures[2])
+};
+
+GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
+  var plane = this.getPlaneSize();
+  var windowRatio = window.innerWidth / window.innerHeight;
+  var rectRatio = plane.width / plane.height * windowRatio;
+  var imageRatio = texture.image.width / texture.image.height; // console.log(imageRatio, rectRatio)
+
+  var factorX = 1;
+  var factorY = 1;
+
+  if (rectRatio > imageRatio) {
+    factorX = 1;
+    factorY = 1 / rectRatio * imageRatio;
+  } else {
+    factorX = 1 * rectRatio / imageRatio;
+    factorY = 1;
+  }
+
+  this.factors[0] = new THREE.Vector2(factorX, factorY);
+
+  if (this.meshes[index]) {
+    this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[0];
+    this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
+  }
+
+  if (this.initialRender) {
+    this.render();
+  }
+};
+
+GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
+  var plane = this.getPlaneSize();
+  var windowRatio = window.innerWidth / window.innerHeight;
+  var rectRatio = plane.width / plane.height * windowRatio;
+  var imageRatio = texture.image.width / texture.image.height; // console.log(imageRatio, rectRatio)
+
+  var ratio = rectRatio / imageRatio;
+  var factorX = 1;
+  var factorY = 1;
+
+  if (rectRatio > imageRatio) {
+    factorX = 1;
+    factorY = 1 / rectRatio * imageRatio;
+  } else {
+    factorX = 1 * rectRatio / imageRatio;
+    factorY = 1;
+  } // this.meshes[index].material.map.repeat.set(factorX, factorY)
+  // texture.repeat.set(factorX, factorY)
+  // ele.offset.x = 0.5 * (1 - ratio);
+
+
+  if (this.initialRender) {
+    this.render();
   }
 };
 
@@ -43160,54 +43288,6 @@ GLManager.prototype.getPlaneSize = function () {
   };
 };
 
-GLManager.prototype.calculateAspectRatioFactor = function (index, j, texture) {
-  var plane = this.getPlaneSize();
-  var windowRatio = window.innerWidth / window.innerHeight;
-  var rectRatio = plane.width / plane.height * windowRatio;
-  var imageRatio = texture.image.width / texture.image.height; // console.log(imageRatio, rectRatio)
-
-  var factorX = 1;
-  var factorY = 1;
-
-  if (rectRatio > imageRatio) {
-    factorX = 1;
-    factorY = 1 / rectRatio * imageRatio;
-  } else {
-    factorX = 1 * rectRatio / imageRatio;
-    factorY = 1;
-  }
-
-  this.factors[index][j] = new THREE.Vector2(factorX, factorY);
-
-  if (index === 1) {
-    if (this.currentIndex === j) {
-      this.meshes[1].material.uniforms.u_textureFactor.value = this.factors[1][j];
-      this.meshes[1].material.uniforms.u_textureFactor.needsUpdate = true;
-    }
-
-    if (this.nextIndex === j) {
-      this.meshes[1].material.uniforms.u_texture2Factor.value = this.factors[1][j];
-      this.meshes[1].material.uniforms.u_texture2Factor.needsUpdate = true;
-    }
-  } else {
-    if (this.meshes[index] && index != 0) {
-      this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[index][j];
-      this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
-    }
-  }
-
-  if (this.initialRender) {
-    this.loadedEntries++;
-
-    if (this.loadedEntries === this.totalEntries) {
-      document.body.classList.remove('loading');
-      console.log('loaded all');
-    }
-
-    this.render();
-  }
-};
-
 GLManager.prototype.alterPlane0 = function () {
   var _this3 = this;
 
@@ -43219,18 +43299,17 @@ GLManager.prototype.alterPlane0 = function () {
   });
 
   setTimeout(function () {
-    var video = document.querySelector('#video2');
-    video.play();
-    var videoTexture = new THREE.VideoTexture(video);
-    videoTexture.format = THREE.RGBAFormat;
-    var material = new THREE.MeshBasicMaterial({
-      map: videoTexture
-    });
-    _this3.meshes[0].material = material; // var material2 = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: true });
-    // this.meshes[0].material = material2
+    _this3.videos[1].play();
 
+    _this3.textures[1].format = THREE.RGBAFormat;
+    var material = new THREE.MeshBasicMaterial({
+      map: _this3.textures[1]
+    });
+    _this3.meshes[0].material = material;
     _this3.meshes[0].material.needsUpdate = true;
-    _this3.meshes[0].material.transparent = true;
+    setTimeout(function () {
+      _this3.meshes[0].material.transparent = true;
+    }, 200);
   }, 1800);
 }; // Plane Stuff
 
@@ -43244,11 +43323,9 @@ GLManager.prototype.createPlane = function (index, pos) {
 
     var segments = 60;
     var geometry = new THREE.PlaneBufferGeometry(width, height, segments, segments);
-    var video = document.querySelector('#video1');
-    video.play();
-    var videoTexture = new THREE.VideoTexture(video);
+    this.videos[0].play();
     var material = new THREE.MeshBasicMaterial({
-      map: videoTexture,
+      map: this.textures[0],
       transparent: false
     });
     var mesh2 = new THREE.Mesh(geometry, material);
@@ -43264,22 +43341,17 @@ GLManager.prototype.createPlane = function (index, pos) {
 
     var _geometry = new THREE.PlaneBufferGeometry(_width, _height, _segments, _segments);
 
-    var _video = document.querySelector('#video3'); // video.play();
-
-
-    _video.currentTime = 1;
-
-    var _videoTexture = new THREE.VideoTexture(_video);
+    this.videos[2].currentTime = 1;
 
     var _material = new THREE.ShaderMaterial({
       uniforms: {
         u_texture: {
           type: "t",
-          value: _videoTexture
+          value: this.textures[2]
         },
         u_textureFactor: {
           type: "f",
-          value: this.factors[1][this.currentIndex]
+          value: this.factors[0]
         },
         // u_texture2: {
         //   type: "t",
@@ -43427,13 +43499,23 @@ GLManager.prototype.render = function () {
     this.initialRender = true;
   }
 
-  this.cursorRender();
+  this.cursorRender(); // const canvas = this.renderer.domElement;
+  // this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  // this.camera.updateProjectionMatrix();
+
   this.renderer.render(this.scene, this.camera);
 };
 
 GLManager.prototype.mount = function (container) {
   this.renderer.domElement.style.height = "100%";
   this.renderer.domElement.style.width = "100%";
+
+  if (window.innerWidth <= 900) {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
   container.appendChild(this.renderer.domElement);
 };
 
@@ -43455,17 +43537,13 @@ GLManager.prototype.onResize = function () {
   this.renderer.domElement.style.height = "100%";
   this.renderer.domElement.style.width = "100%";
 
-  for (var i = 0; i < this.meshes.length; i++) {
-    this.meshes[i].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
-  } // for (var i = 0; i < this.textures.length; i++) {
-  //   for (let j = 0; j < this.textures[i].length; j++) {
-  //     if (this.textures[i][j].image) {
-  //       this.calculateAspectRatioFactor(i, j, this.textures[i][j]);
-  //     }
-  //   }
-  // }
+  if (window.innerWidth <= 900) {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
 
-
+  this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
   this.render();
 };
 
@@ -43475,7 +43553,6 @@ GLManager.prototype.scheduleLoop = function () {
 };
 
 GLManager.prototype.loop = function () {
-  // this.stats.begin()
   this.render();
   this.time += 0.1;
 
@@ -43483,8 +43560,7 @@ GLManager.prototype.loop = function () {
     if (this.meshes[i].material.uniforms) {
       this.meshes[i].material.uniforms.u_time.value = this.time;
     }
-  } // this.stats.end()
-
+  }
 
   this.loopRaf = requestAnimationFrame(this.loop);
 };
@@ -43493,7 +43569,7 @@ GLManager.prototype.cancelLoop = function () {
   cancelAnimationFrame(this.loopRaf);
   this.loopRaf = null;
 };
-},{"three":"node_modules/three/build/three.module.js","./shaders":"js/shaders.js","regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","gsap":"node_modules/gsap/index.js","stats.js":"node_modules/stats.js/build/stats.min.js"}],"node_modules/tslib/tslib.es6.js":[function(require,module,exports) {
+},{"three":"node_modules/three/build/three.module.js","./shaders":"js/shaders.js","regenerator-runtime/runtime":"node_modules/regenerator-runtime/runtime.js","gsap":"node_modules/gsap/index.js","stats.js":"node_modules/stats.js/build/stats.min.js","./fitTexture":"js/fitTexture.js"}],"node_modules/tslib/tslib.es6.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -49087,7 +49163,7 @@ var slidesData = [[{
   content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-header\">\n            <button class='explore'>Enter</button>\n          </div>\n        </div>\n      ",
   position: 10
 }], [{
-  content: "\n        <div class=\"slide-container\">\n          <div class=\"yeah\">\n            <section class=\"intro\">\n              <div class=\"left\">\n                <img src=\"".concat(_astroL.default, "\" alt=\"\">\n              </div>\n              <div class=\"middle\">\n                <h1>INTRODUCING METAMALL</h1>\n                <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade in the\n                  first-ever virtual mall owned by its users.</p>\n              </div>\n              <div class=\"right\">\n                <img src=\"").concat(_astroR.default, "\" alt=\"\">\n              </div>\n            </section>\n            <section>\n              <div>\n                <h1>The Unique</h1>\n                <h1>VR Experience</h1>\n                <p>Metamall features a unique VR experience with different themes, architecture and interactive VR properties.\n                  Token holders will be known as Metamallers. It will act as a central hub and welcome all levels of crypto\n                  experience. For the first time ever, users will have access to crypto information and immersive content all in\n                  one place. Metamallers will be able to earn revenue through real estate ownership, advertising revenue, play\n                  games, build networks and much more. By using the world\u2019s most advanced real time 3D Creation Engine, Metamall\n                  will leverage this technology to create stunning visualisations and user experience.</p>\n              </div>\n            </section>\n            <section>\n        \n            </section>\n            <section>\n        \n            </section>\n            <section>\n        \n            </section>\n          </div>\n        </div>\n      "),
+  content: "\n        <div class=\"slide-container\">\n          <div class=\"yeah\">\n            <div class=\"left-line liner\">\n              <div class='block left-block'></div>\n            </div>\n            <div class=\"content-container\">\n              <section class=\"intro\">\n                <div class=\"left\">\n                  <img src=\"".concat(_astroL.default, "\" alt=\"\">\n                </div>\n                <div class=\"middle\">\n                  <h1>INTRODUCING METAMALL</h1>\n                  <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade in the\n                    first-ever virtual mall owned by its users.</p>\n                </div>\n                <div class=\"right\">\n                  <img src=\"").concat(_astroR.default, "\" alt=\"\">\n                </div>\n              </section>\n              <section>\n                <div>\n                  <h1>The Unique</h1>\n                  <h1>VR Experience</h1>\n                  <p>Metamall features a unique VR experience with different themes, architecture and interactive VR properties.\n                    Token holders will be known as Metamallers. It will act as a central hub and welcome all levels of crypto\n                    experience. For the first time ever, users will have access to crypto information and immersive content all in\n                    one place. Metamallers will be able to earn revenue through real estate ownership, advertising revenue, play\n                    games, build networks and much more. By using the world\u2019s most advanced real time 3D Creation Engine, Metamall\n                    will leverage this technology to create stunning visualisations and user experience.</p>\n                </div>\n              </section>\n              <section>\n                <div>\n                  <p class=\"grey\">EARN</p>\n                  <h1>GENERATE REVENUE THROUGH</h1>\n                  <h1>MULTIPLE <b>INCOME STREAMS</b></h1>\n                  <p>\n                    Metamall will be a land of earning opportunities for Metamallers. Following the IDO, Metamall real estate will be\n                    made available for Metamallers to purchase. Other opportunities will consist of passive earning, staking and\n                    advertising.\n                  </p>\n                </div>\n              </section>\n              <section>\n          \n              </section>\n              <section>\n          \n              </section>\n            </div>\n            <div class=\"right-line liner\">\n              <div class='block right-block'></div>\n            </div>\n          </div>\n        </div>\n      "),
   position: 0
 }]];
 exports.slidesData = slidesData;
@@ -54217,7 +54293,7 @@ var Preloader = /*#__PURE__*/function () {
         ele.addEventListener('loadedmetadata', function (event) {
           _this.loaded++;
 
-          _this.update();
+          _this.updatea();
         });
       });
     }
@@ -54253,8 +54329,8 @@ var Preloader = /*#__PURE__*/function () {
       });
     }
   }, {
-    key: "update",
-    value: function update() {
+    key: "updatea",
+    value: function updatea() {
       var _this3 = this;
 
       if (this.loaderAnime) {
@@ -54267,7 +54343,7 @@ var Preloader = /*#__PURE__*/function () {
         duration: 1.5,
         ease: 'Power4.out',
         onComplete: function onComplete() {
-          if (_this3.loaded === _this3.total) {
+          if (_this3.loaded >= _this3.total) {
             console.log('done');
 
             _this3.removePreloader();
@@ -54309,14 +54385,28 @@ var Content = /*#__PURE__*/function () {
 
     _gsap.default.registerPlugin(_ScrollTrigger.ScrollTrigger);
 
-    console.log('arst');
+    this.yeah = document.querySelector('.yeah');
     this.astroL = document.querySelector('.intro > .left > img');
-    this.astroR = document.querySelector('.intro > .right > img'); // this.start()
+    this.astroR = document.querySelector('.intro > .right > img');
+    this.blockL = document.querySelector('.left-block');
+    this.blockR = document.querySelector('.right-block'); // this.start()
   }
 
   _createClass(Content, [{
+    key: "killAll",
+    value: function killAll() {
+      if (this.astroLAnime) {
+        this.astroLAnime.kill();
+      }
+
+      if (this.astroRAnime) {
+        this.astroRAnime.kill();
+      }
+    }
+  }, {
     key: "start",
     value: function start() {
+      this.killAll();
       this.astroLAnime = _gsap.default.timeline({
         repeat: -1
       });
@@ -54338,6 +54428,24 @@ var Content = /*#__PURE__*/function () {
       this.astroRAnime.to(this.astroR, {
         yPercent: 0,
         duration: 1
+      });
+      this.blockLAnime = _gsap.default.to(this.blockL, {
+        scrollTrigger: {
+          trigger: this.yeah,
+          scrub: true,
+          start: "top top",
+          markers: true
+        },
+        top: "90%"
+      });
+      this.blockRAnime = _gsap.default.to(this.blockR, {
+        scrollTrigger: {
+          trigger: this.yeah,
+          scrub: true,
+          start: "top top",
+          markers: true
+        },
+        top: "60%"
       });
     }
   }]);
@@ -54436,9 +54544,10 @@ var preloader = new _Preloader.Preloader({
   }
 });
 var showcase = new _Showcase.Showcase(_slidesData.slidesData, {
-  updatePre: function updatePre(part, total) {
-    preloader.update(part, total);
-  },
+  // updatePre: (part, total) => {
+  //   console.log('here')
+  //   preloader.update(part, total)
+  // },
   killHint: function killHint() {
     // if (showcase.part === 1) {
     //   cursor.killHint()
