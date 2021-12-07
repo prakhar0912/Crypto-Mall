@@ -19,6 +19,17 @@
   src: url(/GothamBold.d0bc216d.ttf) format('truetype');
 }
 
+@font-face{
+  font-family: Neue;
+  src: url(/NeueMachina-Regular.e720175d.otf);
+}
+
+@font-face{
+  font-family: NeueB;
+  src: url(/NeueMachina-Ultrabold.8dc7965d.otf);
+}
+
+
 /* width */
 
 ::-webkit-scrollbar {
@@ -477,6 +488,56 @@ canvas {
   align-items: center;
 }
 
+.top-nav{
+  position: fixed;
+  display: grid;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  padding: 50px 6vw;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+.top-nav > .left{
+  justify-self: left;
+}
+
+.top-nav > .left > button{
+  border: none;
+  background: transparent;
+  color: white;
+  font-weight: 900;
+  font-family: NeueB, Courier, monospace;
+  margin-right: 20px;
+}
+
+.top-nav > .right{
+  justify-self: right;
+}
+
+.top-nav > .right > img{
+  margin-right: 25px;
+}
+
+.explore{
+  position: absolute;
+  top: 69vh;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px white solid;
+  padding: 12px 40px;
+  background: transparent;
+  color: white;
+  /* font-weight: 900; */
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-family: Neue, Courier, monospace;
+  margin-right: 20px;
+}
+
 .burger {
   position: fixed;
   top: 30px;
@@ -485,6 +546,10 @@ canvas {
   width: 35px;
   z-index: 20;
   cursor: pointer;
+}
+
+.explore{
+  pointer-events: all;
 }
 
 .line {

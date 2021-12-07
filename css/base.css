@@ -374,7 +374,7 @@ a:focus {
   display: inline;
 }
 
-.left{
+/* .left{
   position: absolute;
   font-family: 'Roboto', sans-serif;
   left: 10px;
@@ -383,7 +383,7 @@ a:focus {
   color: white;
   font-size: 1.2rem;
 
-}
+} */
 
 .frame__links a:not(:last-child),
 .frame__demos a:not(:last-child) {

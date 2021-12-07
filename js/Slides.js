@@ -48,7 +48,17 @@ class Slides {
 
   mount(container) {
     container.appendChild(this.container);
-    // this.options.mounted()
+    this.addClickEvents()
+  }
+
+  addClickEvents(){
+    this.exploreBtn = document.querySelector('.explore')
+    this.exploreBtn.addEventListener('click', () => {
+      gsap.to(this.exploreBtn, {
+        opacity: 0, duration: 1.5
+      })
+      this.options.alterPlane0()
+    })
   }
 
   startTransitionParts(from, to) {
@@ -67,6 +77,11 @@ class Slides {
       opacity: 1, duration: 0.7, delay: -0.1, onComplete: () => {
         this.masterSlides[to].classList.add('current')
         this.part = to
+        if(to == 0){
+          gsap.to(this.exploreBtn, {
+            opacity: 1, duration: 0.5
+          })
+        }
       }
     })
   }

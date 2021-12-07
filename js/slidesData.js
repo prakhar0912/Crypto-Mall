@@ -9,9 +9,9 @@ const slidesData = [
     {
       image: landingImage,
       content: `
-        <div class="slide-container slide-grid">
+        <div class="slide-container">
           <div class="slide-header">
-            
+            <button class='explore'>Enter</button>
           </div>
         </div>
       `,

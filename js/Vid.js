@@ -13,7 +13,7 @@ function once(el, event, fn, opts) {
 class Vid {
     constructor() {
         this.video1 = document.querySelector('#video1')
-        this.video2 = document.querySelector('#video2')
+        this.video2 = document.querySelector('#video3')
         this.section = document.querySelector('.yeah')
         this.sectionHeight = this.section.clientHeight - document.body.clientHeight + 10
         this.running = false

@@ -12,6 +12,7 @@ import {
   vertex2
 } from "./shaders";
 import 'regenerator-runtime/runtime'
+import gsap from 'gsap'
 import Stats from "stats.js";
 
 function GLManager(data, cursorRender, updatePre) {
@@ -31,7 +32,8 @@ function GLManager(data, cursorRender, updatePre) {
   this.part = 0
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.3)
+  renderer.setClearColor(0x000000, 1)
+  this.stopEffects = true
   this.camera = camera;
   this.scene = scene;
   this.renderer = renderer;
@@ -49,9 +51,7 @@ function GLManager(data, cursorRender, updatePre) {
 
     this.createPlane(0, data[0][0].position)
     this.createPlane(1, data[1][0].position)
-    // this.createPlane(2, data[2][0].position)
     this.calcAspectRatios()
-    // this.setUpGui()
     if (!this.loopRaf) {
       this.render();
     }
@@ -172,7 +172,7 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, j, texture) {
     }
   }
   else {
-    if (this.meshes[index]) {
+    if (this.meshes[index] && index != 0) {
       this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[index][j];
       this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
     }
@@ -186,6 +186,25 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, j, texture) {
     this.render();
   }
 };
+
+GLManager.prototype.alterPlane0 = function () {
+  gsap.to(this.meshes[0].material.color, {
+    r: 0, g: 0, b: 0, duration: 2,
+  })
+  setTimeout(() => {
+    const video = document.querySelector('#video2')
+    video.play();
+    const videoTexture = new THREE.VideoTexture(video)
+    videoTexture.format = THREE.RGBAFormat;
+    var material = new THREE.MeshBasicMaterial({ map: videoTexture });
+    this.meshes[0].material = material
+    // var material2 = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: true });
+    // this.meshes[0].material = material2
+    this.meshes[0].material.needsUpdate = true
+    this.meshes[0].material.transparent = true
+  }, 1800)
+}
+
 // Plane Stuff
 GLManager.prototype.createPlane = function (index, pos) {
   // Calculate bas of Isoceles triangle(camera)
@@ -206,59 +225,8 @@ GLManager.prototype.createPlane = function (index, pos) {
     const video = document.querySelector('#video1')
     video.play();
     const videoTexture = new THREE.VideoTexture(video)
-    const material = new THREE.ShaderMaterial({
-      // map: videoTexture,
-      uniforms: {
-        u_texture: {
-          type: "t",
-          value: videoTexture
-        },
-        u_textureFactor: {
-          type: "f",
-          value: this.factors[0][0]
-        },
-        u_offset: {
-          type: "f",
-          value: 8
-        },
-        u_progress: {
-          type: "f",
-          value: 0
-        },
-        u_direction: {
-          type: "f",
-          value: 1
-        },
-        u_effect: {
-          type: "f",
-          value: 0
-        },
-        u_time: {
-          type: "f",
-          value: this.time
-        },
-        u_waveIntensity: {
-          type: "f",
-          value: 0
-        },
-        u_resolution: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-        },
-        u_rgbPosition: {
-          type: "v2",
-          value: new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
-        },
-        u_rgbVelocity: {
-          type: "v2",
-          value: new THREE.Vector2(0, 0)
-        },
-      },
 
-      vertexShader: vertex,
-      fragmentShader: fragment,
-      side: THREE.DoubleSide
-    });
+    var material = new THREE.MeshBasicMaterial({ map: videoTexture, transparent: false, });
     const mesh2 = new THREE.Mesh(geometry, material);
     mesh2.position.z = pos
     this.scene.add(mesh2);
@@ -277,8 +245,9 @@ GLManager.prototype.createPlane = function (index, pos) {
       segments,
       segments
     );
-    const video = document.querySelector('#video2')
+    const video = document.querySelector('#video3')
     // video.play();
+    video.currentTime = 1
     const videoTexture = new THREE.VideoTexture(video)
     const material = new THREE.ShaderMaterial({
       uniforms: {
@@ -428,6 +397,9 @@ GLManager.prototype.updateCameraPosition = function (position) {
 
 GLManager.prototype.updateTexture = function (newIndex, progress) {
   let didChange = false;
+  if (this.part == 0) {
+    return
+  }
   if (newIndex != null && this.newIndex !== this.currentIndex) {
     this.currentIndex = this.nextIndex;
     this.nextIndex = newIndex;
@@ -450,6 +422,9 @@ GLManager.prototype.updateTexture = function (newIndex, progress) {
   }
 };
 GLManager.prototype.updateStickEffect = function ({ progress, direction, waveIntensity, part, inTransition }) {
+  if (this.stopEffects) {
+    return
+  }
   if (inTransition) {
     this.meshes[this.part].material.uniforms.u_waveIntensity.value = waveIntensity;
   }
@@ -461,6 +436,12 @@ GLManager.prototype.updateStickEffect = function ({ progress, direction, waveInt
 };
 
 GLManager.prototype.updateRgbEffect = function ({ position, velocity, part }) {
+  if (!this.loopRaf) {
+    this.render();
+  }
+  if (this.stopEffects) {
+    return
+  }
   if (this.meshes[this.part]) {
     this.meshes[this.part].material.uniforms.u_rgbPosition.value = new THREE.Vector2(position.x, position.y);
     this.meshes[this.part].material.uniforms.u_rgbVelocity.value = new THREE.Vector2(velocity.x, velocity.y);
@@ -521,7 +502,9 @@ GLManager.prototype.loop = function () {
   this.render();
   this.time += 0.1;
   for (let i = 0; i < this.meshes.length; i++) {
-    this.meshes[i].material.uniforms.u_time.value = this.time;
+    if (this.meshes[i].material.uniforms) {
+      this.meshes[i].material.uniforms.u_time.value = this.time;
+    }
   }
   // this.stats.end()
   this.loopRaf = requestAnimationFrame(this.loop);

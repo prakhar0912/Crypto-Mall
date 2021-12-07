@@ -19,57 +19,61 @@ let mobileDevice = mobileAndTabletCheck()
 const container = document.getElementById("app");
 const cursor = new Cursor(document.querySelector(".cursor"), mobileDevice);
 
-const slides = new Slides(slidesData, {});
-
-const frame = new Frame({
-  nextSection: (direction, touch) => {
-    if (direction === 'down') {
-      if (touch) {
-        showcase.inTransition = true
-        showcase.startMoveToSection(showcase.part, showcase.part + 1)
-      }
-      else {
-        showcase.inTransition = true
-        showcase.startMoveToSection(showcase.part, showcase.part + 1)
-        cursor.blowUp()
-      }
-    }
-    else if (direction === 'up') {
-      if (touch) {
-        showcase.endMoveToSection(showcase.part, showcase.part + 1)
-      }
-      else {
-        showcase.endMoveToSection(showcase.part, showcase.part + 1)
-        cursor.blowDown()
-      }
-    }
-  },
-  prevSection: (direction, touch) => {
-    if (direction === 'down') {
-      if (touch) {
-        showcase.inTransition = true
-        showcase.startMoveToSection(showcase.part, showcase.part - 1)
-      }
-      else {
-        showcase.inTransition = true
-        showcase.startMoveToSection(showcase.part, showcase.part - 1)
-        cursor.blowUp()
-      }
-    }
-    else if (direction === 'up') {
-      if (touch) {
-        showcase.endMoveToSection(showcase.part, showcase.part - 1)
-      }
-      else {
-        showcase.endMoveToSection(showcase.part, showcase.part - 1)
-        cursor.blowDown()
-      }
-    }
-  },
-  moveToSection: (index) => {
-    showcase.startMoveToSection(showcase.part, index)
+const slides = new Slides(slidesData, {
+  alterPlane0: () => {
+    showcase.alterPlane0()
   }
-}, mobileDevice, slidesData[1].length)
+});
+
+// const frame = new Frame({
+//   nextSection: (direction, touch) => {
+//     if (direction === 'down') {
+//       if (touch) {
+//         showcase.inTransition = true
+//         showcase.startMoveToSection(showcase.part, showcase.part + 1)
+//       }
+//       else {
+//         showcase.inTransition = true
+//         showcase.startMoveToSection(showcase.part, showcase.part + 1)
+//         cursor.blowUp()
+//       }
+//     }
+//     else if (direction === 'up') {
+//       if (touch) {
+//         showcase.endMoveToSection(showcase.part, showcase.part + 1)
+//       }
+//       else {
+//         showcase.endMoveToSection(showcase.part, showcase.part + 1)
+//         cursor.blowDown()
+//       }
+//     }
+//   },
+//   prevSection: (direction, touch) => {
+//     if (direction === 'down') {
+//       if (touch) {
+//         showcase.inTransition = true
+//         showcase.startMoveToSection(showcase.part, showcase.part - 1)
+//       }
+//       else {
+//         showcase.inTransition = true
+//         showcase.startMoveToSection(showcase.part, showcase.part - 1)
+//         cursor.blowUp()
+//       }
+//     }
+//     else if (direction === 'up') {
+//       if (touch) {
+//         showcase.endMoveToSection(showcase.part, showcase.part - 1)
+//       }
+//       else {
+//         showcase.endMoveToSection(showcase.part, showcase.part - 1)
+//         cursor.blowDown()
+//       }
+//     }
+//   },
+//   moveToSection: (index) => {
+//     showcase.startMoveToSection(showcase.part, index)
+//   }
+// }, mobileDevice, slidesData[1].length)
 
 
 const preloader = new Preloader({
@@ -89,7 +93,7 @@ const showcase = new Showcase(slidesData, {
     //   cursor.killHint()
     // }
     setTimeout(() => {
-      frame.killBlow()
+      // frame.killBlow()
       // cursor.killHint()
     }, 1000)
   },
@@ -129,8 +133,8 @@ const showcase = new Showcase(slidesData, {
     slides.endTransitionParts(from, to)
   },
   updatePart: (index, section) => {
-    nav.updatePart(index)
-    frame.updatePart(index)
+    // nav.updatePart(index)
+    // frame.updatePart(index)
     cursor.updateHint(index)
   },
   blowUp: () => {
@@ -142,23 +146,23 @@ const showcase = new Showcase(slidesData, {
 });
 
 
-const nav = new Nav({
-  onSectionSelected: (index, spec) => {
-    showcase.inTransition = true
-    if(spec){
-      showcase.startMoveToSection(showcase.part, index, true)
-    }
-    else{
-      showcase.startMoveToSection(showcase.part, index)
-    }
-  },
-  onHidePart3: () => {
-    slides.hidePart3()
-  },
-  scrollToContact: () => {
-    slides.scrollToContact()
-  }
-})
+// const nav = new Nav({
+//   onSectionSelected: (index, spec) => {
+//     showcase.inTransition = true
+//     if(spec){
+//       showcase.startMoveToSection(showcase.part, index, true)
+//     }
+//     else{
+//       showcase.startMoveToSection(showcase.part, index)
+//     }
+//   },
+//   onHidePart3: () => {
+//     slides.hidePart3()
+//   },
+//   scrollToContact: () => {
+//     slides.scrollToContact()
+//   }
+// })
 
 showcase.mount(container);
 slides.mount(document.body);
@@ -167,7 +171,7 @@ showcase.render();
 
 window.addEventListener("resize", function () {
   showcase.onResize();
-  frame.onResize()
+  // frame.onResize()
 });
 
 window.addEventListener("mousemove", function (ev) {

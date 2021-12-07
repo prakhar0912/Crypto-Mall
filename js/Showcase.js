@@ -5,9 +5,9 @@ import {
   spring,
   parallel,
 } from "popmotion";
-import {
-  Grab
-} from "./Grab";
+// import {
+//   Grab
+// } from "./Grab";
 import {
   reach
 } from "./reach";
@@ -57,20 +57,20 @@ function Showcase(data, options = {}) {
   this.waveIntensityRange = [0, 0.4]
 
   // this.slides = new Slides(data);
-  this.grab = new Grab({
-    onGrabStart: this.onGrabStart.bind(this),
-    onGrabMove: this.onGrabMove.bind(this),
-    onGrabEnd: this.onGrabEnd.bind(this)
-  });
+  // this.grab = new Grab({
+  //   onGrabStart: this.onGrabStart.bind(this),
+  //   onGrabMove: this.onGrabMove.bind(this),
+  //   onGrabEnd: this.onGrabEnd.bind(this)
+  // });
 
 }
 
 Showcase.prototype.applyEvents = function () {
-  this.grab.addListeners()
+  // this.grab.addListeners()
 }
 
 Showcase.prototype.removeEvents = function () {
-  this.grab.removeListeners()
+  // this.grab.removeListeners()
 }
 
 
@@ -93,6 +93,12 @@ Showcase.prototype.render = function () {
 
 function clamp(num, min, max) {
   return Math.max(min, Math.min(num, max));
+}
+
+Showcase.prototype.alterPlane0 = function () {
+  this.GL.stopEffects = true
+  this.GL.alterPlane0()
+  this.startMoveToSection(0,1,5)
 }
 
 Showcase.prototype.onMouseMove = function (ev) {
@@ -228,7 +234,7 @@ Showcase.prototype.setStickEffect = function () {
   });
 }
 
-Showcase.prototype.onPart1 = function(){
+Showcase.prototype.onPart1 = function () {
   this.zoom.to(this.GL.camera.position, {
     z: this.GL.camera.position.z + 1, duration: 0.5, ease: "power4.in",
   })
@@ -260,7 +266,7 @@ Showcase.prototype.onPart1 = function(){
 
 
 
-Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
+Showcase.prototype.startMoveToSection = function (from, to, delay = 0) {
   if (to < 0 || to > this.data.length - 1 || from === to) {
     console.log(from, to)
     return
@@ -269,12 +275,14 @@ Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
     if (this.zoom) {
       this.zoom.kill();
     }
-    this.setStickEffect()
-    this.GL.scheduleLoop();
-    this.options.startTransitionPage(from, to)
-    this.zoom = gsap.timeline()
+
+    this.zoom = gsap.timeline({delay: delay})
     this.zoom.to(this.GL.camera.position, {
-      z: this.GL.camera.position.z + 4, duration: 1, ease: "power4.in",
+      z: this.GL.camera.position.z, duration: 1, ease: "power4.in", onStart: () => {
+        this.setStickEffect()
+        this.GL.scheduleLoop();
+        this.options.startTransitionPage(from, to)
+      }
     })
     this.zoom.to(this.GL.camera.position, {
       z: this.data[to][0].position + 6, duration: 1.2, ease: "power4.in", onComplete: () => {
@@ -284,15 +292,16 @@ Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
         this.GL.part = to
         this.options.updatePart(to, this.index.active)
         this.inTransition = false
-        if(to == 0){
+        if (to == 0) {
           this.options.endPart1()
         }
         if (to === 1) {
+          this.GL.stopEffects = false
           this.options.onPart1()
+          this.onPart1()
         }
       }
     })
-    this.onPart1()
 
 
 
@@ -340,7 +349,7 @@ Showcase.prototype.startMoveToSection = function (from, to, spec = false) {
         this.part = to
         this.GL.part = to
         this.inTransition = false
-        if(to == 0){
+        if (to == 0) {
           this.options.endPart1()
         }
         if (to === 1) {
@@ -395,7 +404,7 @@ Showcase.prototype.endMoveToSection = function (from, to) {
       this.inTransition = false
       this.GL.part = from
       this.part = from
-      if(from == 1){
+      if (from == 1) {
         this.onPart1()
         this.options.onPart1()
       }
