@@ -23,7 +23,7 @@ class Preloader {
         setTimeout(() => {
             this.loaded = 3
             this.updatea()
-        }, 3000)
+        }, 5000)
     }
 
     showPreloader() {

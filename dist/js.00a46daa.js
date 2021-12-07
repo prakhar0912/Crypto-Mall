@@ -54308,7 +54308,7 @@ var Preloader = /*#__PURE__*/function () {
         _this.loaded = 3;
 
         _this.updatea();
-      }, 3000);
+      }, 5000);
     }
   }, {
     key: "showPreloader",
