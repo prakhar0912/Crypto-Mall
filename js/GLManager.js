@@ -43,6 +43,7 @@ function GLManager(data, cursorRender, updatePre) {
   this.loop = this.loop.bind(this);
   this.createPlane(0, data[0][0].position)
   this.createPlane(1, data[1][0].position)
+  this.createPlane(2, 11)
   // this.init()
   this.calcAspectRatios()
   if (!this.loopRaf) {
@@ -213,18 +214,11 @@ GLManager.prototype.getPlaneSize = function () {
 
 
 GLManager.prototype.alterPlane0 = function () {
-  gsap.to(this.meshes[0].material.color, {
-    r: 0, g: 0, b: 0, duration: 2,
-  })
+  // gsap.to(this.meshes[0].material.color, {
+  //   r: 0, g: 0, b: 0, duration: 2,
+  // })
   setTimeout(() => {
     this.videos[1].play();
-    this.textures[1].format = THREE.RGBAFormat;
-    var material = new THREE.MeshBasicMaterial({ map: this.textures[1] });
-    this.meshes[0].material = material
-    this.meshes[0].material.needsUpdate = true
-    setTimeout(() => {
-      this.meshes[0].material.transparent = true
-    }, 200)
   }, 1800)
 }
 
@@ -246,6 +240,7 @@ GLManager.prototype.createPlane = function (index, pos) {
     );
 
     this.videos[0].play();
+
     var material = new THREE.MeshBasicMaterial({ map: this.textures[0], transparent: false, });
     const mesh2 = new THREE.Mesh(geometry, material);
     mesh2.position.z = pos
@@ -337,6 +332,28 @@ GLManager.prototype.createPlane = function (index, pos) {
     mesh.position.z = pos
     this.scene.add(mesh);
     this.meshes.push(mesh);
+    // gsap.to(this.camera.position, {z: this.camera.position.z + 1})
+  }
+  else if (index === 2) {
+    const {
+      width,
+      height
+    } = this.getPlaneSize();
+
+    const segments = 60;
+    const geometry = new THREE.PlaneBufferGeometry(
+      width,
+      height,
+      segments,
+      segments
+    );
+    // this.videos[1].play();
+    this.textures[1].format = THREE.RGBAFormat;
+    var material = new THREE.MeshBasicMaterial({ map: this.textures[1], transparent: true, });
+    const mesh2 = new THREE.Mesh(geometry, material);
+    mesh2.position.z = 11
+    this.scene.add(mesh2);
+    this.meshes.push(mesh2)
   }
 };
 

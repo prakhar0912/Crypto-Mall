@@ -43052,7 +43052,8 @@ function GLManager(data, cursorRender, updatePre) {
   this.loopRaf = null;
   this.loop = this.loop.bind(this);
   this.createPlane(0, data[0][0].position);
-  this.createPlane(1, data[1][0].position); // this.init()
+  this.createPlane(1, data[1][0].position);
+  this.createPlane(2, 11); // this.init()
 
   this.calcAspectRatios();
 
@@ -43296,25 +43297,11 @@ GLManager.prototype.getPlaneSize = function () {
 GLManager.prototype.alterPlane0 = function () {
   var _this3 = this;
 
-  _gsap.default.to(this.meshes[0].material.color, {
-    r: 0,
-    g: 0,
-    b: 0,
-    duration: 2
-  });
-
+  // gsap.to(this.meshes[0].material.color, {
+  //   r: 0, g: 0, b: 0, duration: 2,
+  // })
   setTimeout(function () {
     _this3.videos[1].play();
-
-    _this3.textures[1].format = THREE.RGBAFormat;
-    var material = new THREE.MeshBasicMaterial({
-      map: _this3.textures[1]
-    });
-    _this3.meshes[0].material = material;
-    _this3.meshes[0].material.needsUpdate = true;
-    setTimeout(function () {
-      _this3.meshes[0].material.transparent = true;
-    }, 200);
   }, 1800);
 }; // Plane Stuff
 
@@ -43420,7 +43407,28 @@ GLManager.prototype.createPlane = function (index, pos) {
     var mesh = new THREE.Mesh(_geometry, _material);
     mesh.position.z = pos;
     this.scene.add(mesh);
-    this.meshes.push(mesh);
+    this.meshes.push(mesh); // gsap.to(this.camera.position, {z: this.camera.position.z + 1})
+  } else if (index === 2) {
+    var _this$getPlaneSize3 = this.getPlaneSize(),
+        _width2 = _this$getPlaneSize3.width,
+        _height2 = _this$getPlaneSize3.height;
+
+    var _segments2 = 60;
+
+    var _geometry2 = new THREE.PlaneBufferGeometry(_width2, _height2, _segments2, _segments2); // this.videos[1].play();
+
+
+    this.textures[1].format = THREE.RGBAFormat;
+    var material = new THREE.MeshBasicMaterial({
+      map: this.textures[1],
+      transparent: true
+    });
+
+    var _mesh = new THREE.Mesh(_geometry2, material);
+
+    _mesh.position.z = 11;
+    this.scene.add(_mesh);
+    this.meshes.push(_mesh);
   }
 };
 
