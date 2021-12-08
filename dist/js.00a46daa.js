@@ -43320,6 +43320,8 @@ GLManager.prototype.alterPlane0 = function () {
 
 
 GLManager.prototype.createPlane = function (index, pos) {
+  var _this4 = this;
+
   // Calculate bas of Isoceles triangle(camera)
   if (index === 0) {
     var _this$getPlaneSize = this.getPlaneSize(),
@@ -43344,10 +43346,12 @@ GLManager.prototype.createPlane = function (index, pos) {
 
     var _segments = 60;
 
-    var _geometry = new THREE.PlaneBufferGeometry(_width, _height, _segments, _segments); // this.videos[2].play()
+    var _geometry = new THREE.PlaneBufferGeometry(_width, _height, _segments, _segments);
 
-
-    this.videos[2].currentTime = 1;
+    this.videos[2].play();
+    setTimeout(function () {
+      _this4.videos[2].pause();
+    }, 1000); // this.videos[2].currentTime = 1
 
     var _material = new THREE.ShaderMaterial({
       uniforms: {
