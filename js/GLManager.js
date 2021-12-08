@@ -28,7 +28,7 @@ function GLManager(data, cursorRender, updatePre) {
   renderer.setClearColor(0x000000, 1)
   this.textures = []
   this.assignTextures()
-  this.stopEffects = true
+  this.stopEffects = false
   this.camera = camera;
   this.scene = scene;
   this.renderer = renderer;
@@ -46,7 +46,7 @@ function GLManager(data, cursorRender, updatePre) {
   // this.init()
   this.calcAspectRatios()
   if (!this.loopRaf) {
-    this.render();
+    this.loop();
   }
   // gsap.to(this.camera.position,{z: this.camera.position.z + 1})
 }
@@ -265,6 +265,7 @@ GLManager.prototype.createPlane = function (index, pos) {
       segments,
       segments
     );
+    this.videos[2].play()
     this.videos[2].currentTime = 1
     const material = new THREE.ShaderMaterial({
       uniforms: {
@@ -370,7 +371,7 @@ GLManager.prototype.updateTexture = function (newIndex, progress) {
   }
 };
 GLManager.prototype.updateStickEffect = function ({ progress, direction, waveIntensity, part, inTransition }) {
-  if (this.stopEffects) {
+  if (this.part == 0) {
     return
   }
   if (inTransition) {
@@ -387,7 +388,7 @@ GLManager.prototype.updateRgbEffect = function ({ position, velocity, part }) {
   if (!this.loopRaf) {
     this.render();
   }
-  if (this.stopEffects) {
+  if (this.part == 0) {
     return
   }
   if (this.meshes[this.part]) {
@@ -404,19 +405,11 @@ GLManager.prototype.render = function () {
     this.initialRender = true;
   }
   this.cursorRender()
-  // const canvas = this.renderer.domElement;
-  // this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-  // this.camera.updateProjectionMatrix();
   this.renderer.render(this.scene, this.camera);
 };
 GLManager.prototype.mount = function (container) {
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
-  // if (window.innerWidth <= 900) {
-  //   this.camera.aspect = window.innerWidth / window.innerHeight;
-  //   this.camera.updateProjectionMatrix();
-  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
-  // }
   container.appendChild(this.renderer.domElement);
 };
 GLManager.prototype.unmount = function () {
@@ -436,11 +429,6 @@ GLManager.prototype.onResize = function () {
   this.renderer.setSize(window.innerWidth, window.innerHeight);
   this.renderer.domElement.style.height = "100%"
   this.renderer.domElement.style.width = "100%"
-  // if (window.innerWidth <= 900) {
-  //   this.camera.aspect = window.innerWidth / window.innerHeight;
-  //   this.camera.updateProjectionMatrix();
-  //   this.renderer.setSize(window.innerWidth, window.innerHeight);
-  // }
   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
   this.calcAspectRatios()
   this.render();
