@@ -237,9 +237,12 @@ section:nth-of-type(3)>h1 {
         font-size: 4.2rem;
     }
 
+    .slide-grid{
+        min-height: calc(var(--vh, 1vh) * 100)
+    }
+
     .yeah, .slide-grid {
         grid-template-columns: 2% 96% 2%;
-        /* background: url('../images/blur60.png'); */
     }
 
     .intro>.left, .intro>.right {
@@ -271,11 +274,12 @@ section:nth-of-type(3)>h1 {
     }
 
     .intro>.middle {
-        padding: 0 10vw;
+        padding: 50px 10vw;
     }
 
     .intro {
         padding: 150px 0 0 0;
+        margin-bottom: 60px;
         grid-template-areas: "a a""b c";
     }
 
@@ -284,7 +288,7 @@ section:nth-of-type(3)>h1 {
     }
 
     .top-nav {
-        padding: 30px 3vw;
+        padding: 20px 3vw;
     }
 
     .top-nav>.left>button {
