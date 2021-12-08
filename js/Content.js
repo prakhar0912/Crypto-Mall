@@ -46,7 +46,6 @@ class Content{
                 trigger: this.yeah,
                 scrub: true,
                 start: "top top",
-                markers: true
             },
             top: "90%"
         })
@@ -56,7 +55,6 @@ class Content{
                 trigger: this.yeah,
                 scrub: true,
                 start: "top top",
-                markers: true
             },
             top: "60%"
         })

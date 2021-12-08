@@ -54426,8 +54426,7 @@ var Content = /*#__PURE__*/function () {
         scrollTrigger: {
           trigger: this.yeah,
           scrub: true,
-          start: "top top",
-          markers: true
+          start: "top top"
         },
         top: "90%"
       });
@@ -54435,8 +54434,7 @@ var Content = /*#__PURE__*/function () {
         scrollTrigger: {
           trigger: this.yeah,
           scrub: true,
-          start: "top top",
-          markers: true
+          start: "top top"
         },
         top: "60%"
       });
