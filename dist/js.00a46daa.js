@@ -43344,9 +43344,9 @@ GLManager.prototype.createPlane = function (index, pos) {
 
     var _segments = 60;
 
-    var _geometry = new THREE.PlaneBufferGeometry(_width, _height, _segments, _segments);
+    var _geometry = new THREE.PlaneBufferGeometry(_width, _height, _segments, _segments); // this.videos[2].play()
 
-    this.videos[2].play();
+
     this.videos[2].currentTime = 1;
 
     var _material = new THREE.ShaderMaterial({
@@ -54674,7 +54674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "42661" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34215" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

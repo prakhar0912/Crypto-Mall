@@ -265,7 +265,7 @@ GLManager.prototype.createPlane = function (index, pos) {
       segments,
       segments
     );
-    this.videos[2].play()
+    // this.videos[2].play()
     this.videos[2].currentTime = 1
     const material = new THREE.ShaderMaterial({
       uniforms: {
