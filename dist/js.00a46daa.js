@@ -54292,9 +54292,11 @@ var Preloader = /*#__PURE__*/function () {
         });
       });
       setTimeout(function () {
-        _this.loaded = 3;
+        if (_this.loaded < 3) {
+          _this.loaded = 3;
 
-        _this.updatea();
+          _this.updatea();
+        }
       }, 6000);
     }
   }, {

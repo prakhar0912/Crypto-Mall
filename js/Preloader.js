@@ -18,14 +18,16 @@ class Preloader {
             ele.addEventListener('loadeddata', (event) => {
                 console.log(event)
                 this.loaded++
-                if(this.loaded <= this.total){
+                if (this.loaded <= this.total) {
                     this.updatea()
                 }
             });
         })
         setTimeout(() => {
-            this.loaded = 3
-            this.updatea()
+            if (this.loaded < 3) {
+                this.loaded = 3
+                this.updatea()
+            }
         }, 6000)
     }
 
