@@ -54403,6 +54403,7 @@ var Content = /*#__PURE__*/function () {
         scrollTrigger: {
           trigger: this.yeah,
           scrub: true,
+          scroller: this.yeah,
           start: "top top"
         },
         top: "90%"
@@ -54411,6 +54412,7 @@ var Content = /*#__PURE__*/function () {
         scrollTrigger: {
           trigger: this.yeah,
           scrub: true,
+          scroller: this.yeah,
           start: "top top"
         },
         top: "60%"
@@ -54640,7 +54642,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34407" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37095" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -45,6 +45,7 @@ class Content{
             scrollTrigger: {
                 trigger: this.yeah,
                 scrub: true,
+                scroller: this.yeah,
                 start: "top top",
             },
             top: "90%"
@@ -54,6 +55,7 @@ class Content{
             scrollTrigger: {
                 trigger: this.yeah,
                 scrub: true,
+                scroller: this.yeah,
                 start: "top top",
             },
             top: "60%"
