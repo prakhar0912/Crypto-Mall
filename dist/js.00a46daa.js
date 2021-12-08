@@ -43035,7 +43035,7 @@ function GLManager(data, cursorRender, updatePre) {
   this.part = 0;
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 1);
+  renderer.setClearColor(0x000000, 0.3);
   this.textures = [];
   this.assignTextures();
   this.stopEffects = false;
@@ -48800,7 +48800,7 @@ var Slides = /*#__PURE__*/function () {
 
       this.exploreBtn = document.querySelector('.explore');
       this.exploreBtn.addEventListener('click', function () {
-        _gsap.default.to(_this.exploreBtn, {
+        _gsap.default.to('.slide-grid', {
           opacity: 0,
           duration: 1.5
         });
@@ -49159,7 +49159,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var slidesData = [[{
   // image: img1,
-  content: "\n        <div class=\"slide-container\">\n          <div class=\"slide-header\">\n            <button class='explore'>Enter</button>\n          </div>\n        </div>\n      ",
+  content: "\n        <div class=\"slide-container slide-grid\">\n          <div class=\"left-line liner\">\n            <div class='block left-block'></div>\n          </div>\n          <div class=\"slide-header landing\">\n            <h1>METAMALL</h1>\n            <p>The Decentralized Metaverse Mall</p>\n            <button class='explore'>Enter</button>\n          </div>\n          <div class=\"right-line liner\">\n            <div class='block left-block'></div>\n          </div>\n        </div>\n      ",
   position: 10
 }], [{
   // image: img1,
@@ -54115,6 +54115,9 @@ function once(el, event, fn, opts) {
 
 var Vid = /*#__PURE__*/function () {
   function Vid() {
+    var _arguments = arguments,
+        _this = this;
+
     _classCallCheck(this, Vid);
 
     this.video1 = document.querySelector('#video1');
@@ -54127,54 +54130,44 @@ var Vid = /*#__PURE__*/function () {
     this.done = false;
 
     _gsap.default.registerPlugin(_ScrollTrigger.ScrollTrigger);
-  } // for a horizontal version, see https://codepen.io/GreenSock/pen/rNmQPpa?editors=0010
-  // start(part) {
-  //     if (part == 0) {
-  //         this.video1.play()
-  //     }
-  //     else if (part == 1) {
-  //         this.running = true
-  //         this.video1.pause()
-  //         this.scrollPlay()
-  //     }
-  // }
-  // pause(part) {
-  //     if (part == 0) {
-  //         this.video1.pause()
-  //     }
-  //     else if (part == 1) {
-  //         this.running = false
-  //         this.video2.pause()
-  //     }
-  // }
-  // oneShot() {
-  //     if(!this.done){
-  //         this.done = true
-  //         setTimeout(() => {
-  //             this.go = false
-  //             this.video2.pause()
-  //             this.done = false
-  //         }, 500)
-  //     }
-  // }
-  // scrollPlay() {
-  //     if (this.video2.duration) {
-  //         if (this.prev != window.scrollY && !this.go) {
-  //             this.go = true
-  //             this.video2.play()
-  //         }
-  //         else if (this.prev == window.scrollY) {
-  //             this.oneShot()
-  //         }
-  //         this.prev = window.scrollY
-  //     }
-  //     if (this.running) {
-  //         requestAnimationFrame(this.scrollPlay.bind(this));
-  //     }
-  // }
 
+    this.locoScroll = new _locomotiveScroll.default({
+      el: this.section,
+      smooth: true
+    });
+    this.locoScroll.on("scroll", _ScrollTrigger.ScrollTrigger.update);
+
+    _ScrollTrigger.ScrollTrigger.scrollerProxy(this.section, {
+      scrollTop: function scrollTop(value) {
+        return _arguments.length ? _this.locoScroll.scrollTo(value, 0, 0) : _this.locoScroll.scroll.instance.scroll.y;
+      },
+      // scrollTop(value){
+      // }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+      getBoundingClientRect: function getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight
+        };
+      },
+      // LocomotiveScroll handles things completely differently on mobile devices - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied to the container (the LocomotiveScroll-controlled element).
+      pinType: this.section.style.transform ? "transform" : "fixed"
+    }); // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+
+
+    _ScrollTrigger.ScrollTrigger.addEventListener("refresh", function () {
+      return _this.locoScroll.update();
+    }); // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+
+
+    _ScrollTrigger.ScrollTrigger.refresh();
+  }
 
   _createClass(Vid, [{
+    key: "scrollTop",
+    value: function scrollTop(value) {}
+  }, {
     key: "start",
     value: function start(part) {
       if (part == 0) {
@@ -54203,14 +54196,7 @@ var Vid = /*#__PURE__*/function () {
       // clearInterval(this.inte)
       if (this.scrollTrig) {
         this.scrollTrig.kill();
-      } // this.scrollTrig = ScrollTrigger.create({
-      //     trigger: this.section,
-      //     duration: 1,
-      //     markers: true,
-      //     ease: "power4.out",
-      //     scrub: true
-      // })
-
+      }
 
       this.scrollTrig = _gsap.default.timeline({
         defaults: {
@@ -54218,6 +54204,7 @@ var Vid = /*#__PURE__*/function () {
         },
         scrollTrigger: {
           trigger: this.section,
+          scroller: this.section,
           start: "top top",
           end: "bottom bottom",
           scrub: true
@@ -54227,8 +54214,9 @@ var Vid = /*#__PURE__*/function () {
         currentTime: 0
       }, {
         currentTime: this.video2.duration || 1
-      }); // this.run()
-      // this.inte = setInterval(this.playVideo.bind(this), 1)
+      }); // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+
+      _ScrollTrigger.ScrollTrigger.refresh();
     }
   }, {
     key: "run",
@@ -54393,8 +54381,8 @@ var Content = /*#__PURE__*/function () {
     this.yeah = document.querySelector('.yeah');
     this.astroL = document.querySelector('.intro > .left > img');
     this.astroR = document.querySelector('.intro > .right > img');
-    this.blockL = document.querySelector('.left-block');
-    this.blockR = document.querySelector('.right-block'); // this.start()
+    this.blockL = document.querySelector('.yeah > .left-line > .left-block');
+    this.blockR = document.querySelector('.yeah > .right-line > .right-block'); // this.start()
   }
 
   _createClass(Content, [{
@@ -54667,7 +54655,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39895" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34073" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

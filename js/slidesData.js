@@ -7,9 +7,17 @@ const slidesData = [
     {
       // image: img1,
       content: `
-        <div class="slide-container">
-          <div class="slide-header">
+        <div class="slide-container slide-grid">
+          <div class="left-line liner">
+            <div class='block left-block'></div>
+          </div>
+          <div class="slide-header landing">
+            <h1>METAMALL</h1>
+            <p>The Decentralized Metaverse Mall</p>
             <button class='explore'>Enter</button>
+          </div>
+          <div class="right-line liner">
+            <div class='block left-block'></div>
           </div>
         </div>
       `,

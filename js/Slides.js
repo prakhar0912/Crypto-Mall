@@ -54,7 +54,7 @@ class Slides {
   addClickEvents(){
     this.exploreBtn = document.querySelector('.explore')
     this.exploreBtn.addEventListener('click', () => {
-      gsap.to(this.exploreBtn, {
+      gsap.to('.slide-grid', {
         opacity: 0, duration: 1.5
       })
       this.options.alterPlane0()

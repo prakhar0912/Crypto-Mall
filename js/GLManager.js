@@ -25,7 +25,7 @@ function GLManager(data, cursorRender, updatePre) {
   this.part = 0
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 1)
+  renderer.setClearColor(0x000000, 0.3)
   this.textures = []
   this.assignTextures()
   this.stopEffects = false

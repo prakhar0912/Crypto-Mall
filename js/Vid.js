@@ -22,61 +22,32 @@ class Vid {
         this.go = false
         this.done = false
         gsap.registerPlugin(ScrollTrigger)
+        this.locoScroll = new locomotiveScroll({
+            el: this.section,
+            smooth: true
+        })
+        this.locoScroll.on("scroll", ScrollTrigger.update)
+        ScrollTrigger.scrollerProxy(this.section, {
+            scrollTop: (value) => {
+                return arguments.length ? this.locoScroll.scrollTo(value, 0, 0) : this.locoScroll.scroll.instance.scroll.y;
+            },
+            // scrollTop(value){
+            // }, // we don't have to define a scrollLeft because we're only scrolling vertically.
+            getBoundingClientRect: () => {
+                return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+            },
+            // LocomotiveScroll handles things completely differently on mobile devices - it doesn't even transform the container at all! So to get the correct behavior and avoid jitters, we should pin things with position: fixed on mobile. We sense it by checking to see if there's a transform applied to the container (the LocomotiveScroll-controlled element).
+            pinType: this.section.style.transform ? "transform" : "fixed"
+        });
+        // each time the window updates, we should refresh ScrollTrigger and then update LocomotiveScroll. 
+        ScrollTrigger.addEventListener("refresh", () => this.locoScroll.update());
+        // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+        ScrollTrigger.refresh();
+
     }
 
-
-    // for a horizontal version, see https://codepen.io/GreenSock/pen/rNmQPpa?editors=0010
-
-    // start(part) {
-    //     if (part == 0) {
-    //         this.video1.play()
-    //     }
-    //     else if (part == 1) {
-    //         this.running = true
-    //         this.video1.pause()
-    //         this.scrollPlay()
-    //     }
-
-    // }
-
-    // pause(part) {
-    //     if (part == 0) {
-    //         this.video1.pause()
-    //     }
-    //     else if (part == 1) {
-    //         this.running = false
-    //         this.video2.pause()
-    //     }
-    // }
-
-    // oneShot() {
-    //     if(!this.done){
-    //         this.done = true
-    //         setTimeout(() => {
-    //             this.go = false
-    //             this.video2.pause()
-    //             this.done = false
-    //         }, 500)
-    //     }
-    // }
-
-    // scrollPlay() {
-    //     if (this.video2.duration) {
-    //         if (this.prev != window.scrollY && !this.go) {
-    //             this.go = true
-    //             this.video2.play()
-
-    //         }
-    //         else if (this.prev == window.scrollY) {
-    //             this.oneShot()
-    //         }
-    //         this.prev = window.scrollY
-
-    //     }
-    //     if (this.running) {
-    //         requestAnimationFrame(this.scrollPlay.bind(this));
-    //     }
-    // }
+    scrollTop(value) {
+    }
 
     start(part) {
         if (part == 0) {
@@ -111,26 +82,16 @@ class Vid {
             this.scrollTrig.kill()
         }
 
-        // this.scrollTrig = ScrollTrigger.create({
-        //     trigger: this.section,
-        //     duration: 1,
-        //     markers: true,
-        //     ease: "power4.out",
-        //     scrub: true
-        // })
-
         this.scrollTrig = gsap.timeline({
             defaults: { duration: 1 },
             scrollTrigger: {
                 trigger: this.section,
+                scroller: this.section,
                 start: "top top",
                 end: "bottom bottom",
                 scrub: true
             }
         });
-
-
-
 
         this.scrollTrig.fromTo(
             this.video2,
@@ -142,11 +103,8 @@ class Vid {
             }
         );
 
-
-
-
-        // this.run()
-        // this.inte = setInterval(this.playVideo.bind(this), 1)
+        // after everything is set up, refresh() ScrollTrigger and update LocomotiveScroll because padding may have been added for pinning, etc.
+        ScrollTrigger.refresh();
 
     }
 

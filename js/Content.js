@@ -7,8 +7,8 @@ class Content{
         this.yeah = document.querySelector('.yeah')
         this.astroL = document.querySelector('.intro > .left > img')
         this.astroR = document.querySelector('.intro > .right > img')
-        this.blockL = document.querySelector('.left-block')
-        this.blockR = document.querySelector('.right-block')
+        this.blockL = document.querySelector('.yeah > .left-line > .left-block')
+        this.blockR = document.querySelector('.yeah > .right-line > .right-block')
         // this.start()
     }
 
