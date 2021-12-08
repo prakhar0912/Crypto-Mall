@@ -63,12 +63,7 @@ const slidesData = [
                   </p>
                 </div>
               </section>
-              <section>
-          
-              </section>
-              <section>
-          
-              </section>
+              
             </div>
             <div class="right-line liner">
               <div class='block right-block'></div>

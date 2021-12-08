@@ -2,10 +2,60 @@
     position: relative;
     height: 100%;
     width: 100vw;
-    pointer-events: none !important;
-    background: url('../images/blur.png');
+    background: url('../images/blur60.png');
     display: grid;
     grid-template-columns: 20% 60% 20%;
+}
+
+.top-nav {
+    position: fixed;
+    display: grid;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 50px 6vw;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    font-size: 1.2rem;
+    z-index: 10;
+}
+
+.top-nav>.left {
+    justify-self: left;
+}
+
+.top-nav>.left>button {
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: 900;
+    font-family: NeueB, Courier, monospace;
+    margin-right: 20px;
+}
+
+.top-nav>.right {
+    justify-self: right;
+}
+
+.top-nav>.right>img {
+    margin-right: 25px;
+}
+
+.explore {
+    position: absolute;
+    top: 69vh;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px white solid;
+    padding: 12px 40px;
+    background: transparent;
+    color: white;
+    /* font-weight: 900; */
+    border-radius: 10px;
+    font-size: 1.2rem;
+    font-family: Neue, Courier, monospace;
+    margin-right: 20px;
+    pointer-events: all;
 }
 
 .liner {
@@ -132,7 +182,7 @@ section:nth-of-type(2)>div>h1:nth-of-type(2) {
     font-family: NeueB, Courier, monospace;
 }
 
-section:nth-of-type(2)>div>h1:nth-of-type(1){
+section:nth-of-type(2)>div>h1:nth-of-type(1) {
     margin-bottom: 10px;
 }
 
@@ -147,4 +197,65 @@ section:nth-of-type(3) {
 section:nth-of-type(3)>h1 {
     font-size: 2rem;
     line-height: 2.5rem;
+}
+
+@media (max-width: 800px) {
+    :root {
+        font-size: 13px;
+    }
+
+    .yeah {
+        grid-template-columns: 2% 96% 2%;
+        /* background: url('../images/blur60.png'); */
+    }
+
+    .intro>.left, .intro>.right {
+        position: relative;
+        left: initial;
+        bottom: initial;
+        top: initial;
+        transform: none;
+        justify-self: center;
+    }
+
+    .intro>.left>img, .intro>.right>img{
+        width: 70%;
+        display: block;
+        margin: 0 auto
+    }
+
+    section{
+        height: initial;
+        /* min-height: 90vh; */
+    }
+
+    .intro>.left {
+        grid-area: b;
+    }
+
+    .intro>.right {
+        grid-area: c;
+    }
+
+    .intro > .middle{
+        padding: 0 10vw;
+    }
+
+    .intro {
+        padding: 150px 0 0 0;
+        grid-template-areas: "a a" "b c";
+    }
+
+    section:nth-of-type(2)>div{
+        padding: 120px 5vw;
+    }
+
+    .top-nav{
+        padding: 30px 3vw;
+    }
+
+    .top-nav>.left>button{
+        margin-right: 10px;
+    }
+
 }

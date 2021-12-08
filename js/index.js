@@ -84,18 +84,8 @@ const preloader = new Preloader({
 
 
 const showcase = new Showcase(slidesData, {
-  // updatePre: (part, total) => {
-  //   console.log('here')
-  //   preloader.update(part, total)
-  // },
   killHint: () => {
-    // if (showcase.part === 1) {
-    //   cursor.killHint()
-    // }
-    setTimeout(() => {
-      // frame.killBlow()
-      // cursor.killHint()
-    }, 1000)
+    
   },
   cursorRender: () => {
     if (!mobileDevice) {
