@@ -13,6 +13,7 @@ function once(el, event, fn, opts) {
 
 class Vid {
     constructor() {
+        this.video0 = document.querySelector('#video1')
         this.video1 = document.querySelector('#video1')
         this.video2 = document.querySelector('#video3')
         this.section = document.querySelector('.yeah')
@@ -51,11 +52,12 @@ class Vid {
 
     start(part) {
         if (part == 0) {
-            this.video1.play()
+            this.video0.play()
         }
         else if (part == 1) {
             this.running = true
             this.video1.pause()
+            this.video0.pause()
             this.scrollPlay()
 
         }
@@ -65,13 +67,14 @@ class Vid {
     pause(part) {
         if (part == 0) {
             this.video1.pause()
+            this.video0.pause()
+            this.video
         }
         else if (part == 1) {
             // clearInterval(this.inte)
             this.running = false
             this.scrollTrig.kill()
             this.video2.pause()
-
         }
     }
 
