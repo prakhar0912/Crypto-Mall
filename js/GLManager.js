@@ -218,6 +218,9 @@ GLManager.prototype.alterPlane0 = function () {
   //   r: 0, g: 0, b: 0, duration: 2,
   // })
   setTimeout(() => {
+    if(window.innerWidth < 900){
+      this.videos[0].pause()
+    }
     this.videos[1].play();
   }, 1800)
 }

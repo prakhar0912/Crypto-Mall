@@ -43301,6 +43301,10 @@ GLManager.prototype.alterPlane0 = function () {
   //   r: 0, g: 0, b: 0, duration: 2,
   // })
   setTimeout(function () {
+    if (window.innerWidth < 900) {
+      _this3.videos[0].pause();
+    }
+
     _this3.videos[1].play();
   }, 1800);
 }; // Plane Stuff
@@ -54670,7 +54674,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34073" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34159" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
