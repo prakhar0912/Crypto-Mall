@@ -4,9 +4,7 @@ import {
   vertex1
 } from "./shaders";
 import 'regenerator-runtime/runtime'
-import gsap from 'gsap'
 import Stats from "stats.js";
-import { fitTexture } from "./fitTexture";
 
 function GLManager(data, cursorRender, updatePre) {
   this.totalEntries = this.calculateTotalEntries(data);
@@ -44,25 +42,11 @@ function GLManager(data, cursorRender, updatePre) {
   this.createPlane(0, data[0][0].position)
   this.createPlane(1, data[1][0].position)
   this.createPlane(2, 11)
-  // this.init()
   this.calcAspectRatios()
   if (!this.loopRaf) {
     this.loop();
   }
-  // gsap.to(this.camera.position,{z: this.camera.position.z + 1})
 }
-
-
-// GLManager.prototype.init = function(){
-//   this.renderer.setSize(window.innerWidth, window.innerHeight);
-//   this.renderer.domElement.style.height = "100%"
-//   this.renderer.domElement.style.width = "100%"
-
-//   this.meshes[1].material.uniforms.u_resolution.value = new THREE.Vector2(window.innerWidth, window.innerHeight);
-//   this.render();
-
-
-// }
 
 
 GLManager.prototype.assignTextures = function () {
@@ -219,7 +203,7 @@ GLManager.prototype.alterPlane0 = function () {
   // })
   setTimeout(() => {
     if(window.innerWidth < 900){
-      this.videos[0].pause()
+      this.videos[0].playbackRate = 0.5
     }
     this.videos[1].play();
   }, 1800)

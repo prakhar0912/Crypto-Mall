@@ -20,30 +20,7 @@
 
   <link rel="stylesheet" type="text/css" href="./css/yeah.css" />
   <link rel="stylesheet" href="./css/loco.css">
-  <link rel="shortcut icon" href="./images/favicon.png" type="image/x-icon">
-
-  <script>
-    document.documentElement.className = "js";
-    var supportsCssVars = function () {
-      var e,
-        t = document.createElement("style");
-      return (
-        (t.innerHTML = "root: { --tmp-var: bold; }"),
-        document.head.appendChild(t),
-        (e = !!(
-          window.CSS &&
-          window.CSS.supports &&
-          window.CSS.supports("font-weight", "var(--tmp-var)")
-        )),
-        t.parentNode.removeChild(t),
-        e
-      );
-    };
-    supportsCssVars() ||
-      alert(
-        "Please view this demo in a modern browser that supports CSS Variables."
-      );
-  </script>
+  <link rel="shortcut icon" href="./imgg/favicon.png" type="image/x-icon">
 
 </head>
 
@@ -76,10 +53,14 @@
       <button>WHITEPAPER</button>
       <button>TEAM</button>
     </div>
+    <div class="center">
+      <h1 class="bold">METAMALL</h1>
+      <p>The Decentralized Metaverse Mall</p>
+    </div>
     <div class="right">
-      <img src="./images/twitter.svg" alt="">
-      <img src="./images/instagram.svg" alt="">
-      <img src="./images/telegram.svg" alt="">
+      <img src="./imgg/twitter.svg" alt="">
+      <img src="./imgg/instagram.svg" alt="">
+      <img src="./imgg/telegram.svg" alt="">
     </div>
   </div>
 

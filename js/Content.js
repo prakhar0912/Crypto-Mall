@@ -9,7 +9,7 @@ class Content{
         this.astroR = document.querySelector('.intro > .right > img')
         this.blockL = document.querySelector('.yeah > .left-line > .left-block')
         this.blockR = document.querySelector('.yeah > .right-line > .right-block')
-        // this.start()
+        this.nav = document.querySelector('.top-nav')
     }
 
     killAll(){
@@ -57,6 +57,15 @@ class Content{
                 start: "top top",
             },
             top: "60%"
+        })
+
+        gsap.to(this.nav, {
+            gridTemplateColumns: "30% 40% 30%",
+            onComplete: () => {
+                gsap.to(this.nav.querySelector(".center"), {
+                    display: "block", opacity: 1
+                })
+            }
         })
     }
 }
