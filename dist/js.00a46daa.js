@@ -54281,7 +54281,9 @@ var Preloader = /*#__PURE__*/function () {
         ele.addEventListener('canplay', function (event) {
           _this.loaded++;
 
-          _this.updatea();
+          if (_this.loaded > _this.total) {
+            _this.updatea();
+          }
         });
       });
       setTimeout(function () {

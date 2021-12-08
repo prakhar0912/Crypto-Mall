@@ -17,7 +17,9 @@ class Preloader {
         this.videos.forEach(ele => {
             ele.addEventListener('canplay', (event) => {
                 this.loaded++
-                this.updatea()
+                if(this.loaded > this.total){
+                    this.updatea()
+                }
             });
         })
         setTimeout(() => {
