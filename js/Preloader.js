@@ -16,7 +16,7 @@ class Preloader {
 
     addListeners() {
         this.videos.forEach(ele => {
-            ele.addEventListener('canplay', (event) => {
+            ele.addEventListener('loadeddata', (event) => {
                 console.log(event)
 
                 if (this.loaded <= 3) {

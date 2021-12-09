@@ -54313,7 +54313,7 @@ var Preloader = /*#__PURE__*/function () {
       var _this = this;
 
       this.videos.forEach(function (ele) {
-        ele.addEventListener('canplay', function (event) {
+        ele.addEventListener('loadeddata', function (event) {
           console.log(event);
 
           if (_this.loaded <= 3) {
