@@ -102,7 +102,7 @@ class Vid {
                 currentTime: 0,
             },
             {
-                currentTime: this.video2.duration || 1,
+                currentTime: this.video2.duration-0.6 || 1,
             }
         );
 
