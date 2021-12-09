@@ -5,6 +5,7 @@ import {
 } from "./shaders";
 import 'regenerator-runtime/runtime'
 import Stats from "stats.js";
+import gsap from "gsap"
 
 function GLManager(data, cursorRender, updatePre) {
   this.totalEntries = this.calculateTotalEntries(data);

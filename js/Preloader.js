@@ -19,6 +19,9 @@ class Preloader {
                 console.log(event)
                 this.loaded++
                 this.updatea()
+                if(ele.readyState >= 3){
+                    console.log('yeaa')
+                }
                 if(this.loaded >= 3){
                     console.log('herea')
                     setTimeout(() => {
