@@ -22,7 +22,7 @@ const slidesData = [
           <div class="slide-header landing">
             <h1>METAMALL</h1>
             <p>The Decentralized Metaverse Mall</p>
-            <button class='explore'>Enter</button>
+            <button class='explore'>Explore</button>
           </div>
           <div class="right-line liner">
           </div>
@@ -48,7 +48,7 @@ const slidesData = [
                     <img class="skewElem1" src="${astroL}" alt="">
                 </div>
                 <div class="middle">
-                    <h1>INTRODUCING METAMALL</h1>
+                    <h1>INTRODUCING <b class="bold">METAMALL</b></h1>
                     <p>MetaMall will provide an unprecedented VR experience on the blockchain to create, explore and trade
                         in the
                         first-ever virtual mall owned by its users.</p>

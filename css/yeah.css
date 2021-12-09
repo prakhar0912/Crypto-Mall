@@ -20,7 +20,8 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    background: #071E6F;
+    /* background: #071E6F; */
+    background: black;
     opacity: 0.5
 }
 
@@ -147,7 +148,7 @@ p {
 }
 
 .explore {
-    margin: 20px auto;
+    margin: 40px auto;
     width: max-content;
     padding: 15px 50px;
     background: transparent;
@@ -451,7 +452,7 @@ section:nth-of-type(3)>h1 {
 
     section {
         height: initial;
-        /* min-height: 90vh; */
+        min-height: 110vh;
     }
 
     .intro>.left {
@@ -463,11 +464,11 @@ section:nth-of-type(3)>h1 {
     }
 
     .intro>.middle {
-        padding: 50px 10vw;
+        padding: 50px 10vw 0 10vw;
     }
 
     .intro {
-        padding: 150px 0 0 0;
+        padding: 120px 0 0 0;
         margin-bottom: 60px;
         grid-template-areas: "a a""b c";
     }
@@ -485,17 +486,48 @@ section:nth-of-type(3)>h1 {
         margin-right: 10px;
     }
 
+    .vr > div{
+        width: 90%;
+    }
+
     .coin, .heart, .joys {
         grid-template-columns: 100%;
-        min-height: 80vh;
+        min-height: 90vh;
+    }
+
+
+    .coin>div:first-of-type, .joys>div:first-of-type {
+        order: 2;
+        align-self: flex-start;
+    }
+
+    .coin>div:last-of-type, .joys>div:last-of-type {
+        padding-bottom: 20px;
+        align-self: flex-end;
+    }
+
+    .heart>div:last-of-type {
+        align-self: flex-start;
     }
 
     .heart>div:first-of-type {
-        order: 2
+        padding-bottom: 20px;
+        align-self: flex-end;
+    }
+
+    .roadmap{
+        padding: 100px 0;
+    }
+
+
+    .team>div:first-of-type {
+        padding-bottom: 30px;
     }
 
     .team>.dudes {
         grid-template-columns: 100%;
+        row-gap: 50px;
     }
+
 
 }

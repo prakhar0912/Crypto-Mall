@@ -9,24 +9,25 @@ class Preloader {
         this.videos = document.querySelectorAll('video')
         this.loaded = 0
         this.total = this.videos.length
-        this.finalLoaded = 
-        this.addListeners()
+        this.finalLoaded =
+            this.addListeners()
         this.showPreloader()
     }
 
     addListeners() {
         this.videos.forEach(ele => {
-            ele.addEventListener('loadeddata', (event) => {
+            ele.addEventListener('canplay', (event) => {
                 console.log(event)
-                this.loaded++
-                this.updatea()
-                // if(this.loaded >= 2){
-                //     setTimeout(() => {
-                //         this.loaded = 3
-                //         this.updatea()
-                //     }, 4000)
-                // }
+
+                if (this.loaded <= 3) {
+                    this.loaded++
+                    this.updatea()
+                }
             });
+            setTimeout(() => {
+                this.loaded = 3
+                this.updatea()
+            }, 9000)
         })
     }
 
@@ -55,6 +56,9 @@ class Preloader {
         if (this.loaderAnime) {
             this.loaderAnime.kill()
         }
+
+
+
         this.loaderAnime = gsap.to(this.line, {
             width: `${this.loaded * 100 / this.total}%`, duration: 1.5, ease: 'Power4.out', onComplete: () => {
                 if (this.loaded >= this.total) {
