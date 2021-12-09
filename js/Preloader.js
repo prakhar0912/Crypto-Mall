@@ -32,12 +32,12 @@ class Preloader {
                 }
             });
         })
-        setTimeout(() => {
-            if (this.loaded < 3) {
-                this.loaded = 5
-                this.updatea()
-            }
-        }, 9000)
+        // setTimeout(() => {
+        //     if (this.loaded < 3) {
+        //         this.loaded = 5
+        //         this.updatea()
+        //     }
+        // }, 9000)
     }
 
     showPreloader() {

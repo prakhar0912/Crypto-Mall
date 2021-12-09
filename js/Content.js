@@ -70,6 +70,8 @@ class Content {
             }
         })
 
+        
+
         // let proxy = { skew: 0 },
         //     skewSetter = gsap.quickSetter(".skewElem", "skewY", "deg"), // fast
         //     clamp = gsap.utils.clamp(-20, 20); // don't let the skew go beyond 20 degrees. 

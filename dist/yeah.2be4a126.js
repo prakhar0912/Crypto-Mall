@@ -189,7 +189,7 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"./../font/NeueMachina-Regular.otf":[["NeueMachina-Regular.e720175d.otf","font/NeueMachina-Regular.otf"],"font/NeueMachina-Regular.otf"],"./../font/NeueMachina-Light.otf":[["NeueMachina-Light.1cc0936b.otf","font/NeueMachina-Light.otf"],"font/NeueMachina-Light.otf"],"./../font/NeueMachina-Ultrabold.otf":[["NeueMachina-Ultrabold.8dc7965d.otf","font/NeueMachina-Ultrabold.otf"],"font/NeueMachina-Ultrabold.otf"],"./../imgg/blur50.png":[["blur50.ed548ffc.png","imgg/blur50.png"],"imgg/blur50.png"],"_css_loader":"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./../font/NeueMachina-Regular.otf":[["NeueMachina-Regular.e720175d.otf","font/NeueMachina-Regular.otf"],"font/NeueMachina-Regular.otf"],"./../font/NeueMachina-Light.otf":[["NeueMachina-Light.1cc0936b.otf","font/NeueMachina-Light.otf"],"font/NeueMachina-Light.otf"],"./../font/NeueMachina-Ultrabold.otf":[["NeueMachina-Ultrabold.8dc7965d.otf","font/NeueMachina-Ultrabold.otf"],"font/NeueMachina-Ultrabold.otf"],"_css_loader":"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -217,7 +217,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45679" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44681" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

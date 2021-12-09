@@ -202,9 +202,12 @@ GLManager.prototype.alterPlane0 = function () {
   //   r: 0, g: 0, b: 0, duration: 2,
   // })
   setTimeout(() => {
-    if(window.innerWidth < 900){
+    if (window.innerWidth < 900) {
       this.videos[0].playbackRate = 0.5
     }
+    gsap.to('.overlayy', {
+      background: 'black'
+    })
     this.videos[1].play();
   }, 1800)
 }
@@ -250,7 +253,7 @@ GLManager.prototype.createPlane = function (index, pos) {
     this.videos[2].play()
     setTimeout(() => {
       this.videos[2].pause()
-    },1000)
+    }, 1000)
     // this.videos[2].currentTime = 1
     const material = new THREE.ShaderMaterial({
       uniforms: {

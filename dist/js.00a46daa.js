@@ -37665,6 +37665,10 @@ GLManager.prototype.alterPlane0 = function () {
       _this3.videos[0].playbackRate = 0.5;
     }
 
+    gsap.to('.overlayy', {
+      background: 'black'
+    });
+
     _this3.videos[1].play();
   }, 1800);
 }; // Plane Stuff
@@ -54269,14 +54273,12 @@ var Preloader = /*#__PURE__*/function () {
             }, 4000);
           }
         });
-      });
-      setTimeout(function () {
-        if (_this.loaded < 3) {
-          _this.loaded = 5;
-
-          _this.updatea();
-        }
-      }, 9000);
+      }); // setTimeout(() => {
+      //     if (this.loaded < 3) {
+      //         this.loaded = 5
+      //         this.updatea()
+      //     }
+      // }, 9000)
     }
   }, {
     key: "showPreloader",
@@ -54674,7 +54676,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45679" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44681" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
