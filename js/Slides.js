@@ -47,6 +47,7 @@ class Slides {
   }
 
   mount(container) {
+    document.body.appendChild(createEleWithClass("div", 'overlayy'))
     container.appendChild(this.container);
     this.addClickEvents()
   }

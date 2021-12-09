@@ -8,7 +8,7 @@ class Preloader {
         this.line = this.preloaderContainer.querySelector('.loader-line')
         this.videos = document.querySelectorAll('video')
         this.loaded = 0
-        this.total = this.videos.length
+        this.total = this.videos.length + 2
         this.addListeners()
         this.showPreloader()
     }
@@ -18,17 +18,26 @@ class Preloader {
             ele.addEventListener('loadeddata', (event) => {
                 console.log(event)
                 this.loaded++
-                if (this.loaded <= this.total) {
-                    this.updatea()
+                this.updatea()
+                if(this.loaded >= 3){
+                    console.log('herea')
+                    setTimeout(() => {
+                        this.loaded = 4
+                        this.updatea()
+                    }, 2000)
+                    setTimeout(() => {
+                        this.loaded = 5
+                        this.updatea()
+                    }, 4000)
                 }
             });
         })
         setTimeout(() => {
             if (this.loaded < 3) {
-                this.loaded = 3
+                this.loaded = 5
                 this.updatea()
             }
-        }, 6000)
+        }, 9000)
     }
 
     showPreloader() {
@@ -56,7 +65,6 @@ class Preloader {
         if (this.loaderAnime) {
             this.loaderAnime.kill()
         }
-        console.log(this.loaded, this.total)
         this.loaderAnime = gsap.to(this.line, {
             width: `${this.loaded * 100 / this.total}%`, duration: 1.5, ease: 'Power4.out', onComplete: () => {
                 if (this.loaded >= this.total) {

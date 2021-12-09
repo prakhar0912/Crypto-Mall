@@ -1,8 +1,8 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-class Content{
-    constructor(){
+class Content {
+    constructor() {
         gsap.registerPlugin(ScrollTrigger)
         this.yeah = document.querySelector('.yeah')
         this.astroL = document.querySelector('.intro > .left > img')
@@ -12,32 +12,32 @@ class Content{
         this.nav = document.querySelector('.top-nav')
     }
 
-    killAll(){
-        if(this.astroLAnime){
+    killAll() {
+        if (this.astroLAnime) {
             this.astroLAnime.kill()
         }
-        if(this.astroRAnime){
+        if (this.astroRAnime) {
             this.astroRAnime.kill()
         }
     }
 
-    start(){
+    start() {
 
         this.killAll()
 
-        this.astroLAnime = gsap.timeline({repeat: -1})
-        this.astroLAnime.to(this.astroL, {
+        this.astroLAnime = gsap.timeline({ repeat: -1 })
+        this.astroLAnime.to('.skewElem1', {
             yPercent: -8, duration: 1
         })
-        this.astroLAnime.to(this.astroL, {
+        this.astroLAnime.to('.skewElem1', {
             yPercent: 0, duration: 1
         })
 
-        this.astroRAnime = gsap.timeline({repeat: -1})
-        this.astroRAnime.to(this.astroR, {
+        this.astroRAnime = gsap.timeline({ repeat: -1 })
+        this.astroRAnime.to('.skewElem2', {
             yPercent: 8, duration: 1
         })
-        this.astroRAnime.to(this.astroR, {
+        this.astroRAnime.to('.skewElem2', {
             yPercent: 0, duration: 1
         })
 
@@ -69,6 +69,30 @@ class Content{
                 })
             }
         })
+
+        // let proxy = { skew: 0 },
+        //     skewSetter = gsap.quickSetter(".skewElem", "skewY", "deg"), // fast
+        //     clamp = gsap.utils.clamp(-20, 20); // don't let the skew go beyond 20 degrees. 
+
+        // ScrollTrigger.create({
+        //     onUpdate: (self) => {
+        //         let skew = clamp(self.getVelocity() / -100);
+        //         // only do something if the skew is MORE severe. Remember, we're always tweening back to 0, so if the user slows their scrolling quickly, it's more natural to just let the tween handle that smoothly rather than jumping to the smaller skew.
+        //         if (Math.abs(skew) > Math.abs(proxy.skew)) {
+        //             proxy.skew = skew;
+        //             gsap.to(proxy, { skew: 0, duration: 0.8, ease: "power3", overwrite: true, onUpdate: () => skewSetter(proxy.skew) });
+        //         }
+        //     },
+        //     scroller: this.yeah,
+        //     trigger: this.yeah,
+        //     markers: true
+        // }); 
+
+        // // make the right edge "stick" to the scroll bar. force3D: true improves performance
+        // gsap.set(".skewElem", { transformOrigin: "right center", force3D: true });
+
+        // ScrollTrigger.refresh()
+
     }
 }
 

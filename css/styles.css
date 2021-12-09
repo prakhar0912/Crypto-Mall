@@ -19,17 +19,6 @@
   src: url(../font/GothamBold.ttf) format('truetype');
 }
 
-@font-face{
-  font-family: Neue;
-  src: url(../font/NeueMachina-Regular.otf);
-}
-
-@font-face{
-  font-family: NeueB;
-  src: url(../font/NeueMachina-Ultrabold.otf);
-}
-
-
 /* width */
 
 ::-webkit-scrollbar {

@@ -25,7 +25,8 @@ class Vid {
         gsap.registerPlugin(ScrollTrigger)
         this.locoScroll = new locomotiveScroll({
             el: this.section,
-            smooth: true
+            smooth: true,
+            multiplier: 1.5
         })
         this.locoScroll.on("scroll", ScrollTrigger.update)
         ScrollTrigger.scrollerProxy(this.section, {
@@ -86,7 +87,7 @@ class Vid {
         }
 
         this.scrollTrig = gsap.timeline({
-            defaults: { duration: 1 },
+            defaults: { duration: 1, ease: "linear" },
             scrollTrigger: {
                 trigger: this.section,
                 scroller: this.section,
@@ -102,7 +103,7 @@ class Vid {
                 currentTime: 0,
             },
             {
-                currentTime: this.video2.duration-0.6 || 1,
+                currentTime: this.video2.duration-2 || 1,
             }
         );
 

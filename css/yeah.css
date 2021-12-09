@@ -1,6 +1,26 @@
-.slide {
+@font-face {
+    font-family: Neue;
+    src: url(../font/NeueMachina-Regular.otf);
+}
+
+@font-face{
+  font-family: NeueL;
+  src: url(../font/NeueMachina-Light.otf);
+}
+
+@font-face{
+  font-family: NeueB;
+  src: url(../font/NeueMachina-Ultrabold.otf);
+}
+
+
+.overlayy {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
     background: url(../imgg/blur50.png)
-        /* background-position: center bottom; */
 }
 
 
@@ -12,7 +32,15 @@
     min-height: 100vh;
 }
 
-.bold{
+p {
+    font-family: NeueL, Courier, monospace;
+}
+
+.bold {
+    font-family: NeueB, Courier, monospace;
+}
+
+.h1 > b{
     font-family: NeueB, Courier, monospace;
 }
 
@@ -29,8 +57,7 @@
     bottom: 0;
     width: 100vw;
     height: 30vh;
-    background: linear-gradient(0deg, #000000d2 0%, rgba(0, 0, 0, 0) 70%);
-    /* background: url('../images/blurB.png'); */
+    background: linear-gradient(0deg, #000000b2 0%, rgba(0, 0, 0, 0) 80%);
 }
 
 .landing {
@@ -64,7 +91,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    grid-template-columns: 50% 50% ;
+    grid-template-columns: 50% 50%;
     padding: 30px 6vw;
     align-items: center;
     font-size: 1.2rem;
@@ -72,7 +99,7 @@
     color: white;
 }
 
-.top-nav.show-center{
+.top-nav.show-center {
     grid-template-columns: 30% 40% 30%;
 }
 
@@ -81,20 +108,20 @@
     justify-self: left;
 }
 
-.top-nav > .center{
+.top-nav>.center {
     opacity: 0;
     display: none;
     justify-self: center;
     text-align: center;
 }
 
-.top-nav > .center > h1{
+.top-nav>.center>h1 {
     font-size: 2.1rem;
     margin: 0;
     margin-bottom: 5px
 }
 
-.top-nav > .center > p{
+.top-nav>.center>p {
     font-size: 0.5rem;
     margin: 0;
 }
@@ -152,7 +179,7 @@
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    opacity: 0.1;
+    opacity: 0.25;
     width: 0.1px;
     border: none;
     box-shadow: none;
@@ -160,17 +187,19 @@
 
 .block {
     position: absolute;
-    height: 60px;
-    width: 2px;
+    height: 90px;
+    width: 0.1px;
     background-color: #fff;
     box-shadow:
-        0 0 1px 1px #fff,
+        0 0 0px 1px #fff,
         /* inner white */
-        0 0 20px 1px #fff,
+        0 0 20px 4px #fff,
         /* middle magenta */
-        0 0 140px 50px #0ff;
+        0 0 140px 50px #CDF0FF;
+
+        /* box-shadow: 0px 0px 8px #CDF0FF; */
     /* outer cyan */
-    left: -1px;
+    left: 0px;
 }
 
 .left-block {
@@ -196,7 +225,7 @@
 
 section {
     position: relative;
-    min-height: 70vh;
+    min-height: 100vh;
     width: 100%;
     margin: 0 auto;
     /* opacity: 0.2; */
@@ -216,6 +245,7 @@ section {
 }
 
 .grey {
+    font-family: NeueB, Courier, monospace;
     color: #FFFFFF;
     opacity: 0.6;
 }
@@ -258,11 +288,22 @@ section:nth-of-type(2) {
     place-items: center;
 }
 
-.vr>div:nth-of-type(2) {
+.vr > div {
+    max-height: max-content;
+    display: grid;
+    grid-template-columns: 100%;
+    place-items: center;
+}
+
+.vr>div>div:nth-of-type(1) > img{
+    width: 202px;
+}
+
+.vr>div>div:nth-of-type(2) {
     display: block;
     width: 90%;
     margin: auto;
-    padding: 120px 0;
+    padding: 70px 0;
     text-align: center;
     line-height: 3rem;
 }
@@ -287,20 +328,28 @@ section:nth-of-type(3)>h1 {
     place-items: center;
     width: 90%;
     height: max-content;
-    min-height: 60vh;
+    min-height: 70vh;
 }
 
 .heart {
     grid-template-columns: 30% 70%;
 }
 
+.heart > div:nth-of-type(2){
+    text-align: right;
+}
+
 .roadmap {
     display: grid;
     grid-template-columns: 100%;
     place-items: center;
-    width: 90%;
+    width: 100%;
     height: max-content;
-    min-height: 60vh;
+    min-height: 80vh;
+}
+
+.roadmap > div, .roadmap > div > img{
+    width: 100%;
 }
 
 .team {
@@ -330,11 +379,23 @@ section:nth-of-type(3)>h1 {
         font-size: 13px;
     }
 
-    .top-nav > .center > h1{
+    .overlayy{
+        height: calc(var(--vh, 1vh) * 100)
+    }
+
+    .slides{
+        background: none;
+    }
+
+    .middle-line{
+        opacity: 0.15;
+    }
+
+    .top-nav>.center>h1 {
         font-size: 1.7rem;
     }
-    
-    .top-nav > .center > p{
+
+    .top-nav>.center>p {
         font-size: 0.8rem;
     }
 
@@ -349,7 +410,7 @@ section:nth-of-type(3)>h1 {
         font-size: 0.9rem;
     }
 
-    .top-nav>.right>img{
+    .top-nav>.right>img {
         margin-right: 10px;
         width: 20px
     }
@@ -418,16 +479,16 @@ section:nth-of-type(3)>h1 {
         margin-right: 10px;
     }
 
-    .coin, .heart, .joys{
+    .coin, .heart, .joys {
         grid-template-columns: 100%;
         min-height: 80vh;
     }
 
-    .heart > div:first-of-type{
+    .heart>div:first-of-type {
         order: 2
     }
 
-    .team > .dudes{
+    .team>.dudes {
         grid-template-columns: 100%;
     }
 
