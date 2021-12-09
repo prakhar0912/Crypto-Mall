@@ -8,7 +8,8 @@ class Preloader {
         this.line = this.preloaderContainer.querySelector('.loader-line')
         this.videos = document.querySelectorAll('video')
         this.loaded = 0
-        this.total = this.videos.length + 2
+        this.total = this.videos.length
+        this.finalLoaded = 
         this.addListeners()
         this.showPreloader()
     }
@@ -19,28 +20,14 @@ class Preloader {
                 console.log(event)
                 this.loaded++
                 this.updatea()
-                if(ele.readyState >= 3){
-                    console.log('yeaa')
-                }
-                if(this.loaded >= 3){
-                    console.log('herea')
-                    setTimeout(() => {
-                        this.loaded = 4
-                        this.updatea()
-                    }, 2000)
-                    setTimeout(() => {
-                        this.loaded = 5
-                        this.updatea()
-                    }, 4000)
-                }
+                // if(this.loaded >= 2){
+                //     setTimeout(() => {
+                //         this.loaded = 3
+                //         this.updatea()
+                //     }, 4000)
+                // }
             });
         })
-        // setTimeout(() => {
-        //     if (this.loaded < 3) {
-        //         this.loaded = 5
-        //         this.updatea()
-        //     }
-        // }, 9000)
     }
 
     showPreloader() {

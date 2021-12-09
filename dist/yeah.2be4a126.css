@@ -168,8 +168,7 @@ p {
     position: relative;
     height: 100%;
     width: 0.1px;
-    background-color: white;
-    opacity: 0.5;
+    background-color: rgba(255, 255, 255, 0.5);
     /* border: 0.1px solid #FFFFFF; */
     box-shadow: 0px 0px 3px #CDF0FF;
 }
@@ -189,16 +188,15 @@ p {
 .block {
     position: absolute;
     height: 90px;
-    width: 0.1px;
+    width: 2px;
+    opacity: 1;
     background-color: #fff;
-    box-shadow:
+    /* box-shadow:
         0 0 0px 1px #fff,
-        /* inner white */
         0 0 20px 4px #fff,
-        /* middle magenta */
-        0 0 140px 50px #CDF0FF;
+        0 0 140px 50px #CDF0FF; */
 
-        /* box-shadow: 0px 0px 8px #CDF0FF; */
+        box-shadow: 0px 0px 10px #ffffff;
     /* outer cyan */
     left: 0px;
 }
@@ -304,7 +302,7 @@ section:nth-of-type(2) {
     display: block;
     width: 90%;
     margin: auto;
-    padding: 70px 0;
+    padding: 20px 0;
     text-align: center;
     line-height: 3rem;
 }
@@ -346,7 +344,7 @@ section:nth-of-type(3)>h1 {
     place-items: center;
     width: 100%;
     height: max-content;
-    min-height: 80vh;
+    min-height: 110vh;
 }
 
 .roadmap > div, .roadmap > div > img{
@@ -357,10 +355,15 @@ section:nth-of-type(3)>h1 {
     display: grid;
     grid-template-columns: 100%;
     align-items: center;
-    width: 90%;
+    width: 100%;
     height: max-content;
-    min-height: 80vh;
+    min-height: 110vh;
     padding: 80px 0 100px 0;
+    margin-top: 100px;
+}
+
+.team > div:first-of-type{
+    padding-left: 5%;
 }
 
 .team>.dudes {
@@ -371,7 +374,9 @@ section:nth-of-type(3)>h1 {
 }
 
 .dudes>img {
-    width: 100%;
+    display: block;
+    width: 90%;
+    margin: 0 auto;
 }
 
 

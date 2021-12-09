@@ -43017,7 +43017,7 @@ GLManager.prototype.setUpGui = function () {
 GLManager.prototype.loadFactors = function (data) {
   var factorsMaster = [];
 
-  for (var i = 0; i < 1; i++) {
+  for (var i = 0; i < 2; i++) {
     factorsMaster.push(new THREE.Vector2(1, 1));
   }
 
@@ -43026,8 +43026,8 @@ GLManager.prototype.loadFactors = function (data) {
 
 GLManager.prototype.calcAspectRatios = function () {
   // fitTexture(this.textures[0], window.innerWidth/window.innerHeight, 'fill')
-  this.calculateAspectRatioFactorNew(0, this.textures[0]);
-  this.calculateAspectRatioFactorNew(0, this.textures[1]);
+  this.calculateAspectRatioFactor(0, this.textures[0]);
+  this.calculateAspectRatioFactorNew(2, this.textures[1]);
   this.calculateAspectRatioFactor(1, this.textures[2]);
 };
 
@@ -43050,9 +43050,9 @@ GLManager.prototype.calculateAspectRatioFactor = function (index, texture) {
 
   this.factors[0] = new THREE.Vector2(factorX, factorY);
 
-  if (this.meshes[1]) {
-    this.meshes[1].material.uniforms.u_textureFactor.value = this.factors[0];
-    this.meshes[1].material.uniforms.u_textureFactor.needsUpdate = true;
+  if (this.meshes[index]) {
+    this.meshes[index].material.uniforms.u_textureFactor.value = this.factors[0];
+    this.meshes[index].material.uniforms.u_textureFactor.needsUpdate = true;
   }
 
   if (this.initialRender) {
@@ -43072,8 +43072,8 @@ GLManager.prototype.calculateAspectRatioFactorNew = function (index, texture) {
   if (rectRatio > imageRatio) {
     factorX = 1;
     factorY = 1 / rectRatio * imageRatio;
-    this.meshes[0].material.map.repeat.set(factorX, factorY);
-    this.meshes[0].material.map.offset.y = (factorY - 1) / 2 * -1;
+    this.meshes[2].material.map.repeat.set(factorX, factorY);
+    this.meshes[2].material.map.offset.y = (factorY - 1) / 2 * -1;
   } else {
     factorX = 1 * rectRatio / imageRatio;
     factorY = 1; // factorX += 0.2
@@ -43227,6 +43227,7 @@ GLManager.prototype.alterPlane0 = function () {
   // gsap.to(this.meshes[0].material.color, {
   //   r: 0, g: 0, b: 0, duration: 2,
   // })
+  this.stopEffects = true;
   setTimeout(function () {
     if (window.innerWidth < 900) {
       _this3.videos[0].playbackRate = 0.5;
@@ -43238,6 +43239,9 @@ GLManager.prototype.alterPlane0 = function () {
 
     _this3.videos[1].play();
   }, 1800);
+  setTimeout(function () {
+    _this3.stopEffects = false;
+  }, 6000);
 }; // Plane Stuff
 
 
@@ -43253,11 +43257,65 @@ GLManager.prototype.createPlane = function (index, pos) {
     var segments = 60;
     var geometry = new THREE.PlaneBufferGeometry(width, height, segments, segments);
     this.videos[0].play();
-    var material = new THREE.MeshBasicMaterial({
-      map: this.textures[0],
-      transparent: false
-    });
-    var mesh2 = new THREE.Mesh(geometry, material);
+
+    var _material = new THREE.ShaderMaterial({
+      uniforms: {
+        u_texture: {
+          type: "t",
+          value: this.textures[0]
+        },
+        u_textureFactor: {
+          type: "f",
+          value: this.factors[1]
+        },
+        u_textureProgress: {
+          type: "f",
+          value: this.textureProgress
+        },
+        u_offset: {
+          type: "f",
+          value: 8
+        },
+        u_progress: {
+          type: "f",
+          value: 0
+        },
+        u_direction: {
+          type: "f",
+          value: 1
+        },
+        u_effect: {
+          type: "f",
+          value: 0
+        },
+        u_time: {
+          type: "f",
+          value: this.time
+        },
+        u_waveIntensity: {
+          type: "f",
+          value: 0
+        },
+        u_resolution: {
+          type: "v2",
+          value: new THREE.Vector2(window.innerWidth, window.innerHeight)
+        },
+        u_rgbPosition: {
+          type: "v2",
+          value: new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2)
+        },
+        u_rgbVelocity: {
+          type: "v2",
+          value: new THREE.Vector2(0, 0)
+        }
+      },
+      vertexShader: _shaders.vertex,
+      fragmentShader: _shaders.fragment,
+      side: THREE.DoubleSide
+    }); // var material = new THREE.MeshBasicMaterial({ map: this.textures[0], transparent: false, });
+
+
+    var mesh2 = new THREE.Mesh(geometry, _material);
     mesh2.position.z = pos;
     this.scene.add(mesh2);
     this.meshes.push(mesh2);
@@ -43275,7 +43333,7 @@ GLManager.prototype.createPlane = function (index, pos) {
       _this4.videos[2].pause();
     }, 1000); // this.videos[2].currentTime = 1
 
-    var _material = new THREE.ShaderMaterial({
+    var _material2 = new THREE.ShaderMaterial({
       uniforms: {
         u_texture: {
           type: "t",
@@ -43339,7 +43397,7 @@ GLManager.prototype.createPlane = function (index, pos) {
       side: THREE.DoubleSide
     });
 
-    var mesh = new THREE.Mesh(_geometry, _material);
+    var mesh = new THREE.Mesh(_geometry, _material2);
     mesh.position.z = pos;
     this.scene.add(mesh);
     this.meshes.push(mesh); // gsap.to(this.camera.position, {z: this.camera.position.z + 1})
@@ -43432,7 +43490,7 @@ GLManager.prototype.updateRgbEffect = function (_ref4) {
     this.render();
   }
 
-  if (this.part == 0) {
+  if (this.stopEffects) {
     return;
   }
 
@@ -54244,8 +54302,8 @@ var Preloader = /*#__PURE__*/function () {
     this.line = this.preloaderContainer.querySelector('.loader-line');
     this.videos = document.querySelectorAll('video');
     this.loaded = 0;
-    this.total = this.videos.length + 2;
-    this.addListeners();
+    this.total = this.videos.length;
+    this.finalLoaded = this.addListeners();
     this.showPreloader();
   }
 
@@ -54259,32 +54317,15 @@ var Preloader = /*#__PURE__*/function () {
           console.log(event);
           _this.loaded++;
 
-          _this.updatea();
+          _this.updatea(); // if(this.loaded >= 2){
+          //     setTimeout(() => {
+          //         this.loaded = 3
+          //         this.updatea()
+          //     }, 4000)
+          // }
 
-          if (ele.readyState >= 3) {
-            console.log('yeaa');
-          }
-
-          if (_this.loaded >= 3) {
-            console.log('herea');
-            setTimeout(function () {
-              _this.loaded = 4;
-
-              _this.updatea();
-            }, 2000);
-            setTimeout(function () {
-              _this.loaded = 5;
-
-              _this.updatea();
-            }, 4000);
-          }
         });
-      }); // setTimeout(() => {
-      //     if (this.loaded < 3) {
-      //         this.loaded = 5
-      //         this.updatea()
-      //     }
-      // }, 9000)
+      });
     }
   }, {
     key: "showPreloader",
@@ -54682,7 +54723,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "44681" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35457" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
